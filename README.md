@@ -1,2 +1,2 @@
 # tidalscripts
-Tidal Cycle Scipts
+Tidal Cycle Scripts
