@@ -1,0 +1,4 @@
+d1 $ slow 32 $ juxBy 0.5 (rev) $ striate' 32 (1/16) $ sound "lighter*33" # n (run 33) # speed (slow 2 $ scale 1 16 saw) # gain "1.5" # room "1.0"
+
+d1 silence
+hush

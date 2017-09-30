@@ -1,0 +1,43 @@
+import Sound.OSC.FD
+
+d1' <- startServ 4040 d1
+
+let s = "2"
+
+d1 $ slow 4 $ sound "bd ~ cp bd ~ bd cp ~ ~ bd cp ~ ~ ~ cp ~" # speed "2"
+d1 silence
+
+let startServ port d = do x <- udpServer "0.0.0.0" port
+                          mPatF <- newMVar (silence, id)
+                          forkIO $ loop x d mPatF
+                          return $ \pat -> do (_, f) <- takeMVar mPatF
+                                              putMVar mPatF (pat, f)
+                                              d $ f pat
+    loop :: UDP -> (ParamPattern -> IO ()) -> MVar (ParamPattern, ParamPattern -> ParamPattern) -> IO ()
+    loop x d mPatF = do m <- recvMessage x
+                        act m d mPatF
+                        loop x d mPatF
+    act (Just (Message "/density" [Float n])) d mPatF =
+      do  (pat, f) <- takeMVar mPatF
+          let f' = density (toRational n) . f
+          putMVar mPatF (pat, f')
+          d $ f' pat
+          return ()
+    act (Just (Message "/speed" [Float n])) d mPatF =
+      do  (pat, f) <- takeMVar mPatF
+          let f' = (|*| speed (pure $ GHC.Float.float2Double n)) . f
+          putMVar mPatF (pat, f')
+          d $ f' pat
+          return ()
+    act (Just (Message "/clear" [])) d mPatF =
+      do  (pat, _) <- takeMVar mPatF
+          putMVar mPatF (pat, id)
+          d pat
+          return ()
+    act (Just (Message "/sound" [ASCII_String s])) d mPatF =
+      do  (pat, f) <- takeMVar mPatF
+          let f' = (sound (pure $ show s) #) . f
+          putMVar mPatF (pat, f')
+          d $ f' pat
+          return ()
+    act _ _ _ = return ()
