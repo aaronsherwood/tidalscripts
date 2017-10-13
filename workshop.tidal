@@ -40,14 +40,14 @@ d2 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx" #
 -- gain
 d1 $ slow 2 $ sound "[bd bd:3? cp [~ ~ ~ bd:4?], can:3*0]" # gain "1.5"
 
--- every, play a different sound pattern
+-- const for every, play a different sound pattern
 d3 $ every 4 (const $ sound "hh*4") $ sound "hh*8"
 
 -- gain is pattern too
 d3 $ every 4 (const $ sound "hh*4") $ sound "hh*8" # gain "1.2 0.97 0.85 0.9 1.2 0.97 0.85 0.9"
 
 -- selecting different sounds - RUN
-d4 $ sound "arpy*8" # n (run 6)
+d4 $ sound "arpy*8" # n (run 7)
 d4 $ every 4 (const $ sound "arpy*12" # n (run 8) # speed "0.5") $ sound "arpy*8" # n (run 16)
 
 -- sometimes
