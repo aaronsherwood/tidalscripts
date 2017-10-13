@@ -2,3 +2,9 @@ d1 $ slow 32 $ juxBy 0.5 (rev) $ striate' 32 (1/16) $ sound "lighter*33" # n (ru
 
 d1 silence
 hush
+
+-- break beat irand
+d5 $ slow 4 $ sound "amencutup*32" # n (irand 32) # gain "1.2"
+
+-- sitar
+d4 $ every 2 (slow 2) $ jux (rev) $ sound "sitar*8?" # n (run 5) # cut "10" # gain "1.3"

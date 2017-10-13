@@ -1,0 +1,61 @@
+d1 silence
+d2 silence
+d3 silence
+d4 silence
+d5 silence
+hush
+
+-- play one sound
+d1 $ sound "bd"
+
+-- stop the sound
+d1 silence
+
+-- what is a cycle?
+d1 $ sound "bd bd cp ~"
+
+-- too fast
+d1 $ slow 2 $ sound "bd bd cp ~"
+
+-- random sounds
+d1 $ sound "bd hh cp mt sn:2 arpy drum odx"
+
+-- pattern manipulation
+d1 $ every 4 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx"
+
+d1 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx"
+
+-- speed
+d1 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx" # speed "2"
+d1 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx" # speed (slow 4 $ scale (-1) 8 saw)
+
+-- sub patterns
+d1 $ slow 2 $ sound "bd bd cp [~ ~ ~ bd]"
+
+-- sometimes playing sounds and choose differnt notes
+d1 $ slow 2 $ sound "bd bd:3? cp [~ ~ ~ bd:4?]"
+
+-- other patterns
+d2 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx" # speed (slow 4 $ scale (-1) 8 saw)
+
+-- gain
+d1 $ slow 2 $ sound "bd bd:3? cp [~ ~ ~ bd:4?]" # gain "1.5"
+
+-- every play a different sound pattern
+d3 $ every 4 (const $ sound "hh*8?") $ sound "hh*8"
+
+-- gain is pattern too
+d3 $ every 4 (const $ sound "hh*4") $ sound "hh*8" # gain "1.2 0.97 0.85 0.9 1.2 0.97 0.85 0.9"
+
+-- selecting different sounds - RUN
+d4 $ sound "arpy*8" # n (run 8)
+d4 $ every 4 (const $ sound "arpy*12" # n (run 11) # speed "0.5") $ sound "arpy*8" # n (run 8)
+
+-- sometimes
+d4 $ sometimes (rev) $ every 4 (const $ sound "arpy*12" # n (run 11) # speed "0.5") $ sound "arpy*8" # n (run 8)
+
+-- jux
+d4 $ sometimes (jux(rev)) $ every 4 (const $ sound "arpy*12" # n (run 11) # speed "0.5") $ sound "arpy*8" # n (run 8)
+
+--striate
+d4 $ jux (striate 2) $ sometimes (rev) $ every 4 (const $ sound "arpy*12" # n (run 11) # speed "0.5") $ sound "arpy*8" # n (run 8)
