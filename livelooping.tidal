@@ -1,0 +1,144 @@
+harm = pF "harm"
+timbre = pF "timbre"
+morph = pF "morph"
+engine = pI "engine"
+
+vwet = pF "verbwet"
+vtime = pF "verbtime"
+vdamp = pF "verbdamp"
+vhp = pF "verbhp"
+vfreeze = pI "verbfreeze"
+vdiff = pF "verbdiff"
+vgain = pF "verbgain"
+
+cloudspitch = pF "cloudspitch"
+cloudspos = pF "cloudspos"
+cloudssize = pF "cloudssize"
+cloudsdens = pF "cloudsdens"
+cloudstex = pF "cloudstex"
+cloudswet = pF "cloudswet"
+cloudsgain = pF "cloudsgain"
+cloudsspread = pF "cloudsspread"
+cloudsrvb = pF "cloudsrvb"
+cloudsfb = pF "cloudsfb"
+cloudsfreeze = pF "cloudsfreeze"
+cloudsmode = pF "cloudsmode"
+cloudslofi = pF "cloudslofi"
+
+-- utility to group the 4 "blend parameters"
+cloudsblend w s f r = cloudswet w # cloudsspread s # cloudsfb f # cloudsrvb r
+
+ringsfreq = pF "ringsfreq"
+ringsstruct = pF "ringsstruct"
+ringsbright = pF "ringsbright"
+ringsdamp = pF "ringsdamp"
+ringspos = pF "ringspos"
+ringsmodel = pI "ringsmodel"
+ringsintern_exciter = pI "ringsinternal"
+ringstrig = pI "ringsinternal"
+ringseasteregg = pI "ringseasteregg"
+ringsbypass= pI "ringsbypass"
+ringspoly= pI "ringspoly"
+
+linput = pI "linput"
+lname = pS "lname"
+
+
+delayIn = room "0.75" # size "0.75" # delayfb 0.5 # delaytime 0.5 # delay 0.75 # lock 1
+
+cloudsDelayIn = cloudsmode "2" # cloudspos perlin # cloudssize perlin # cloudsdens perlin # cloudstex 0.5 # cloudsfb "0.66" # cloudsrvb "0.4" # cloudsgain "2" # cloudswet "1" # cloudspitch "0" # cloudsspread "1"  # cloudsfreeze "0" # cloudslofi "0"
+
+cloudsGrain = delayfb 0.5 # delaytime 0.5 # delay "0.8" # lock 1 # cloudspitch 0 # cloudspos "0.01" # cloudswet "0.4" # cloudssize perlin # cloudsdens 0.72 # cloudstex perlin # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.75" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0"
+
+cloudsGrainLess = delayfb 0.5 # delaytime 0.5 # delay "0.18" # lock 1 # cloudspitch 0 # cloudspos "0.01" # cloudswet "0.4" # cloudssize perlin # cloudsdens 0.72 # cloudstex perlin # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.175" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0"
+
+hush
+
+-- mic in
+d1 $ s "in1" # gain 1 # cloudsGrain
+d1 $ s "in1" # gain 1 # cloudsDelayIn
+
+-- recording loops
+d2 silence
+once $ s "freeLoops"
+d2 $ slow 4 $ stack [s "rlooper"] # n 0
+once $ slow 4 $ stack [s "looper"] -- # n 2-- record slow 2
+d2 $ slow 2 $ qtrigger 1 $ s "rlooper" # n "0"
+
+-- LOOP PLAYBACK
+
+d1 silence
+
+-- basic playback
+d3 $ slow 2 $ s "loop" # n 0
+d3 $ slow 4 $ s "loop" # room 0.5 # gain 1.1 # size 0.8 # room 0.5 # n 0
+
+d3 $ slow 4 $ s "loop" # room 0.5 # gain 1.1 # size 0.8 # room 0.5 # n 0
+
+solo 7
+
+xfadeIn 3 2 $ slow 8 $ s "loop" # speed "0.5" # room 0.5 # gain 1.1 # size 0.8 # room 0.5 # n 0
+
+-- low pitch
+xfadeIn 3 4 $ slow 8 $ s "loop" # gain 1 # room "0.3" # delayfb 0.25 # delaytime 0.5 # delay "0.8" # lock 1 # speed 0.5 # pan perlin # n 0
+
+d4 $ jux (# speed "-0.5") $ slow 8 $ s "loop" # gain 1 # cloudsGrain # n 0
+
+-- clouds grain
+xfadeIn 4 4 $ jux (# speed "-1") $ slow 4 $ s "loop" # gain 1 # cloudsGrain # n 0
+
+d7 $ jux (# speed "-1") $ slow 4 $ s "loop" # gain 1 # cloudsGrain # n 0
+
+-- euclidean
+xfadeIn 5 8 $ jux (# speed 0.5) $ randslice 16 $ struct ("t(5, 9)") $ sound "loop" # room 0.75 # room 0.5 # size 0.5 # gain 1 # speed 1 # n 0 -- # pan 0
+
+xfadeIn 5 4 $ jux (rev) $ every 4 (density 1) $ randslice 16 $ struct ("t(9, 16)") $ sound "loop" # room 0.5 # size 0.5 # gain 1 -- # pan 1
+
+-- slice / chop / striate
+d6 $ slow 4 $ slice 8 "6 1 2 ~ 4 7 5 ~" $ sound "loop" # room 0.9 # size 0.9 # gain 1 # size 0.75 # pan 0.5
+
+d6 $ slow 2 $ jux (rev) $ chop 32 $ sound "loop" # room "0.9" # gain "1"
+
+d5 silence
+hush
+
+
+
+-- visuals
+alpha a = ccn "16*128" # ccv a # s "midi"
+visualMovement v = ccn "17*128" # ccv v # s "midi"
+visualSpeed v = ccn "18*128" # ccv v # s "midi"
+
+d7 $ alpha (range 127 0 (slow 2 (saw)))
+d7 $ alpha 0
+
+d8 $ visualMovement 1
+d9 $ visualSpeed 1
+hush
+xfadeIn 4 4 $ gain 0
+
+
+{-
+Eucldean Rhythms
+(2,5) : A thirteenth century Persian rhythm called Khafif-e-ramal.
+(3,4) : The archetypal pattern of the Cumbia from Colombia, as well as a Calypso rhythm from Trinidad.
+(3,5,2) : Another thirteenth century Persian rhythm by the name of Khafif-e-ramal, as well as a Rumanian folk-dance rhythm.
+(3,7) : A Ruchenitza rhythm used in a Bulgarian folk-dance.
+(3,8) : The Cuban tresillo pattern.
+(4,7) : Another Ruchenitza Bulgarian folk-dance rhythm.
+(4,9) : The Aksak rhythm of Turkey.
+(4,11) : The metric pattern used by Frank Zappa in his piece titled Outside Now.
+(5,6) : Yields the York-Samai pattern, a popular Arab rhythm.
+(5,7) : The Nawakhat pattern, another popular Arab rhythm.
+(5,8) : The Cuban cinquillo patter
+(5,9) : A popular Arab rhythm called Agsag-Samai.
+(5,11) : The metric pattern used by Moussorgsky in Pictures at an Exhibition.
+(5,12) : The Venda clapping pattern of a South African children’s song.
+(5,16) : The Bossa-Nova rhythm necklace of Brazil.
+(7,8) : A typical rhythm played on the Bendir (frame drum).
+(7,12) : A common West African bell pattern.
+(7,16,14) : A Samba rhythm necklace from Brazil.
+(9,16) : A rhythm necklace used in the Central African Republic.
+(11,24,14) : A rhythm necklace of the Aka Pygmies of Central Africa.
+(13,24,5) : Another rhythm necklace of the Aka Pygmies of the upper Sangha.
+-}

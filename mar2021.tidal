@@ -1,0 +1,59 @@
+
+
+d1 $ s "in1" # gain 1 # room 0.5 # size "0.5" # gain 1.2
+
+once $ s "freeLoops"
+d2 $ slow 4 $ stack [s "olooper"] # n 0
+once $ slow 4 $ stack [s "looper"] -- # n 2-- record slow 2
+d2 $ slow 2 $ qtrigger 1 $ s "rlooper" # n "0"
+
+
+
+d6 $ hat
+setcps 0.4
+
+d2 silence
+
+love = d2 $ every 4 (struct("t(5, 8)")) $ struct("t(5, 16)") $ sound("808bd:1*16") # speed (range 1 8 (saw)) # up 4 # room 0.5 # size "0.5" # cloudsGrainLess
+
+love
+
+d5 $ s "hh*16" # gain (range 0.9 1.2 (rand)) # room 0.5 # size "0.5"
+
+hat = s "hh*16" # gain (range 0.9 1.2 (rand)) # room 0.5 # size "0.5"
+
+d2 $ hat
+
+
+d3 $ qtrigger 1 $ seqP [
+  (0, 8, hat),
+  (4, 8, slow 4 ( s "olooper" # n 0))
+]
+
+work = slow 4 ( s "loop" # room 0.5 # size "0.5" # gain 1.2 # n 0)
+
+d4 $ qtrigger 3 $ seqPLoop [
+  (0, 4, work)
+]
+
+d4 $ work # cloudsGrainLess
+
+d5 $ slow 2 $ work # speed 0.5 # distort 0.5
+
+hush
+
+d3 $ s "bd"
+
+d1 $ slow 2 $ n "[1] [~ -7] [~] [~] [-8] [~ 0?] [~] [-1?]" |-12
+# s "plaits"
+# sustain 3
+# engine 2
+# room 0.7
+# gain 1
+# harm 0 -- (range 0.18 1.0 $ perlin)
+# timbre 0.3 --(range 0.5 0.25 $ saw)
+# morph 1
+
+# slow 2 (morph (range 1.0 0.4 $ rand))
+
+# timbre (range 0.45 0.9 $ perlin)

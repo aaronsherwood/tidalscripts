@@ -1,0 +1,40 @@
+d1 $ density 2 $ every 2 (# n (irand 4)) $ every 7 (# sound "click([1 10 2]/3,11)") $ every 12 (# sound "click([3 4]/2,9)") $ rev (sound "click([5 6]/2,8)") # n "1" # gain "1" # pan (rand) # speed "8 6 5 9 4 3 12 11 2 10 1 7"
+
+d2 $ every 3 (degrade) $ every 8 (# n (irand 9)) $ every 4 (density 2) $ sound "east*8" # n (run 16) # gain "1.5" # pan (range 0.45 0.55 $ rand)
+
+d3 $ sound "808bd:3*4" # gain 1.2
+
+d4 $ rev (sound "sine*16") # gain (range 0.6 1.1 rand) # cut "3" # speed "1"
+
+d6 $ sound "arpy" # speed (cF 1 "hello")
+
+d3 $ every 8 (slow 4) $ slow 2 $ jux (rev) $ striate' 32 (1/16) $ sound "06_Temple-Ensemble:1" # pan (rand) # gain "1.2" # room "0.25" -- # cut 2 -- $ loopAt 2
+d3 $ slow 1 $ (1 <~) $ striate' 4 (1/16) $ sound "06_Temple-Ensemble:0" # speed (slow 64 $ range 1 1 sine) # pan (rand) # gain "1.2" # cut 1
+
+
+# crush "8 6 5 9 4 3 12 11 2 10 1 7"
+setcps (120/60/4)
+d1 silence
+d2 silence -- modular reset
+d3 silence
+d4 silence -- sine
+d5 silence -- modular clock
+d6 silence -- break beat
+d7 silence
+d8 silence -- casio
+d9 silence -- clap
+
+d1 $ density 2 $ every 2 (# n (irand 4)) $ every 7 (# sound "click([1 10 2]/3,11)") $ every 12 (# sound "click([3 4]/2,9)") $ rev (sound "click([5 6]/2,8)") # n "1" # gain "1.1" # pan (rand) # speed "8 6 5 9 4 3 12 11 2 10 1 7"
+d2 $ s "midi" # midichan 1 -- modular reset
+d3 $ (1 <~) $ every 8 (density 2) $ sound "[arpy*4]? [arpy*2]? ~ ~" # speed (density 1 $ range (-2) 6 tri) # up "0" # gain "1.2" -- # room "1.5"
+d4 $ rev (sound "sine*16") # gain (range 0.6 0.8 rand) # cut "3" # up "-0" -- sine
+d5 $ s "midi*16" # midichan 0 -- modular clock
+xfadeIn 6 2 $ slow 2 $ jux ((# speed "0.5")) $ sound "amencutup*32" # n (irand 32) # gain "1" # speed (3) # pan (rand)
+
+d8 $ every 8 (density 2) $ sound "casio:0*16" # speed (slow 8 $ range 1.5 1 saw) # gain "1.0 0.8 1.0" -- # room "1.0"
+-- clap
+d9  $ slow 1 $ every 1 (# s "~ cp ~ [cp cp]") $ sound "~ cp ~ cp" # speed (slow 4 $ range 1.5 3 tri) # gain "1.2" # room "0.3"
+
+-- kick (at 2 per measure) misses each 23 beat, then 22 beat in alteration
+
+hush

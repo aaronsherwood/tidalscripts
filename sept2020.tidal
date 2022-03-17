@@ -1,0 +1,203 @@
+
+
+d4 $ rev (sound "sine*16") # gain (range 0.6 1.1 rand) # up (cF 1 "optflowX") # cut "1" -- # speed (cF 1 "avgOpticalFlowLength")
+d1 $ density 2 $ up "<[9 9 21 20]*2? [9 9 21 16]*2? [d 6 21 20]*2? [a 9 21 16]*2?>" # s "sine:1 sine? sine:2 sine:1" # pan (rand) # room "0.1" # crush (cF 1 "optflowLength") # gain "0.85" # delay "0.5" # delayfeedback "0.01" # delaytime "0.8"
+
+-- doesn't work
+d1 $ (whenmod toInteger (cI 8 "optFlowLengthInt") toInteger (cI 7 "optFlowLengthInt") (const $ s "bd(8,7)")) $ s "bd(3,2)"
+
+d5 $ jux (striate 2) $ sometimes (rev) $ every 4 (const $ sound "arpy*12" # n (run 11) # speed "1" # room "0.3") $ sound "arpy*8" # n (run 8) # room "0.3" # speed (cF 1 "optFlowLength")
+
+d3 $ every 4 (density 2) $ sound "arpy*4 arpy*2 cp bd*2" # speed (density 1 $ range "-2" "6" saw) # room "1.5"
+ -- # gain "1.1"
+d6 $ jux (rev) $ striate 128 $ sound "<sitar:1 sitar:2? sitar:3 sitar:4?>" # up "0" # room "0.5"
+d6 $ brak $ jux (rev) $ striate 128 $ sound "<sitar:1 sitar:2? sitar:3 sitar:4?>" # room "0.5" # gain "1" -- # speed (sine)
+d6 $ sometimesBy 0.65 (gap 2) $ jux (rev) $ sometimes (striate 16) $ sound "<sitar:1 sitar:2 sitar:3 sitar:4>" # room "0.5" # gain "1" # speed sine
+d1 $ every 4 (const $ s "tabla2*16?" # n (irand 46) # up "8" # room "1" # gain "1.2") $ slow 2 $ s "tabla2*8" # n (irand 46) # up "7" # room "1"
+d6 $ brak $ jux (rev) $ sometimes (striate 16) $ sound "<sitar:1 sitar:2 sitar:3 sitar:4>" # room "0.5" # gain "1"
+
+d3 $ slow 32 $ jux (rev) $ striate' 32 (1/16) $ slow 1 $ sound "toys*16" # n (run 8) # gain "1.0" # up "-1"
+d3 $ slow 8 $ sound "toys*8" # n (run 8) # gain "1.0"  # up "-1"
+
+d3 $ every 16 (const $ s "jvbass*8" # n (run 4) # room "1.5" # gain "1" # up "-1") $ whenmod 8 4 (const $ s "jvbass*8" # n (run 7) # room "1.5" # gain "1" # up "-1") $ s "jvbass*8" # n (run 14) # room "1.5" # gain "1" # up "-1"
+d3 $ s "jvbass*8" # n (run 14) # room "1.5" # gain "1" # up "-1"
+d3 $ s "jvbass*8" # n (run 7) # room "1.5" # gain "1" # up "-1"
+d3 $ s "jvbass*8" # n (run 4) # room "1.5" # gain "1" # up "-1"
+d5 $ jux (striate 2) $ sometimes (rev) $ every 4 (const $ sound "arpy*12" # n (run 11) # speed "1") $ sound "arpy*8" # n (run 8) # room "0.3"
+
+let trythis = d3 $ s "jvbass*8" # n (run 14) # room "1.5" # gain "1" # up "-1"
+let trythis2 = d3 $ s "jvbass*16" # n (run 14) # room "1.5" # gain "1" # up "-1"
+if <condition> then <true-value> else <false-value>
+trythis
+
+d3 $ trythis
+d3 $ every (cI 8 "optFlowLengthInt") (density 2) $ s "hh*4"
+
+if (cI 8 "optFlowLengthInt") > 2 then trythis else trythis2
+
+hush
+
+d1 $ stripe (cI 0 "optFlowLengthInt") $ sound "bd sd ~ [mt ht]"
+d1  $ chop (cI 0 "optFlowLengthInt") $ sound "arpy ~ feel*2 newnotes"
+d1 $ loopAt 8 $ slow 2 $ rev $ chop (cI 8 "optFlowLengthInt") $ sound "breaks125"
+d1 $ gap 8 $ sound "jvbass"
+d3 $ jux (rev) $ striate (32) $ sound "bev:1" # room "0.5" # size "0.9" # up "1" -- # legato ((+ (1)) <$>(cF 8 "optflowX"))-- # cut 1
+d3 silence
+d2 $ sound "cp"
+
+d1 $ ifp ((== 0).(flip mod 2))
+  (striate 4)
+  (# coarse "24 48") $
+  sound "hh hc"
+d1 $ sound (sew (cB t "optFlowLengthInt") "bd*8" "cp*8")
+
+d1 $ when (cB 0 "optFlowLengthInt") (striate 4) $ sound "hh hc"
+d1 $ mask "t t t ~ t t ~ t"
+  $ s (cat ["sn*8", "[cp*4 bd*4, bass*5]"])
+  # n (run 8)
+
+-- kalimba
+d5 $ density 2 $ sound "kalimba(7,8)?" # up "-5 -3 -1 <5 4 3 2>" # gain (range 0.86 1.1 rand) # n (irand 4)
+d5 $ every 4 (slow 2) $ sound "kalimba(2,3) kalimba(2,3)" # up ((+ (0)) <$> iter 14 firstFour) # n (irand 4)
+d5 $ density 4 $ sound "kalimba" # up ((+ (0)) <$> iter 14 firstFour) # n (irand 4) -- # delay "0.0" # delaytime "0.00" # delayfeedback "0.0"
+d5 $ every 8 (density 1) $ density 4 $ sound "kalimba" # up ((+ (0)) <$> iter 68 all) # n (irand 4) -- # delay "0.0" # delaytime "0.00" # delayfeedback "0.0"
+
+d6 $ sometimesBy 0.65 (gap 2) $ jux (rev) $ sometimes (striate 16) $ sound "<sitar:1 sitar:2 sitar:3 sitar:4>" # room "0.5" # gain "0.9" -- # speed sine
+d2 $ jux rev $ every 4 (const $ s "tabla2*16?" # n (irand 46) # up "8" # room "1") $ slow 2 $ s "tabla2*8" # n (irand 46) # up "7" # room "1"
+d5 $ density 2 $ sound "kalimba(7,8)?" # up "-5 -3 -1 <5 4 3 2>" # gain (range 0.86 1.1 rand) # n (irand 4) # gain (cF 1 "optflowNegX") # pan 0
+d6 $ density 2 $ sound "kalimba(7,8)?" # up "-5 -3 -1 <5 4 3 2>" # gain (range 0.86 1.1 rand) # n (irand 4) # gain (cF 1 "optflowPosX") # pan 1
+d5 $ density 2 $ sound "kalimba(3,8)?" # up "majPent:1" # gain (range 0.86 1.1 rand) # n (irand 4)
+("kalimba(3"++",8)?")
+d5 $ density (cT 2 "optflowLengthInt") $ sound "kalimba(3,5)" # up "-5 -3 -1 <5 4 3 2>" # gain (range 0.86 1.1 rand) # n (irand 4)
+import Sound.Tidal.Scales
+d1 $ s "arpy*4" # n (listToPat majPent)
+d5 $ density 2 $ every (cI 1 "optFlowLengthInt") (const $ sound "kalimba(7,8)?" # up "-5 -3 -1 <5 4 3 2>" # gain (range 0.86 1.1 rand) # n (irand 4))
+d1 $ sound "kalimba(5,8)" # up "0 2 4 <10 9 8 7>" # gain (range 0.86 1.1 rand) # n (irand 4)
+d1 $ s "arpy" # ps "maj aol"
+d1 $ note (scale "majPent" $ run 5) # s "kalimba" # n (irand 4)
+d1 $ jux rev $ chunk 4 (fast 2 . (|- n 12)) $ off 0.25 (|+ 7) $ struct (iter 4 "t(5,8)")
+d3 $ jux rev $ striate (320) $ sound "bev:1" # room "0.5" # size "0.9" # up "-3" -- # legato ((+ (1)) <$>(cF 8 "optflowX"))-- # cut 1
+d3 silence
+d1 silence
+d1 $ jux rev
+d1 $ density 2 $ struct (iter 4 "t(7,8)") $ note (scale "majPent" "0 .. 7") # sound "kalimba" # n (irand 4) # room "0.4"
+d2 silence
+d1 $ sound (sew (cS "t" "optflowX_sign") "bd*8" "cp*8")
+d1 $ euclid (cI 3 "optFlowLengthInt") $ sound "cp"
+d1 $ every (cI 0 "optFlowLengthInt") (density 4) $ s "hh*8"
+d1 $ euclid ((cI 0 "optFlowLengthInt") (cI 0 "optFlowLengthInt")) $ sound "cp"
+d1 $ sound (sew (cB "t" "optflowX_sig") "bd*8" "cp*8")
+
+d2 $ s "tabla2*8" # speed (range 0.3 1.1 $ cF0 "touchRead1")
+d2 $ slice 8 "[<0*8 0*2> 3*4 2 4] [4 .. 7]" $ sound "breaks125:1" # room 0.25 # speed (range 0.3 1.1 $ cF0 "touchRead")
+
+d1 $ selectF (cF0 "touchRead1") [(const $ s "tabla2*8?" # n (irand 46) # up "1" # room "1" # gain (range 0 1.1 $ cF0 "touchRead2")), (const $ s "tabla2*12" # n (irand 46) # up "1" # room "1" # gain (range 0 1.1 $ cF0 "touchRead2") ), (const $ s "tabla2*16" # n (irand 46) # up "1" # room "1" # gain (range 0 1.1  $ cF0 "touchRead2") ) ] $ s "tabla2"
+hush
+
+print ((cS "t" "optflowX_sig") )
+d6 silence
+let current = chord8
+
+let firstFour = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10"
+let sixteen = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10 -9 1"
+let all = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10 -9 1 6 11 -8 0 7 12 -6 2 4 13 -7 4 9 14 -8 0 7 16 -4 0 7 17 -9 1 6 11 18 -8 0 7 14 19 -7 2 10 14 20 -3 5 7 12 21 -5 3 5 14 22 -4 3 5 13 23"
+let chord1  = "0 4 7"         -- d f# a         D
+let chord2  = "-1 4 8"        -- c# f# a#       F#
+let chord3  = "-3 0 4 9"      -- b d f# b       b-
+let chord4  = "-5 0 4 10"     -- a d f# c       D7
+let chord5  = "-9 1 6 11"     -- f d# g# c#     Db
+let chord6  = "-8 0 7 12"     -- f# d a d       D
+let chord7  = "-6 2 4 13"     -- g# e f# d#     Emaj7
+let chord8  = "-7 4 9 14"     -- g f# b e       e-
+let chord9  = "-8 0 7 16"     -- f# d a f#      D
+let chord10 = "-4 0 7 17"     -- a# d a g       g-
+let chord11 = "-9 1 6 11 18"  -- f d# g# c# g#  Db
+let chord12 = "-8 0 7 14 19"  -- f# d a e a     D
+let chord13 = "-7 2 10 14 20" -- g e c e a#     C7
+let chord14 = "-3 5 7 12 21"  -- b g a d b      G
+let chord15 = "-5 3 5 14 22"  -- a f g e c      F
+let chord16 = "-4 3 5 13 23"  -- a# f g d# c#   Eb9
+
+d  = -12
+d# = -11
+e  = -10
+f  = -9
+f# = -8
+g  = -7
+g# = -6
+a  = -5
+a# = -4
+b  = -3
+c  = -2
+c# = -1
+
+d  = 0
+d# = 1
+e  = 2
+f  = 3
+f# = 4
+g  = 5
+g# = 6
+a  = 7
+a# = 8
+b  = 9
+c  = 10
+c# = 11
+
+d  = 12
+d# = 13
+e  = 14
+f  = 15
+f# = 16
+g  = 17
+g# = 18
+a  = 19
+a# = 20
+b  = 21
+c  = 22
+c# = 23
+
+d1 silence
+d2 silence
+d3 silence
+d4 silence
+hush
+
+
+import Sound.Tidal.Scales
+
+d1 $ sound "kalimba(7,8)?" # up "0 2 4 <10 9 8 7>" # gain (range 0.86 1 rand) # n (irand 4) # room "0.6"
+d1 $ note (scale "bartok" "0 .. 7") # sound "kalimba" # gain (cF 1 "moverX")
+
+d1 $ jux rev $ every 4 (# speed "-1") $ struct (iter 4 "t(3,8)?") $ sometimesBy "0.7" (# note (scale "majPent" "0 .. 7")) $ note (scale "bartok" "-2 .. 5") # sound "kalimba" # gain (range 0.7 0.9 rand) # n (irand 4) # room "0.6" # delay "0.5" # delayfb "0.5" # delaytime "0.5"
+
+
+d2 $ whenmod 16 12 (const $ s "tabla2*16" # n (irand 46) # up "1" # room "1" # gain (range 0.85 1.1 rand)) $ slow 2 $ s "tabla2*16?" # n (irand 46) # up "1" # room "1" # gain (range 0.85 1 rand)
+
+
+
+d2 $ selectF (cF0 "moverX") [(const $ s "tabla2*8?" # n (irand 46) # up "1" # room "1" # gain (range 1.1 0.3 $ cF0 "moverY")), (const $ s "tabla2*12" # n (irand 46) # up "1" # room "1" # gain (range 1.1 0.3 $ cF0 "moverY") ), (const $ s "tabla2*16" # n (irand 46) # up "1" # room "1" # gain (range 1.1 0.3 $ cF0 "moverY") ) ] $ s "tabla2"
+
+# crush (range 10 1 $ cF0 "moverY")
+
+d2 $ s "tabla2*8" # n (irand 46) # up "1" # room "1" # gain (range 0.85 1.1 rand) -- # crush (range 1 10 $ cF0 "moverY")
+
+(range 0.5 4 $ cT0 "moverY")
+
+d3 $ jux rev $ slow 8 $ striate' 64 (1/4) $ sound "bev:1" # room "0.9" # size "0.9" # up "-3" # slow 4 ( gain (range 0.3 1 rand) ) -- # slow 4 ( crush (range 2 32 rand) )
+d3 $ jux rev $ slow 8 $ striate' 64 (1/4) $ sound "bev:1" # room "0.9" # size "0.9" # up "-3" # slow 4 ( gain (range 0.5 1 rand) ) -- # slow 4 ( crush (range 2 32 rand) )
+
+d4 $ slow 4 $ s "<gong:1? gong:3?>" # gain "1.2" # room "0.6"
+
+addiing samples
+changing notes
+run
+irand
+scales
+
+
+d1 silence
+d2 silence
+d3 silence
+d4 silence
+hush

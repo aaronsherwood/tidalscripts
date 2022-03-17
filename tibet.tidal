@@ -6,10 +6,10 @@ d1 $ slow 64 $ jux (rev) $ striate' 32 (1/16) $ sound "tibet1*9" # n (run 9) # g
 
 d2 $ slow 8 $ stut 2 0.5 0.2 $ sound "tibet1:0*8" # gain "1.0" # speed "1.3" # gain "1.2" -- reed mostly
 d3 $ (1 <~) $ slow 8 $ stut 4 0.5 0.2 $ sound "tibet1:7*8" # gain "1.5" # speed "4.2" -- cymbals
-d4 $ every 8 (density 2) $ loopAt 2 $ jux (rev) $ striate' 32 (1/16) $ sound "tibet1:5" -- ripples
+d4 $ every 8 (density 2) $ loopAt 2 $ jux (rev) $ striate' 32 (1/16) $ sound "tibet1:5" # gain "1"-- ripples
 d5 $ every 8 (density 2) $ loopAt 2 $ striate 3 $ sound "tibet1:0" # gain "1.1" -- ahh (off by a beat)
 
-d6 $ slow 128 $ (striate' 30000 (1/1000) $ sound "tibet1:8") # speed (slow 32 $ scale 0.1 1 tri) -- ambient
+d6 $ slow 128 $ (striate' 30000 (1/1000) $ sound "tibet1:8") # speed (slow 32 $ range 0.1 3 tri) # gain "1"-- ambient
 
 d1 silence -- rhythm
 d2 silence -- reed mostly

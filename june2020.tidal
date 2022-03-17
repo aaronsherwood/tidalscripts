@@ -1,0 +1,69 @@
+-- june 6
+d1 $ density 2 $ up "<[9 9 21 20]*2? [9 9 21 16]*2? [d 6 21 20]*2? [a 9 21 16]*2?>" # s "sine:1 sine? sine:2 sine:1" # pan (rand) # room "0.1" # crush "1" # gain "0.75" -- # delay "0.5" # delayfeedback "0.75" # delaytime "0.02"
+d2 $ every 4 (density 2) $ sound "dr2*8" # up "-5" # n (irand 6) # speed "12" # cut "1" # pan (rand) # room "0.1" # gain (range 0.75 1.2 $ rand) # crush "1"
+
+-- june 7
+d1 $ density 2 $ brak $ sound ("glitch2:0 yeah:3? glitch:4 glitch:1") # room "0.15" # size "0.1" # speed "0.8" # gain "1.1"
+
+d2 $ density 0.5 $ every 4 (# speed "0.95") $ "<0 1 0.5 0.125>" <~ sound "[808bd:3][808bd:7*2?][808bd:0*2?][808bd:5*2?]" # gain "1.2 0.7 0.8 0.9" # shape "0.9" # room "0.2" # speed "1.95" # up "-5"
+
+d3 $ slow 2 $ jux (rev) $ sometimesBy 0.8 (striate 32) $ sometimesBy 0.2 (# gain "0") $ sound "<oF:0 oF:2>" # cut "1" # room "0.5" # gain "1" # up "1"
+d3 $ slow 8 $ jux (rev) $ gap 32 $ sound "oF:2 oF:2" # cut "1" # up "1" # begin "0" -- # room "0.5" # size "0.9"
+
+
+d7 $ degradeBy 0.1 $ s "lighter*16" # n (irand 33) # gain (range 0.75 1.3 $ rand) -- # speed "1.5"
+d4 $ every 2 (# up 1) $ degradeBy 0.9 $ s "jungbass*16" # n (run 20) # cut "1" # gain (range 0.75 0.9 $ rand) # up "49"
+d4 $ jux (rev) $ degradeBy 0.6 $ s "newnotes*16" # n (run 16) # cut "1" # gain (range 0.75 1.0 $ rand) # up "-4"
+d5 $ slow "2" $ s "~ industrial:2 ~ industrial:6" # room "0.1" # gain "1.7"
+d5 $ s "~ industrial:6" # room "0.1" # gain "1.7"
+
+d6 $ brak $ jux (rev) $ striate 128 $ sound "<sitar:1 sitar:2? sitar:3 sitar:4?>" # gain "0.95" # up "-5"
+d6 $ brak $ jux (rev) $ striate 128 $ sound "<sitar:1 sitar:2? sitar:3 sitar:4?>" # room "0.5" # gain "1" -- # speed (sine)
+d6 $ brak $ sometimesBy 0.65 (gap 2) $ jux (rev) $ sometimes (striate 16) $ sound "<sitar:1 sitar:2 sitar:3 sitar:4>" # room "0.5" # gain "1" -- # speed (sine)
+d6 $ brak $ jux (rev) $ sometimes (striate 16) $ sound "<sitar:1 sitar:2 sitar:3 sitar:4>" # room "0.5" # gain "1"
+
+d9 $ slow 2 $ s "[bd:1 ~] [~ [bd:2 bd:3?] ~ ~]"
+d8 $ s "hh*16" # gain (range 0.85 1.3 $ rand) # room "0.1"
+
+--june 8
+setcps 0.4
+d1 $ density 4 $ sound "jvbass(3,8)" # speed "2" # squiz (slow 4 $ isaw*20+5)
+clutch 1 $ sound "[hh*4, odx(3,8)]"
+anticipate 1 $ sound "bd sn" # delay "0.5" # room "0.3"
+d1 $ n (off 0.125 (+52) $ off 0.25 (+70) $ slow 2 $ "0(3,8) [5 7]") # sound "supermandolin" # sustain 2-- # velocity (range 0.7 1.0 $ rand) # sustain 2
+d1 $ n (slow 2 $ fmap (*7) $ run 8) # s "supergong" # decay "[10 0.2]/4" # voice "[0.5 0]/8"
+d2 $ loopAt 1 $ s "aaron" # n "1" # gain "0.9"
+
+d3 $ density 2 $ every 4 (# speed "0.95") $ "<0 1 0.5 0.125>" <~ sound "[808bd:3][808bd:7*2?][808bd:0*2?][808bd:5*2?]" # gain "1.2 0.7 0.8 0.9" # shape "0.9" # room "0.2" # speed "1.95" # up "-5"
+
+-- june 9
+processing = OSCTarget {oName = "processing", -- Give your target a name
+                            oAddress = "127.0.0.1", -- the target network address
+                            oPort = 12000, -- the target network port
+                            oPath = "/trigger/something", -- the OSC path
+                            oShape = Nothing, -- The 'shape' - see below
+                            oLatency = 0.02, -- the latency (to smooth network jitter)
+                            oPreamble = [], -- Some fixed data to put at the start of messages
+                            oTimestamp = MessageStamp -- The style of timestamp
+                           }
+tidal <- startTidal processing defaultConfig
+let p = streamReplace tidal
+
+p 1 $ density 2 $ every 4 (# speed "0.95") $ "<0 1 0.5 0.125>" <~ sound "[808bd:3][808bd:7*2?][808bd:0*2?][808bd:5*2?]" # gain "1.2 0.7 0.8 0.9" # shape "0.9" # room "0.2" # speed "1.95" # up "-5"
+p 1 $ s "bd sn" # vowel "a"
+p 1 silence
+d1 $ s "bd sn" # vowel "a"
+
+hush
+unsolo 8
+unsolo 1
+solo 9
+d1 silence
+d2 silence
+d3 silence
+d4 silence
+d5 silence
+d6 silence
+d7 silence
+d8 silence
+d9 silence

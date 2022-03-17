@@ -1,0 +1,339 @@
+setcps(85/60/4)
+sock <- carabiner tidal 4 (-0.5)
+
+-- new composition Chords
+aSectionChordProg = "<[5,9,13] [6,10,14] [4,8,12] [5,9,13] [5,9,13] [6,10,14] [4,8,12] [3,7,11]>"
+bSectionChordProg = "<[0,5,9,13,17] [[][-1,4,8,12,16]] [-2,3,7,11,15] [] [0,5,9,13,17] [[][-1,4,8,12,16]] [-3,2,6,10,14] []>"
+cSectionSmallChordProg = "<[3,7,11] [4,8,12] [5,9,13] [4,10,14]>"
+cSectionLargeChordProg = "<[1,6,10,14,18,22] [2,7,11,15,19,23] [3,8,12,16,20,24] [4,9,13,17,21,25]>"
+cSectionMelody = "<[[4 7] [8 [~ . . . 7]] [[9~~8][]] [[9~~8][7 6]]] [[4 7] [8 [~ . . . 7]] [[9~~8][~ . . . 7]] [[10~~9][8 7]]] [[4 [11 [[~][~ 11 10 9]]]] [~ [~ . . . 8]] [[10~~9][~ . . . 8]] [[10~~9][8 7]]] [[4 7] [11 [~ . . . 9]] [[10 ~ ~ 9] [~ ~ 8 ~]] [[~ 7 ~ ~] [6 4]]] >"
+-- sloppy chords
+a = "<[e4,gs4,b4,cs5,e3] [g4,b4,cs4,g3] [fs4,b4,cs5,ds5,b3] [fs4,as4,b4,ds5,as3] [ds4,gs4,cs5,f3] [ds4,gs4,b4,cs5,gs3] [fs4,b4,cs5,ds3] [gs4'sus2,c4]>"
+b = "<[e4'min6,e3] [g4,b4,cs5,ds5,g3] [fs4,b4,cs5,ds5,b3] [fs4'sus2,as3] [ds4,gs4,cs5,f3] [e4, gs4,b4,cs5,gs3] [fs4,gs4,b4,cs5,ds3] [ds4,gs4,cs5,c4] >"
+c = "<[e4, gs4,b4,cs5,e3] [f4,as4,ds5,g3] [e4,gs4,b4,ds5,b3] [fs4,as4,b4,ds5,as3] [ds4,gs4,cs5,f3] [ds4,gs4,b4,cs5,gs3] [fs4,b4,cs5,ds3] [gs4'sus2,c4] >"
+originallUnused = "<[g4,c5,d5,e3] [f4,as4,ds5,g3] [g4'sus2,b3] [fs4'sus2,as3] [ds4,gs4,cs5,f3] [e4'sus2,gs3] [fs4,b4,cs5,ds3] [gs4'sus2,c4]>"
+harm = pF "harm"
+timbre = pF "timbre"
+morph = pF "morph"
+engine = pI "engine"
+vwet = pF "verbwet"
+vtime = pF "verbtime"
+vdamp = pF "verbdamp"
+vhp = pF "verbhp"
+vfreeze = pI "verbfreeze"
+vdiff = pF "verbdiff"
+vgain = pF "verbgain"
+cloudspitch = pF "cloudspitch"
+cloudspos = pF "cloudspos"
+cloudssize = pF "cloudssize"
+cloudsdens = pF "cloudsdens"
+cloudstex = pF "cloudstex"
+cloudswet = pF "cloudswet"
+cloudsgain = pF "cloudsgain"
+cloudsspread = pF "cloudsspread"
+cloudsrvb = pF "cloudsrvb"
+cloudsfb = pF "cloudsfb"
+cloudsfreeze = pF "cloudsfreeze"
+cloudsmode = pF "cloudsmode"
+cloudslofi = pF "cloudslofi"
+ringsfreq = pF "ringsfreq"
+ringsstruct = pF "ringsstruct"
+ringsbright = pF "ringsbright"
+ringsdamp = pF "ringsdamp"
+ringspos = pF "ringspos"
+ringsmodel = pI "ringsmodel"
+ringsintern_exciter = pI "ringsinternal"
+ringstrig = pI "ringsinternal"
+ringseasteregg = pI "ringseasteregg"
+ringsbypass= pI "ringsbypass"
+ringspoly= pI "ringspoly"
+linput = pI "linput"
+lname = pS "lname"
+delayIn = room "0.75" # size "0.75" # delayfb 0.5 # delaytime 0.5 # delay 0.75 # lock 1
+cloudsDelayIn = cloudsmode "2" # cloudspos perlin # cloudssize perlin # cloudsdens perlin # cloudstex 0.5 # cloudsfb "0.66" # cloudsrvb "0.4" # cloudsgain "2" # cloudswet "1" # cloudspitch "0" # cloudsspread "1"  # cloudsfreeze "0" # cloudslofi "0" # orbit 10
+cloudsGrain = delayfb 0.5 # delaytime 0.5 # delay "0.8" # lock 1 # cloudspitch 0 # cloudspos "0.01" # cloudswet "0.4" # cloudssize perlin # cloudsdens 0.72 # cloudstex perlin # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.75" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0" # orbit 10
+cloudsGrainLess = delayfb 0.5 # delaytime 0.5 # delay "0.18" # lock 1 # cloudspitch 0 # cloudspos "0.01" # cloudswet "0.4" # cloudssize perlin # cloudsdens 0.72 # cloudstex perlin # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.175" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0" # orbit 10
+cloudsPitchDown = cloudspos 0.9 # cloudsdens "0.3" # cloudsfb 0.35 # cloudssize 0.75 # cloudswet "0.4" # cloudsgain "5" # cloudspitch "<-24>" # cloudstex rand # cloudsspread "0.75" # cloudsrvb "0.5" # cloudslofi "0" # squiz 0 # orbit 10
+
+-- extras not used
+d6 $ s "sine(7,8)" # up "0" # speed 0.95
+d8 $ s "sine*4" # up "-8"  # speed 0.95
+d7 $ s "sine(4,7)" # up "7"  # speed 0.95
+d4 $ s "[feel ~ ~ ~ feel?] [~] [~ ~ feel ~ ~] [~ ~ ~ ~ ~ ~ feel?]" # gain 1.1 # room 0.75 # nudge "-0.01"
+d1 $ swingBy (4/7) 8 $ sound "hh*16"
+d1 $ loopAt 2.5 $ chop 30 $ s "44comp:7" # gain 1.5 # orbit 7
+d9 $ loopAt 1 $ density 4 $ every 2 (linger 0.5) $ degradeBy 0.0 $ jux (# speed 2) $ struct "t(4,7)" $ chop 32 $ s "44comp:2" # room 0.4 # speed 1 # nudge 0.027
+xfade 8 $ loopAt 1 $ chop 32 $ s "44comp:2"
+d9 $ loopAt 4 $ degradeBy 0.0 $ chop 32 $ s "44comp:5" # room 0.0 # gain 1.2 -- # nudge "-0.027"
+
+hush
+
+-- A section
+-- sax
+p "chords" $ loopAt 16 $ chop 32 $ s "44comp:32" # gain 1 # room 0.5 # nudge "-0.027" # orbit 6
+-- strings
+p "chords" $ loopAt 16 $ chop 32 $ s "44comp:15" # gain 1.1 # room 0.5 # orbit 6
+-- synth higher
+p "chords" $ loopAt 16 $ chop 32 $ s "44comp:9" # gain 0.9 # room 0.5 # orbit 6 # nudge "-0.027"
+-- synth lower
+p "chords" $ loopAt 16 $ chop 32 $ s "44comp:10" # gain 0.9 # room 0.5 # orbit 6 # nudge "-0.027"
+p "chords" silence
+-- bass clarinet
+p "melody" $ loopAt 16 $ chop 32 $ s "44comp:11" # gain 1.1 # room 0.5
+p "melody" silence
+
+-- B section
+-- sax
+p "chords" $ loopAt 8 $ chop 32 $ s "44comp:33" # gain 1 # room 0.5 # nudge "-0.027" # orbit 6 # krush 2
+-- strings
+p "chords" $ loopAt 8 $ chop 32 $ s "44comp:14" # gain 1.1 # room 0.5 # orbit 6
+-- synth
+p "chords" $ loopAt 8 $ chop 32 $ s "44comp:12" # gain 0.9 # room 0.5 # orbit 6 # nudge "-0.027"
+-- winds
+p "chords" $ loopAt 8 $ chop 32 $ s "44comp:13" # gain 1 # room 0.5 # orbit 6
+
+--C section
+-- sax
+p "chords" $ loopAt 4 $ chop 32 $ s "44comp:34" # gain 1 # room 0.5 # nudge "-0.027" # orbit 6
+-- strings
+p "chords" $ loopAt 4 $ chop 32 $ s "44comp:19" # gain 1.1 # room 0.5 # orbit 6
+-- synth louder
+p "chords" $ loopAt 4 $ chop 32 $ s "44comp:16" # gain 0.9 # room 0.5 # orbit 6 # nudge "-0.027"
+-- synth softer
+p "chords" $ loopAt 4 $ chop 32 $ s "44comp:17" # gain 0.9 # room 0.5 # orbit 6 # nudge "-0.027"
+-- synth crescendo
+p "chords" $ loopAt 4 $ chop 32 $ s "44comp:18" # gain 1 # room 0.5 # orbit 6 # nudge "-0.027"
+-- winds crescendo
+p "chords" $ loopAt 4 $ chop 32 $ s "44comp:20" # gain 1 # room 0.5 # orbit 6
+-- arps
+p "windarp" $ loopAt 4 $ chop 32 $ s "44comp:21" # gain 1.2 # room 0.5
+p "dpoarp" $ loopAt 4 $ chop 32 $ s "44comp:6" # gain 0.75 # room 0.5
+-- melody
+-- winds
+p "melody" $ loopAt 16 $ chop 32 $ s "44comp:22" # gain 1.3 # room 0.5
+-- strings
+p "melody" $ loopAt 16 $ chop 32 $ s "44comp:23" # gain 1.3
+-- piano
+p "melody" $ loopAt 16 $ chop 32 $ s "44comp:24" # gain 1.3 # room 0.5
+
+-- MIDI
+p "chords" $ slow 2 $ n (scale "harmonicMajor" (aSectionChordProg) + "c3") # s "midi" # amp 1
+p "chords" $ n (scale "harmonicMajor" (bSectionChordProg) + "c4") # s "midi" # amp 1
+p "chords" $ n (scale "harmonicMajor" (cSectionSmallChordProg) + "c4") # s "midi"  # amp 1
+p "chords" $ n (scale "harmonicMajor" (cSectionLargeChordProg) + "c3") # s "midi"  # amp 0.7
+p "chords" $ s "midi*16" # n (arp "pinkyupdown" (scale "harmonicMajor" (cSectionLargeChordProg) + "c3" )) # amp (range 0.5 0.6 rand) # nudge (range "-0.027" "-0.01" (perlin))
+p "melody" $ slow 4 $ n (scale "major" (cSectionMelody) + "c4") # s "midi" # amp 0.8 # nudge "-0.027"
+
+p "chords" silence
+
+hush
+
+splatBeat = do
+  d1 $ rotL 1 $ every 16 (linger 0.25) $ s "[feel:6 ~ ~ ~ feel?] [~] [~ ~ <feel:6 feel> ~ ~] [~ ~ ~ ~ ~ ~ feel?]" # room 0.95 # speed (slow 4 (range 4 0.5 (saw))) # nudge "-0.027" # gain 0.9 # squiz 1.01 # up "2"
+  d2 $ s "[glitch:4 ~ ~ ~ glitch:4? ~ ~]*<8 4 16>" # gain (range 1 1.2 (rand)) # room 0.2
+  d3 $ s "~ click:2 ~ click:2" # room 0.2 # gain "1.5"  # nudge 0.027-- # speed "2"
+  d4 $ s "~ [~ [click:3] ~ ~ ~ ~ ~] ~ [~ ~ ~ click:3  ~ ~ ~]" # room 0.2 # gain "1.3" # nudge 0.027
+  d5 $ s "~ glitch:2 ~ glitch:2?" # room 0.9 # gain 1.3 # speed 2
+
+d1 $ degradeBy 0.0 $ rotL 1 $ every 16 (linger 0.25) $ s "[feel:6 ~ ~ ~ feel?] [~] [~ ~ <feel:6 feel> ~ ~] [~ ~ ~ ~ ~ ~ feel?]" # room 0.95 # speed 2 # nudge "-0.027" # gain 1.3 # squiz 1.1 # up "-3"
+d1 silence
+
+splatBeat
+
+hush
+-- mic in
+-- recording loops
+once $ s "freeLoops"
+
+micDrop = do
+  p "micin" $ jux (rev) $ chop 16 $ s "in1" # gain 1.1 # room "0.95" # cloudsPitchDown
+
+p "micin" $ s "in1" # gain 1.2 # room "0.95" -- # cloudsGrainLess
+
+micDrop
+p "micin" silence
+do hush; scrapBook; micDrop
+
+gormaduliQuarantine
+
+mosaic = do
+  p "record" $ slow 8 $ s "rlooper" # n "<0 1 2 3 4 5 6 7>"
+  p "playback" $ slow 8 $ s "loop" # n "[0?,1?,2?,3?,4?,5?,6?,7?]" # room 0.95 # gain 1.2 # djf 0.77 # pan rand
+
+scrapBook = do
+  xfade "halfspeed" $ slow 16 $ s "loop" # n "0" # speed 0.5 # room 0.7
+  xfade "grains" $ slow 8 $ s "loop" # n "5" # cloudsGrainLess
+  xfade "delay" $ slow 8 $ s "loop" # n "3" # cloudsDelayIn # speed "-1"
+
+bookBurning = do
+  p "record" silence
+  p "playback" silence
+  p "halfspeed" silence
+  p "grains" silence
+
+mosaic
+scrapBook
+bookBurning
+brokenHeart
+
+p "rythmic" $ slow 4 $ slice 8 "6 1 2 ~ 4 7 5 ~" $ sound "loop" # room 0.9 # speed "-1" # n 0 # gain 1.1 # djf 0.76
+p "rythmic" $ slow 8 $ jux (rev) $ chop 32 $ sound "loop" # room "0.9" # gain "1.2" # n (irand 7)
+
+hush
+
+-- cow bells
+cow1 = loopAt 4 $ chop 32 $ s "44comp:31" # room 0.7 # cloudsDelayIn # pan perlin -- # gain perlin
+cow2 = loopAt 8 $ chop 32 $ s "44comp:31" # room 0.7 # pan perlin -- # gain perlin
+cow3 = loopAt 16 $ chop 32 $ s "44comp:31" # room 0.7 # gain 1.1 -- # gain (perlin2With (cosine*2) (sine*2))
+cow4 = chop 32 $ loopAt 4 $ sound "44comp:31" # gain 1.2 # room 0.9
+
+gormaduli = do
+  p "cow1" $ cow1
+  p "cow2" $ cow2
+  p "cow3" $ cow3
+
+gormaduliQuarantine = do
+  xfade "cow1" silence
+  xfade "cow2" silence
+  xfade "cow3" silence
+  xfade "cow4" silence
+
+sloppy = do
+  p "slop1" $ s "feel ~ feel [~ ~ ~ ~ ~ ~ feel?]" # gain 1.1 # room 0.75 # nudge "-0.01" -- # speed (slow 4 (range 8 0.75 (saw))) --(range "-0.05" "-0.03" (rand))
+  p "slop2" $ press $ s "hh*4" # room 0.93 # gain (range 1.1 1.3 (rand)) # nudge 0.01 -- # speed (slow 4 (range 8 6 (saw)))
+  p "slop3" $ press $ s "feel:4*2" # gain 1.1 # room 0.6 # nudge 0.02 -- (range "0.03" "0.05" (rand))
+
+cleanSlop how = do
+  if how == "clutch"
+    then do
+      clutch "slop1" silence
+      clutch "slop2" silence
+      clutch "slop3" silence
+  else if how == "xfade"
+    then do
+      xfade "slop1" silence
+      xfade "slop2" silence
+      xfade "slop3" silence
+  else do
+    p "slop1" silence
+    p "slop2" silence
+    p "slop3" silence
+
+hush
+micDrop
+-- drunk beat
+sloppy
+cleanSlop "clutch"
+
+clutch "slopBass" $ density 2 $ s "sine:1(2,7)" # up "<0 3 7 6 1 4 -1 8>" # gain 1.2 # nudge 0.01
+clutch "slopBass" $ every 1 (density 2) $ degradeBy 0.3 $ struct ("t(3,5)") $ s "dr_few*8" # room 0.85 # krush 20 # up "<9 12 16 15 10 13 8 17>" # speed "<0.5 1> <2 4>" # gain 0.8 # nudge 0.01
+
+clutch "slopBass" $ density 2 $ s "sine:1(2,7)" # up (slow 4 ("<0 3 7 6 1 4 -1 8>"+1)) # gain 1.2 # nudge 0.01
+clutch "slopBass" $ every 1 (density 2) $ degradeBy 0.3 $ struct ("t(3,5)") $ s "dr_few*8" # room 0.85 # krush 20 # up (slow 4 ("<9 12 16 15 10 13 8 17>"+1)) # speed "<0.5 1> <2 4>" # gain 0.9 # nudge 0.01
+
+p "slopBass" silence
+
+p "deerhoof" $ density 2 $ press $ s "33:3" # up (slow 4 (c+1)) # room 0.5 # gain 1 # speed "1" # nudge "-0.01"
+p "deerhoof2" $ density 2 $ s "33:3(3,8)" # up (slow 4 (c+1)) # room 0.5 # gain 1 # speed "4" -- # cut 1
+p "deerhoof2" silence
+
+p "piano" $ density 2 $ degradeBy 0.0 $ euclid 2 7 $ n (a) # s "midi" # amp 0.6 # nudge 0.01
+p "piano" $ density 0.5 $ degradeBy 0.0 $ n (c+1) # s "midi" # amp 0.6 # nudge 0.01
+p "piano" $ density 2 $ struct "<t t f f f t f t >" $ n b # s "midi" # amp 0.6 # nudge 0.01
+p "piano" $ density 2 $ euclid 2 7 $ n (arp "pinkyupdown"a) # s "midi" # amp 0.6 # nudge 0.01
+p "piano" $ density 2 $ n (arp "pinkyupdown" c) # s "midi" # amp 0.6 # nudge 0.01
+p "piano" $ density 2 $ n originallUnused # s "midi" # amp 0.7
+p "piano" silence
+
+d8 $ density 2 $ jux (brak) $ s "arpy*4" # up (arp "pinkyupdown" a) # nudge 0.03 # gain 1 # room 0.5 -- # krush 2
+d8 $ density 2 $ press $ s "33:3" # up (slow 4 (c+1)) # room 0.5 # gain 1 # speed "1"
+d9 $ density 2 $ s "33:3(3,8)" # up (slow 4 (c+1)) # room 0.5 # gain 1 # speed "4" -- # cut 1
+d8 $ density 2 $ struct "[ttttfff]*1" $ s "arpy*14?" # up (arp "pinkyupdown" b) # nudge 0.03  # gain 0.85 # room 1 # speed "-1" -- # cloudsGrain
+d8 $ density 0.5 $ jux (rev) $ s "arpy*24" # up (arp "pinkyupdown" c+1) # nudge 0.03  # gain 1 # room 1 -- # krush 1
+d8 $ density 2 $ euclid 2 7 $ s "arpy*7" # up (arp "pinkyupdown" b) # gain 0.9 # room 1 # speed 1 -- # krush 1.5
+
+d1 $ density 4 $ swingBy (4/7) 4 $ brak $ sound ("glitch2:0 yeah:3? glitch:4 glitch:1") # gain "1"
+
+d2 $ every 4 (density 2) $ s "arpy*4 arpy*2?" # speed (density 1 $ range "-2" "6" saw) # up "4" # room "1.5" # gain 1
+
+p "longStrings" silence
+p "longStrings" $ loopAt 16 $ chop 512 $ s "44comp:37" # gain 1.2 # room 0.5 # orbit 3
+
+--kichan likes gorma 1 44comp:1 and marching (44comp:27)
+
+-- basimilus
+p "bia"  $ loopAt 8 $ chop 32 $ s "44comp:1" # gain 1 # room 0.9 # size 0.5
+p "bia1" $ loopAt 4 $ degradeBy 0.4 $ gap 16 $ s "44comp*2" # gain 0.7 # room 0.9 # size 0.5 # speed 2
+p "bia2" $ jux (rev) $ loopAt 2 $ degradeBy 0.2 $ chop 32 $ s "44comp:1" # gain 0.75 # room 0.9 # size 0.5 # speed 2
+
+p "kichanFlute" $ loopAt 4 $ chop 32 $ s "44comp:28" # gain 1.1 # room 0.5
+p "kichanFlute" silence
+
+p "gong" $ slow 4 $ s "<percussion:31? percussion:32?>" # gain "1" # room "0.9"
+once $ s "percussion:31" # speed "-0.9" # room "0.9" # gain 1.1
+
+p "lovano" $ loopAt 3.3 $ chop 32 $ s "33:29" # room 0.5 # gain 1.2
+p "lovano1" $ loopAt 3.3 $ chop 32 $ s "33:28" # room 0.5 # gain 1
+p "lovano2" $ loopAt 2 $ chop 32 $ s "33:28" # room 0.5 # gain 1
+p "lovano" $ loopAt 2 $ chop 32 $ s "33:29" # room 0.5 # gain 1.2
+p "lovano2" silence
+
+p "gong" silence
+
+marching
+xfade "troops" silence
+
+hush
+
+--gormaduli sounds
+gormaduli
+gormaduliQuarantine
+
+p "thisLove0" $ jux (rev) $ slow 1 $ struct "t(3,7)" $ striate' 320 (1/8) $ sound "44comp:36" # room "0.9" # size "0.9" # up "5" # speed "-1"
+
+thisLove = do
+  xfade "thisLove0" $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # gain 0.75 # room "0.9" # size "0.9" # speed "1" # slow 4 ( gain (range 0.35 0.8 perlin) ) # up "-4" -- # up "5"-- # slow 4 ( crush (range 2 32 rand) )
+  xfade "thisLove1" $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # gain 0.75 # room "0.9" # size "0.9" # speed "-2" # slow 4 ( gain (range 0.35 0.8 perlin) ) # up "-4" -- # up "5"
+  xfade "thisLove2" $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # gain 0.75 # room "0.9" # size "0.9" # speed "0.5" # slow 4 ( gain (range 0.35 0.8 perlin) ) # up "-4" -- # up "5"
+
+brokenHeart = do
+  xfade "thisLove0" silence
+  xfade "thisLove1" silence
+  xfade "thisLove2" silence
+
+thisLove
+brokenHeart
+
+micDrop
+
+marching = xfade "troops" $ loopAt 8 $ chop 32 $ s "44comp:27" # gain 1.4 # djf 0.65 # gain 1 # room 0.5
+marching
+xfade "troops" silence
+
+paulineOliveros = xfade "pauline oliveros" $ loopAt 16 $ chop 512 $ s "44comp:26" # room 0.7 # speed 0.95
+paulineOliveros
+xfade "pauline oliveros" silence
+
+hush
+
+blackRain = do
+  xfade "blackRainHigh" $ loopAt 8 $ chop 32 $ sound "44comp:25" # cloudsGrainLess # slow 4 ( gain (range 0.5 0.7 perlin) )
+  xfade "blackRain" $ loopAt 32 $ chop 32 $ sound "44comp:25" # gain 1
+
+sunshine how = do
+  if how == "xfade"
+    then do
+      xfade "blackRainHigh" silence
+      xfade "blackRain" silence
+  else do
+    p "blackRainHigh" silence
+    p "blackRain" silence
+
+at = putStrLn "syntactical connections are made";
+
+do blackRain; gormaduli
+
+blackRain
+sunshine "xfade"
+
+hush

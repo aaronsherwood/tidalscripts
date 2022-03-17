@@ -1,0 +1,13 @@
+import Sound.Tidal.Stream
+
+let sd ip port = do s <- makeConnection ip port superDirtSlang
+                    let backend = Backedn s (\_ _ _ -> return ())
+                    ds <- Sound.Tidal.Stream.superdirtTarget
+                    return (setter ds)
+let target =
+      Target {oName = }
+Sound.Tidal.Stream.dirtTarget.oAddress="169.254.206.60"
+Sound.Tidal.Stream.superdirtTarget
+.oAddress = "169.254.206.60"
+s1 <- sd "169.254.206.60" 57120
+d1 $ every 4 (const $ s "bd(3,2)?" # n "0" # gain "1.2" # room "1") $ slow 2 $ sound "[bd:3 sn:2]" # gain "1.5" # room "1.0"

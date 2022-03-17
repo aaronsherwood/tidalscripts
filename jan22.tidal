@@ -1,0 +1,42 @@
+michi = ringsfreq 38 # ringsstruct 1 # ringsbright 0.9 # ringsdamp 0.75 # ringspos 1 # ringspoly 1 # ringsmodel 2  # cloudspitch "0" # cloudspos "0.01" # cloudswet "1" # cloudssize "0.22" # cloudsdens "0.72" # cloudstex "0.75" # cloudsgain "8" # cloudsspread "0.75" # cloudsrvb "0.6" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0"
+
+p "michi" $ s "in" # michi # pan 1 # gain 1.2 -- # delay "0.75" # delayfb "0.5" # delaytime (range 0.6 1 perlin)
+
+p "micin" $ jux (rev) $ chop 16 $ s "in1" # gain 1.1 # room "0.95" # cloudsPitchDown
+
+hush
+p "micin" silence
+
+p "michi" silence
+
+sloppy10
+
+mosaic = do
+  p "record" $ slow 8 $ s "rlooper" # n "<0 1 2 3 4 5 6 7>"
+  p "playback" $ slow 8 $ s "loop" # n "[0?,1?,2?,3?,4?,5?,6?,7?]" # room 0.95 # size 0.9 -- # gain 1 # djf 0.77 # pan rand
+
+setcps(135/60/4)
+
+do
+  hush
+  d1 $ s "808*16" # speed 16 # n (irand 8) # gain (range 1 1.5 rand)
+  d2 $ iter 4 $ s "808:1(13,16)" # speed 1
+  d3 $ iter 4 $ euclid "<7 11>" 16 $ s "808:2" # speed 3
+  d5 $ iter 4 $ s "808bd:1(7,16)?" # room 0.2 # speed (slow 2 (range 1 4 saw))  # krush 4
+  d7 $ s "[808:4*16, 808:5*16?]" # speed (range 2 8 perlin) # gain (range 0.8 1 rand)
+  d3 silence
+  d9 $ s "~ sd ~ sd" # n 19 # speed "2" # gain 1--
+
+d1 silence
+
+
+
+bookBurning
+
+mosaic
+
+once $ s "freeLoops"
+
+scrapBook
+
+hush

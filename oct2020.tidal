@@ -1,0 +1,27 @@
+
+
+
+
+d1 $ s "tabla2*8" # speed (range 0.3 1.1 $ cF0 "square63")
+d1 $ slice 8 "[<0*8 0*2> 3*4 2 4] [4 .. 7]" $ sound "breaks125:1" # room 0.25 # gain (range 0 1 $ cF0 "square0") # crush (range 10 2 $ cF0 "average")
+
+d2 $ slow 32 $ jux (rev) $ striate' 32 (1/16) $ slow 1 $ sound "toys*16" # n (run 8) # gain (range 0 1 $ cF0 "square20") # up "-1"  # crush (range 10 2 $ cF0 "average")
+
+d4 $ jux (striate 8) $ jux (rev) $ sound "sitar" # n (irand 6) # cut "-1" -- # gain (range 0.4 1.5 $ cF0 "square0")
+
+d3 $ selectF (cF0 "touchRead1") [(const $ s "tabla2*8?" # n (irand 46) # up "1" # room "1" # gain (range 0 1.1 $ cF0 "touchRead2")), (const $ s "tabla2*12" # n (irand 46) # up "1" # room "1" # gain (range 0 1.1 $ cF0 "touchRead2") ), (const $ s "tabla2*16" # n (irand 46) # up "1" # room "1" # gain (range 0 1.1  $ cF0 "touchRead2") ) ] $ s "tabla2"
+hush
+
+
+
+
+
+
+
+
+
+d1 silence
+d2 silence
+d3 silence
+d4 silence
+hush

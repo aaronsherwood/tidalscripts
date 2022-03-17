@@ -1,10 +1,12 @@
-d1 $ slow 32 $ juxBy 0.5 (rev) $ striate' 32 (1/16) $ sound "lighter*33" # n (run 33) # speed (slow 2 $ scale 1 16 saw) -- # gain "1.0" # room "1.0"
+d1 $ slow 32 $ juxBy 0.5 (rev) $ striate' 32 (1/16) $ sound "lighter*33" # n (run 33) # speed (slow 2 $ range 1 16 saw) # gain "1.0" -- # room "1.0"
 
 d1 silence
 hush
 
 -- break beat irand
-d5 $ slow 4 $ sound "amencutup*32" # n (irand 32) # gain "1.2"
+xfadeIn 6 2 $ slow 2 $ sound "amencutup*8" # n (irand 32) # gain "1.2"
 
 -- sitar
-d4 $ every 2 (slow 2) $ jux (rev) $ sound "sitar*8?" # n (run 5) # cut "10" # gain "1.3"
+d4 $ jux (striate 2) $ every 2 (slow 2) $ jux (rev) $ sound "sitar*1?" # n (irand 6) # cut "-1" # gain "1.3"
+
+d6 silence

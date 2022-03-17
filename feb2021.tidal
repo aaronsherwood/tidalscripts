@@ -1,0 +1,409 @@
+harm = pF "harm"
+timbre = pF "timbre"
+morph = pF "morph"
+engine = pI "engine"
+
+vwet = pF "verbwet"
+vtime = pF "verbtime"
+vdamp = pF "verbdamp"
+vhp = pF "verbhp"
+vfreeze = pI "verbfreeze"
+vdiff = pF "verbdiff"
+vgain = pF "verbgain"
+
+cloudspitch = pF "cloudspitch"
+cloudspos = pF "cloudspos"
+cloudssize = pF "cloudssize"
+cloudsdens = pF "cloudsdens"
+cloudstex = pF "cloudstex"
+cloudswet = pF "cloudswet"
+cloudsgain = pF "cloudsgain"
+cloudsspread = pF "cloudsspread"
+cloudsrvb = pF "cloudsrvb"
+cloudsfb = pF "cloudsfb"
+cloudsfreeze = pF "cloudsfreeze"
+cloudsmode = pF "cloudsmode"
+cloudslofi = pF "cloudslofi"
+-- utility to group the 4 "blend parameters"
+cloudsblend w s f r = cloudswet w # cloudsspread s # cloudsfb f # cloudsrvb r
+
+ringsfreq = pF "ringsfreq"
+ringsstruct = pF "ringsstruct"
+ringsbright = pF "ringsbright"
+ringsdamp = pF "ringsdamp"
+ringspos = pF "ringspos"
+ringsmodel = pI "ringsmodel"
+ringsintern_exciter = pI "ringsinternal"
+ringstrig = pI "ringsinternal"
+ringseasteregg = pI "ringseasteregg"
+ringsbypass= pI "ringsbypass"
+ringspoly= pI "ringspoly"
+
+linput = pI "linput"
+lname = pS "lname"
+
+d1 silence
+
+clouds0 = cloudspitch 0 # cloudspos "0.01" # cloudswet "0.5" # cloudssize "0.22" # cloudsdens "0.72" # cloudstex "0.75" # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.6" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0"
+
+d1 $ s "[bd bd sn ~, hh*16]" # clouds0 -- # cloudspitch "0" # cloudspos "0.01" # cloudswet "0.5" # cloudssize "0.22" # cloudsdens "0.72" # cloudstex "0.75" # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.6" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0"
+
+d2 $ sometimesBy 0.4 (# ringseasteregg 1) $ sometimesBy 0.7 (# ringsbypass 1) $ s "hh*16" # ringsbright perlin # ringsfreq 17 # slow 2 (ringspos saw) # slow 2 (ringsmodel (run 4)) # ringsstruct 0.75 # ringsdamp 0.4 # ringstrig 1 # gain (range 0.9 1.5 rand) # ringspoly 1
+
+d1 $ s "bd bd sn ~" # speed 1 # gain 1.2 # ringsfreq 38 # ringsstruct 1 # ringsbright 0.9 # ringsdamp 0.75 # ringspos 1 # ringspoly 1 # ringsmodel 2  # cloudspitch "0" # cloudspos "0.01" # cloudswet "1" # cloudssize "0.22" # cloudsdens "0.72" # cloudstex "0.75" # cloudsgain "8" # cloudsspread "0.75"# cloudsrvb "0.6" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0"
+
+d3 $ slow 4 $ up ( arp "pinkyup" "<[[d'min'4*2 ]  [f'maj'4*2   ] [bf'maj'4*2  ] [f'maj'4*2  ]] [[df'maj'4'i*2 ]  [f'min'4*2   ] [af'maj'4*2  ] [b'maj9 b'maj'4*2 ]]  [[fs'maj'i*4 ]  [g'min7*4  ] ]  [[d'min'4*4 ]  [f'maj'4*4  ] ] [[df'maj'4*4 ]  [b'maj'4*8  ] ] [[f'sus4*2 ] [f'maj'4*2 ] [f'sus2*2 ] [f'maj*2 ]] [[d'min'4*4 ]  [f'maj'4*4   ] ]>") # s "<supertron, supersquare>"  # room 0.8 # gain 0.55 # djf (range 0.3 0.6 (perlinWith tri)) # voice (perlinWith sine) # slow 4 (lfo perlin) # rate (10) # slow 4 (shape (perlinWith saw)) # pan perlin
+hush
+d4 silence
+once $ s "freeLoops"
+d2 $ slow 2 $ stack [s "olooper"] # n 0
+d3 $ slow 2 $ stack [s "looper"]-- record slow 2
+d3 $ slow 2 $ stack [s "loop"]
+
+d8 $ s "in" # gain 1 # room "0.5" # size "0.5" # delayfb 0.5 # delaytime 0.5 # delay 0.9
+
+d8 $ s "in" # gain 1 # cloudsmode "2" # cloudspos perlin # cloudssize perlin # cloudsdens perlin # cloudstex 0.5 # cloudsfb "0.66" # cloudsrvb "0.6" # cloudsgain "1" # cloudswet "1" # cloudspitch "-12" # cloudsspread "0.75"  # cloudsfreeze "0" # cloudslofi "0"
+
+d2 $ slow 4 $ qtrigger 1 $ s "rlooper" # n "1"
+d1 $ slow 4 $ s "loop" # n "1" # room "0.5" # size "0.5" # delayfb 0.5 # delaytime 0.5 # delay 0.9 # gain 1.4
+solo 1
+d8 $ s "inr" # gain 1.2 # room "0.5" # size "0.5" # accelerate "0.3"  -- # delayfb 0.5 # delaytime 0.5 # delay 0.9
+
+d3 $ slow 2 $ stack [s "loop"] # room 0.5 # gain 1.2 # size 0.8 # room 0.5 # n 0
+
+d1 $ slow 2 $ s "loop" # gain 1 # room "0.3" # delayfb 0.75 # delaytime rand # delay 0.9 # speed 1 # pan perlin # n 0
+
+unsolo 1
+
+d3 $ slow 4 $ s "loop" # gain 1 # room "0.3" # delayfb 0.25 # delaytime 0.5 # delay "0.8" # lock 1 # speed 0.25 # pan perlin # n 1
+
+d4 $ (0.0 ~>) $ jux (# speed "-1") $ slow 2 $ s "loop" # gain 0.8 # room "0.3" # delayfb 0.5 # delaytime 0.5 # delay "0.8" # lock 1 # cloudspitch 0 # cloudspos "0.01" # cloudswet "0.4" # cloudssize perlin # cloudsdens 0.72 # cloudstex perlin # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.5" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0" # n 1
+
+
+d5 $ (jux brak) $ every 4 (density 2) $ every 2 (randslice 16) $ every 4 (degrade) $ struct ("t(11,24,14)") $ sound "loop" # room 0.5 # gain 1 # size 0.8 # speed 2 # cut 1
+
+d7 $ slice 8 "6 1 [2 3] ~ 4 1 6*2 7" $ sound "loop" # room 0.75 # gain 0.9 # size 0.75 # pan rand
+
+d5 $ slow 1 $ randslice 32 $ struct ("t(11,24,14)") $ sound "loop" # room 0.75 # gain 0.9 # size 0.75 # speed 1 # pan 0.5 # n 1-- # cut 1
+
+d6 $ slow 4 $ striate 128 $ sound "loop" # room 0.5 # gain 1.4 # size 0.5 # speed "1" -- # cut 1
+
+d5 $ slow 2 $ brak $ jux (rev) $ striate 32 $ sound "loop" # room "0.9" # gain "1"
+
+
+d6 silence
+
+d3 $ (0.0 ~>) $ slow 4 $ stack [s "olooper", s  "loop"] # gain 1.7 # room "0.3"
+
+
+
+d3 $ slow 2 $ s "loop" # gain 1.7 # room "0.3" # delayfb 0.95 # delaytime 0.25 # delay "0.8" # lock 1
+
+
+
+d4 $ s "dr_few*4" # gain 1.2 # room 0.5
+
+d1 $ s "hh*16" # room "0.75" # gain 1.1
+
+d3 $ slow 2 $ stack [s "olooper", s  "loop"] # gain 1.5 # cloudspitch 0 # cloudspos "0.01" # cloudswet "0.4" # cloudssize perlin # cloudsdens 0.72 # cloudstex perlin # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.95" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0" # delayfb 0.95 # delaytime 0.25 # delay "0.8" # lock 1
+
+d3 $ slow 2 $ s "loop" # gain 1.2 # cloudspitch 0 # cloudspos "0.01" # cloudswet "0.4" # cloudssize perlin # cloudsdens 0.72 # cloudstex perlin # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.95" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0" # delayfb 0.95 # delaytime 0.25 # delay "0.8" # lock 1
+
+
+# ringsfreq 76 # ringsstruct 1 # ringsbright 0.9 # ringsdamp 0.75 # ringspos 1 # ringspoly 1 # ringsmodel 2  # cloudspitch "0" # cloudspos "0.01" # cloudswet "0.8" # cloudssize "0.22" # cloudsdens "0.72" # cloudstex "0.5" # cloudsgain "5" # cloudsspread "0.75"# cloudsrvb "0.6" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0"
+
+d2 silence
+hush
+d2 $ s "bd"
+
+d7 $ ccn "16*128" # ccv (range 0 127 (slow 2 (saw))) # s "midi"
+
+d9 $ every 4 (density 2) $ sound "arpy*4 arpy*2" # speed (density 1 $ range "-2" "6" saw) # up "2" # room "1.5" # gain 1.2
+d1 $ every 4 (density 2) $ sound "arpy*12 arpy*2 cp*2 bd*2?" # speed (density 1 $ range "-2" "6" saw) # up "2" # room "1.5" # gain 1.3
+
+d2 $ every 4 (density 2) $ every 4 (degrade) $ struct ("t(3,8)") $ s "dr_few*8" # room 0.85 # krush 20 # speed (slow 1 (range 0.75 "< 2*4 5*4 6*4 9*4>" saw)) # gain 1 # up 6
+
+d2 $ every 4 (density 2) $ every 4 (degrade) $ struct ("t(2,3)") $ s "dr_few*8" # room 0.85 # krush 50 # speed (slow 1 (range 0.75 "< 2*4 3*4 7*4 8*4>" saw)) # gain 1.1 # up "9"
+
+
+unsolo 1
+d1 $ sound "bd*2 cp:4(5,8,<0 2>)" # djf (qtrigger 1 $ range 0.1 0.9 $ slow 2 envL)
+resetCycles
+d1 $ seqP [
+  (0, 12, sound "bd bd*2"),
+  (4, 12, sound "hh*2 [sn cp] cp future*4"),
+  (8, 12, sound (samples "arpy*8" (run 16)))
+]
+
+d1 $ qtrigger 1 $ seqP [
+  (0, 12, sound "bd bd*2"),
+  (4, 12, sound "hh*2 [sn cp] cp future*4"),
+  (8, 12, sound (samples "arpy*8" (run 16)))
+]
+
+d1 $ qtrigger 1 $ seqPLoop [
+  (0, 12, sound "bd bd*2"),
+  (4, 12, sound "hh*2 [sn cp] cp future*4"),
+  (8, 12, sound (samples "arpy*8" (run 16)))
+]
+d2 silence
+do
+{
+  resetCycles;
+  d1 $ rotL 1 $ seqP [
+    (0, 12, sound "bd sd"),
+    (4, 12, sound "hh*2 [sn cp] cp future*4"),
+    (8, 12, sound (samples "arpy*8" (run 16)))
+  ]
+}
+hush
+
+-- We can also use 'unit "c"' to change the behaviour of 'speed' so it
+-- changes the playback speed to match the cps
+d1 $ sound "breaks125:8" # speed 1 # unit "c" # begin 0.75 # end 1
+
+-- Lets play four of those to fill the cycle
+d1 $ sound "breaks125:8*4" # speed 1 # unit "c" # begin "<0.25 0.25 0.25 0.75 >" # end "<0.5 0.5 0.5 1 >"
+
+-- Then play with the cps to hear it change, fitting the cps perfectly
+setcps 0.8
+
+-- Normally, I wouldn't use 'unit', 'begin' and 'end' by hand. Instead
+-- I'd use splice / slice from the previous lesson, or 'chop' to cut
+-- a sound into bits, and set the length of the loop in cycles with
+-- 'loopAt'
+d1 $ loopAt 2 $ chop 4 $ sound "breaks125:8"
+
+-- The above sounds pretty continuous, but it is chopped into four parts.
+-- We can hear that by reversing the chopped up parts:
+d1 $ loopAt 2 $ rev $ chop 4 $ sound "breaks125:8"
+
+-- If we slow the pattern we can hear each part separately:
+d1 $ slow 2 $ loopAt 2 $ chop 4 $ sound "break:8"
+
+-- Here's a different sample:
+d1 $ slow 2 $ loopAt 2 $ chop 4 $ sound "break:9"
+
+-- Now what happens if we put both breaks in the sequence?
+d1 $ slow 2 $ loopAt 2 $ chop 4 $ sound "breaks125:8 breaks125:9" # room 0.9 # size 0.9 # gain 0.9
+
+-- With 'chop', it will play all the parts of break:8, followed by
+-- all the parts of 'break:9'.
+
+-- If we swap 'chop' for its friend 'striate', then parts from the
+-- two breaks are instead interlaced:
+d1 $ slow 2 $ loopAt 2 $ striate 4 $ sound "breaks125:8 breaks125:9" # room 0.9 # gain 1.1 # size 0.9
+
+-- Play with that striate value for fun:
+d1 $ slow 2 $ loopAt 2 $ striate 32 $ sound "breaks125:8 breaks125:9" # room 0.9
+
+-- If you use the *same* loop multiple times with striate, it kind
+-- of stretches it:
+d1 $ slow 4 $ loopAt 1 $ striate 4 $ sound "breaks125:1*4"
+
+-- Here's what that normally sounds like:
+once $ sound "break:1"
+
+-- 'bev' is an even longer sample..
+d1 $ loopAt 16 $ striate 32 $ sound "bev"
+
+d1 $ slow 1 $ jux rev $ loopAt 16 $ striate 32 $ sound "loop*16"
+
+d1 silence
+
+-- Hear it straight
+d1 $ splice 8 "0 1 2 3 4 5 6 7" $ sound "breaks125:4"
+
+-- Now with a more messed-up pattern
+d1 $ slice 8 "6 1 [2 3] ~ 4 1 6*2 7" $ sound "loop" -- # speed 0.5
+
+-- Try changing the cps to hear it at different speeds
+
+-- Try manipulating the pattern of slices
+d1 $ slice 8 (fast "1 [0.5 0.75]" "6 1 [2 3] ~ 4 1 6*2 7") $ sound "breaks125:4"
+
+-- Now try all the above with 'slice' instead of 'splice'.
+-- Slice _doesn't_ do the pitching up/down thing to splice the
+-- sound to the step.
+
+-- Here I put six slices from a loop originally in 4/4, to create
+-- a 3/4 waltz
+d1 $ splice 8 ("0 1 2 3 4 5") $ sound "breaks125:4" # gain 1.1
+d2 $ sound "bd sd*2 hh:4" # speed 2 # gain 1.2
+
+hush
+
+-- https://mutable-instruments.net/modules/braids/manual/
+:{
+braids_models = "csaw trisaw sawsq fold comb hardsync saw3 ring saw7 sawcomb toy zf vosm vowel harm fm pluk bowd blow bell drum kick cymb wtbl wmap wlin wt4 nois twnq clkn qpsk"
+braidsModelN "csaw"     = 0
+braidsModelN "trisaw"   = 1
+braidsModelN "sawsq"    = 2
+braidsModelN "fold"     = 3
+braidsModelN "comb"     = 4
+braidsModelN "hardsync" = 5
+braidsModelN "saw3"     = 6
+braidsModelN "ring"     = 7
+braidsModelN "saw7"     = 8
+braidsModelN "sawcomb"  = 9
+braidsModelN "toy"      = 10
+braidsModelN "zf"       = 11
+braidsModelN "vosm"     = 12
+braidsModelN "vowel"    = 13
+braidsModelN "harm"     = 14
+braidsModelN "fm"       = 15
+braidsModelN "pluk"     = 16
+braidsModelN "bowd"     = 17
+braidsModelN "blow"     = 18
+braidsModelN "bell"     = 19
+braidsModelN "drum"     = 20
+braidsModelN "kick"     = 21
+braidsModelN "cymb"     = 22
+braidsModelN "wtbl"     = 23
+braidsModelN "wmap"     = 24
+braidsModelN "wlin"     = 25
+braidsModelN "wt4"      = 26
+braidsModelN "nois"     = 27
+braidsModelN "twnq"     = 28
+braidsModelN "clkn"     = 29
+braidsModelN "qpsk"     = 30
+smodel = model . (braidsModelN <$>)
+:}
+
+-- https://mutable-instruments.net/modules/plaits/manual/
+:{
+plaits_engines = "anaosc wshape fm formant harm wtable chords vowel gran noisef noisep modal anabd anasn anahh"
+plaitsEngineN "anaosc"  = 0
+plaitsEngineN "wshape"  = 1
+plaitsEngineN "fm"      = 2
+plaitsEngineN "formant" = 3
+plaitsEngineN "harm"    = 4
+plaitsEngineN "wtable"  = 5
+plaitsEngineN "chords"  = 6
+plaitsEngineN "vowel"   = 7
+plaitsEngineN "gran"    = 8
+plaitsEngineN "noisef"  = 9
+plaitsEngineN "noisep"  = 10
+plaitsEngineN "modal"   = 11
+plaitsEngineN "anabd"   = 12
+plaitsEngineN "anasn"   = 13
+plaitsEngineN "anahh"   = 14
+sengine = engine . (plaitsEngineN <$>)
+:}
+
+-- https://mutable-instruments.net/modules/tides/manual/
+:{
+tides_modes = "shapes amps time freqs"
+modeN "shapes" = 0
+modeN "amps"   = 1
+modeN "times"  = 2
+modeN "freqs"  = 3
+smode = mode . (modeN <$>)
+:}
+
+:{
+rings_models = "res symp sympq mod fm rvb"
+ringsModelN "res"   = 0 -- MODAL_RESONATOR,
+ringsModelN "symp"  = 1 -- SYMPATHETIC_STRING,
+ringsModelN "sympq" = 4 -- SYMPATHETIC_STRING_QUANTIZED,
+ringsModelN "mod"   = 2 -- MODULATED/INHARMONIC_STRING,
+ringsModelN "fm"    = 3 -- 2-OP_FM_VOICE,
+ringsModelN "rvb"   = 5 -- STRING_AND_REVERB
+ringsSmodel = ringsmodel . (ringsModelN <$>)
+:}
+
+range' from to p = (p*to - p*from) + from
+rg' = range'
+rsin i o = rg' i o sine
+rsinf   i o f = fast f $ rsin i o
+trif  f = fast f $ tri
+rtri  i o = rg' i o tri
+rtrif   i o f = fast f $ rtri i o
+adsr    = grp [mF "attack",      mF "decay", mF "sustain", mF "release"]
+d1 $ s "plaits*16" # n 0 # engine 1 # timbre saw # adsr "0.1:1:1:0.1"
+  $  -- string engine, like irand = integer rand
+  # n 60
+  # s "plaits"
+  hush
+d1 -- omi (elements)
+  -- $ slow 2
+  $ n (arp "<up down>" "<c'maj'7*2 d'min'7*2 e'min'7*2 [a'min'7 f'maj'7]>" +12)
+  # s "plaits"
+  # engine 5
+  # adsr "0.1:1:1:0.5"
+  # pan 0.5
+d1 -- plaits
+  $ slow 2
+  $ fast "<1 [1 2] <1 [0.5 3]> [1 [2 4]]>"
+  $ struct "t(9,16)"
+  $ n (arp "<up down diverge>" "<a'm9'8 e'7sus4'8>" -24)
+  # engine 14
+  # s "plaits"
+  # adsr "0.1:1:1:0.5"
+  # timbre (rsinf 0 1 0.25)
+  # harm (rsinf 0 1 0.33)
+  # morph (rsinf 0 1 0.11)
+  # lpgdecay (rsinf 0 1 0.44)
+  # lpgcolour (rsinf 0 1 0.35)
+
+  cloudspitch = pF "cloudspitch"
+  cloudspos = pF "cloudspos"
+  cloudssize = pF "cloudssize"
+  cloudsdens = pF "cloudsdens"
+  cloudstex = pF "cloudstex"
+  cloudswet = pF "cloudswet"
+  cloudsgain = pF "cloudsgain"
+  cloudsspread = pF "cloudsspread"
+  cloudsrvb = pF "cloudsrvb"
+  cloudsfb = pF "cloudsfb"
+  cloudsfreeze = pF "cloudsfreeze"
+  cloudsmode = pF "cloudsmode"
+  cloudslofi = pF "cloudslofi"
+
+elementspitch = pF "elementspitch"
+elementsstrength = pF "elementsstrength"
+elementscontour = pF "elementscontour"
+elementsbowlevel = pF "elementsbowlevel"
+elementsblowlevel = pF "elementsblowlevel"
+elementsstrikelevel = pF "elementsstrikelevel"
+elementsflow = pF "elementsflow"
+elementsmallet = pF "elementsmallet"
+elementsbowtimb = pF "elementsbowtimb"
+elementsblowtimb = pF "elementsblowtimb"
+elementsstriketimb = pF "elementsstriketimb"
+elementsgeom = pF "elementsgeom"
+elementsbright = pF "elementsbright"
+elementsdamp = pF "elementsdamp"
+elementspos = pF "elementspos"
+elementsspace = pF "elementsspace"
+elementsmodel = pF "elementsmodel"
+elementseasteregg = pF "elementseasteregg"
+
+d1
+  $ fast "<1 [1 2] <1 [0.5 3]> [1 [2 4]]>"
+  $ struct "t(<11 21 17 15>,32)"
+  $ elementspitch (segment 32 $ rsinf 0 12 0.25 * rtrif 0 2 0.7 + "<0 8 4 1 3>" + "[0 0 12 -12]/4")
+  # s "plaits" --, 808:1*16]"
+  # engine 1
+  # up (scale "ritusen" (irand 24)|- 12)
+  # sustain (rsinf 0.4 1.5 1)
+  # elementsstrength (rsinf 0 1 0.08)
+  # elementscontour (rsinf 0 1 0.10)
+  # elementsbowlevel (rsinf 0 1 0.12)
+  # elementsblowlevel (rsinf 0 1 0.14)
+  # elementsstrikelevel (rsinf 0 1 0.16)
+  # elementsflow (rsinf 0 1 0.18)
+  # elementsmallet (rsinf 0 1 0.20)
+  # elementsbowtimb (rsinf 0 1 0.22)
+  # elementsblowtimb (rsinf 0 1 0.24)
+  # elementsstriketimb (rsinf 0 1 0.26)
+  # elementsgeom (rsinf 0 1 0.28)
+  # elementsbright (rsinf 0 1 0.30)
+  # elementsdamp (rsinf 0 1 0.32)
+  # elementspos (rsinf 0 1 0.34)
+  # elementsspace (rsinf 0 1 0.36)
+  # elementsmodel "<0 1 2>"
+  # elementseasteregg 0
+  # gain 1.1
+
+  hush

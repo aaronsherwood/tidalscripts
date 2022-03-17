@@ -1,0 +1,19 @@
+d1 $ rev $ sound "808*8" # n (run 6) # speed "<0.25@3 0.15>" # room "0.75"
+
+d2 $ fast 2 $ s "{808bd:0 808sd:7 808bd:2}%8" # room "0.25" # crush "3"
+
+d2 $ fast 2 $ s "{808bd:0 808sd:7 808bd:2}%8" # room "0.25" # crush (slow 4 $ range 2 8 sine)
+
+
+(slow 4 $ range 2 8 sine)
+(range 2 8 $ sine)
+
+(slow 4 $ range 2 8 $ sine)
+
+
+
+d1 silence
+d2 silence
+d3 silence
+d4 silence
+hush

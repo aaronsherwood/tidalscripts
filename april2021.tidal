@@ -1,0 +1,16 @@
+d1 $ s "bd bd sn ~"
+
+d1 $ density 2 $ brak $ sound ("glitch2:0 yeah:3? glitch:4 glitch:1") # gain "1.4"
+
+d2 $ every 4 (density 2) $ sound "arpy*0 arpy*2" # speed (density 1 $ range "-2" "6" saw) # up "2" # room "1.5" # gain 1
+
+d3 $ every 4 (density 2) $ every 4 (degrade) $ struct ("t(3,8)") $ s "dr_few*8" # room 0.85 # krush 20 # speed (slow 1 (range 0.75 "< 2*4 5*4 6*4 9*4>" saw)) # gain 0.8 # up 6
+
+-- density
+d4 $ ccn "0*128" # ccv (range 127 0 $ slow 4 saw) # s "midi"
+
+--brightness
+d5 $ every 4 (# ccv (range 127 0 $ slow 0.5 saw)) $ ccn "1*128" # ccv (range 127 0 $ slow 1 saw) # s "midi"
+d5 $ ccn "1*128" # ccv 0 # s "midi"
+
+hush

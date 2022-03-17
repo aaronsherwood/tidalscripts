@@ -1,0 +1,122 @@
+michi = ringsfreq 38 # ringsstruct 1 # ringsbright 0.9 # ringsdamp 0.75 # ringspos 1 # ringspoly 1 # ringsmodel 2  # cloudspitch "0" # cloudspos "0.01" # cloudswet "1" # cloudssize "0.22" # cloudsdens "0.72" # cloudstex "0.75" # cloudsgain "8" # cloudsspread "0.75" # cloudsrvb "0.6" # cloudsfb "0.66" # cloudsfreeze "0" # cloudsmode "0" # cloudslofi "0"
+
+p "michi" $ s "in" # michi # pan 1 -- # delay "0.75" # delayfb "0.5" # delaytime (range 0.6 1 perlin)
+
+p "micin" $ jux (rev) $ chop 16 $ s "in1" # gain 1.1 # room "0.95" # cloudsPitchDown
+
+p "micin" silence
+
+p "michi" silence
+
+hush
+
+
+d1 $ s "808*16" # speed 16 # n (irand 8) # room 0.5 # gain (range 1 1.5 rand)
+d2 $ s "808:1(13,16)"
+d3 $ iter 4 $ euclid "<7 11>" 16 $ s "808:2" # speed 4 # room 0.5 # crush "<2 3 4>"
+d4 $ s "808bd:1*16?" # room 0.2 # speed (slow 4 (range 1 1.4 saw))
+d5 $ s "808bd:0*8?" # krush 6 # speed (range 1 2 rand)
+d6 $ iter 4 $ s "808:2(9,16)" # speed (slow 4 (range 2 4 isaw))
+d7 $ s "[808:4*16, 808:5*16?]" # speed (range 2 3 perlin) # gain (range 0.8 1 rand)
+d8 $ loopAt 16 $ striate 128 $ slice 6 "0*2" $ s "44comp:35" # speed "1" # room 0.9 # size 0.9 # gain 0.7
+hush
+
+mosaic
+
+micDrop
+
+splatBeat
+
+scrapBook
+
+setcps(0.45)
+
+hush
+
+thisLove
+
+do thisLove; at;
+
+gormaduli
+
+sunshine "xfade"
+
+thisLove
+
+sloppy10
+
+d1 $ s "808*16" # speed 12 # n (irand 8) # gain (range 1 1.5 rand)
+d2 $ s "808:1(13,16)"
+d3 $ iter 4 $ euclid "<7 11>" 16 $ s "808:2" # speed 4 # room 0.5 # crush "<2 3 4>"
+d4 $ s "808bd:1*16?" # room 0.2 # speed (slow 4 (range 1 1.4 saw))
+d5 $ s "808bd:0*8?" # krush 6 # speed (range 1 2 rand)
+d6 $ iter 4 $ s "808:2(9,16)" # speed (slow 4 (range 2 4 isaw))
+d7 $ s "[808:4*16, 808:5*16?]" # speed (range 2 3 perlin) # gain (range 0.8 1 rand)
+d8 $ loopAt 16 $ striate 128 $ slice 6 "0*2" $ s "44comp:35" # speed "1" # room 0.9 # size 0.9 # gain 0.8
+
+
+setcps (0.6)
+d1 $ s "808*16?" # speed 16 # n (irand 8) # gain (range 1 1.5 rand)
+d2 $ iter 4 $ s "808:1(13,16)" # speed 1
+d3 $ iter 4 $ euclid "<7 11>" 16 $ s "808:2" # speed 3
+d5 $ iter 4 $ s "808bd:1(7,16)?" # room 0.2 # speed (slow 4 (range 1 1.4 saw)) # krush 10
+d7 $ s "[808:4*16, 808:5*16?]" # speed (range 2 3 perlin) # gain (range 0.8 1 rand)
+d9 silence
+d9 $ s "~ sd ~ sd" # n 19 # speed "2" # gain 1-- # gain "0.5@4 1@4 0.5@4 1@4"
+
+r = ["@5","@4","@3","@6","@7","@6","@5","@4"]
+let ts = replicate (length r) "t"
+let pat = unwords (merge ts r)
+pat
+
+d12 $ slow 8 $ ccn "0*128" # ccv "0@5 127@4 0@3 127@6 0@7 127@6 0@5 127@4" # s "midi"
+d5 silence -- $ slow 1 $ ccn "0*128" # ccv (range 0 127 saw) # s "midi"
+
+hush
+
+unsolo "piano"
+
+sloppy10
+
+d8 $ loopAt 8 $ striate 128 $ s "44comp:38" # gain 1.2 -- # room 0.9 # size 0.9 # gain 0.8
+
+
+cleanSlop "clutch"
+
+improviseChords our "org" "arpy" ["@5","@4","@3","@6","@7","@6","@5","@4"] "0.25"
+
+improviseChords a2 "org" "midi" ["@5","@4","@3","@6","@7","@6","@5","@4"] "0.125"
+
+improviseChords b2 "org" "<midi>" ["@4","@3","@5","@4","@4","@3","@5","@4"] "0.25"
+
+p "piano" silence
+
+improviseChords :: [Char] -> [Char] -> [Char] -> [Char] -> [String] -> IO ()
+
+improviseChords progression org which rhythms den=
+  do
+    if org == "org"
+      then do
+      let chords = do {
+        if length (rhythms) < length (words progression)
+          then do
+            take (length rhythms) (words progression)
+        else do
+            (words progression)
+        }
+      let combined = merge chords rhythms
+      let final = unwords combined
+      if which == "midi"
+        then
+          p "piano" $ density den $ s (parseBP_E which) <| n ((parseBP_E final)+12) # amp (range 0.86 0.9 (rand)) # nudge "-0.01"
+        else
+          p "piano" $ density den $ s (parseBP_E which) <| up (parseBP_E final) # room 0.7 # orbit 3 # gain 1 # nudge "-0.01"
+    else do
+      let chords = "{"++progression++"}%<"++org++">"
+      let ts = replicate (length rhythms) "t"
+      let pat = unwords (merge ts rhythms)
+      if which == "midi"
+        then do
+          p "piano" $ density den $ struct (parseBP_E pat) $ s (parseBP_E which) <| n (parseBP_E chords) # amp (range 0.86 0.9 (rand))
+        else
+          p "piano" $ degradeBy 0.1 $ density den $ struct (parseBP_E pat) $ s (parseBP_E which) <| up ((parseBP_E chords)-4) # room 0.7 # orbit 3 # gain 1 # nudge "-0.01"

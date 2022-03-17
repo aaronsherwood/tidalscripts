@@ -11,7 +11,7 @@ d4 $ whenmod 8 7 (const $ s "tabla2*16" # n (irand 46) # up "8") $ slow 2 $ s "t
 -- kalimba
 d5 $ sound "kalimba*8" # up ((+ (0)) <$> iter 68 all)
 d5 $ every 4 (slow 2) $ sound "kalimba(2,3)" # n (irand 4)
-d5 $ density 3 $ sound "kalimba?" # up ((+ (0)) <$> iter 7 firstFour) # end "1.0" # n (irand 4) -- # delay "0.0" # delaytime "0.00" # delayfeedback "0.0"
+d5 $ density 4 $ sound "kalimba" # up ((+ (0)) <$> iter 14 firstFour) # end "1.0" # n (irand 4) -- # delay "0.0" # delaytime "0.00" # delayfeedback "0.0"
 d5 $ every 8 (density 1) $ density 4 $ sound "kalimba?" # up ((+ (0)) <$> iter 68 all) # end "1.0" # n (irand 4) -- # delay "0.0" # delaytime "0.00" # delayfeedback "0.0"
 
 d1 silence
@@ -24,6 +24,7 @@ hush
 let current = chord8
 
 let firstFour = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10"
+let sixteen = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10 -9 1"
 let all = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10 -9 1 6 11 -8 0 7 12 -6 2 4 13 -7 4 9 14 -8 0 7 16 -4 0 7 17 -9 1 6 11 18 -8 0 7 14 19 -7 2 10 14 20 -3 5 7 12 21 -5 3 5 14 22 -4 3 5 13 23"
 let chord1  = "0 4 7"         -- d f# a         D
 let chord2  = "-1 4 8"        -- c# f# a#       F#

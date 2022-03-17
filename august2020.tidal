@@ -1,0 +1,21 @@
+d1 $ sound "[<feel:6? [~ feel:6]> <feel:3 feel:4>, feel:1*16?]" # room 0.9 # size 0.9 # gain "1.1"
+d4 $ sound "feel:6 feel:5*8? feel:3 feel:1" # room 0.9 # size 0.5 # slow 4 (speed (range 8 0.5 saw))
+d2 $ sound "casio:1*8" # up "-6" # slow 4 (speed (range 1 1.5 saw )) # gain (range 0.5 0.9 rand) # room 0.9 # size 0.5
+
+d3 $ every 16 (const $ s "jvbass*8" # n (run 4) # room "1.5" # gain "1" # up "-1") $ whenmod 8 4 (const $ s "jvbass*8" # n (run 7) # room "1.5" # gain "1" # up "-1") $ s "jvbass*8" # n (run 14) # room "1.5" # gain "1" # up "-1"
+d5 $ jux (striate 2) $ sometimes (rev) $ every 4 (const $ sound "arpy*12" # n (run 11) # speed "1") $ sound "arpy*8" # n (run 8) # room "0.3"
+d4 $ sometimes (rev) $ sound "arpy*8" # n (run 8)
+d6 $ every 4 (const $ sound "bd:3*8 bd:3? sn:2 [~ bd:3?]" # gain "1.2" # room "1.0" # speed (range 8 1 saw) ) $ sound "bd:3 bd:3? sn:2 [~ bd:3?]" # gain "1.5" # room "1.0"
+d6 $ sound "bd:3*8? bd:3? sn:2 [~ bd:3?]" # gain "1.2" # room "1.0" # speed (range 8 1 saw)
+d1 $ sound "bd bd <sn:1 feel:3> [~ bd?]" # gain "1.5" # room "1.0"
+d2 $ every 5 (const $ s "hh*4" # gain (every 3 (rev) $ "2.5 1 1.2 0.9")) $ every 3 (const $ s "hh*8" # gain (every 3 (rev) $ "1.5 1 2.2 1.9")) $ sound "hh*2" # gain (every 3 (rev) $ "2.0 1 1.2 1.9")
+d1 silence
+d2 silence
+d5 silence
+hush
+
+
+d1 $ sound "feel:6 feel:5*8? feel:3 feel:1" # room 0.9 # size 0.5 # slow 4 (speed (range 8 0.5 saw))
+d2 $ sound "casio:1*16" # up "-6" # slow 4 (speed (range 1 1.5 saw )) # gain (range 0.5 1 rand) # room 0.9 # size 0.5
+d3 $ every 2 (const $ sound "~ bd:3? sn:2 [~ bd:3?]" # gain "1.2" # room "1.0" # speed (range 8 1 saw)  ) $ sound "bd:3*8? bd:3? sn:2? [~ bd:3?]" # room 0.9 # size 0.5 # speed (range 8 1 saw)
+d4 $ sound "[<feel:6? [~ feel:6]> <feel:3 feel:4>, feel:1*16?]" # room 0.9 # size 0.9 # gain "1.1"
