@@ -4,6 +4,7 @@
 
 do
   hush
+  thisLove
 
 do
   resetCycles
@@ -15,19 +16,24 @@ brokenHeart
 
 p "vocals0" $ loopAt 2 $ chop 32 $ s "IGLOOGHOST_vocals:18" # delayIn # gain (cF 0.5 "moverX") # orbit 0
 
-vocals 0 0 0 -- hush volume0 volume1
-iglooBeat 0 0 0 1 -- hush beat0 beat1 beat2
-drums 0 1 0 -- hush lowOctave highOctave
-bigBeat 0 0.9 2 0.15 -- hush gain slow degrade ***ONLY ONE SOUND***
-glitch 0 0 0 1 -- hush glitch0 glitch1 glitch2
-sophie 0 0 0 0 -- hush vol0 vol1 vol2
-chords 1 0 1 1 0 -- hush prog-0-1-2 restart
-climax 0 0 1 0 0 -- hush vol0 vol1 vol2 restart
+vocals 1 1 0 -- hush volume0 volume1
+iglooBeat 1 0 0 0 -- hush beat0 beat1 beat2
+drums 0 1 1 -- hush lowOctave highOctave
+bigBeat 0 0.9 2 0.185 -- hush gain slow degrade ***ONLY ONE SOUND***
+glitch 1 1 1 1 -- hush glitch0 glitch1 glitch2
+sophie 0 1.2 0.8 0.8 -- hush vol0 vol1 vol2
+chordprog 1 1 1 1 0 -- hush prog-0-1-2 restart
+climax 1 0 1 0 0 -- hush vol0 vol1 vol2 restart
 
-p "chords" silence
+do
+  chordprog 0 0 0 1 0 -- hush prog-0-1-2 restart
+  climax 1 1 1 1 0   -- hush vol0 vol1 vol2 restart
+
+xfade "melody" silence
 
 hush
 
+-- all this has been added to BootTidal.hs
 vocals stopAll mainVocal glitchVocal =
   do
     if stopAll == 1
@@ -93,7 +99,7 @@ sophie stopAll beat0 beat1 beat2 =
     p "sophie0" $ slow 2 $ s "SOPHIE_fx_kicks(3,8)" # n "2" # gain (1.2*beat0) # room 0.4 # orbit 5
     p "sophie1" $ s "[~ SOPHIE_percussion]" # n 5 # gain (beat1) # nudge "-0.02" # orbit 5
     p "sophie2" $ every 4 (slow 2) $ s "[SOPHIE_hihats!4] [[SOPHIE_hihats*4] SOPHIE_hihats!2] [SOPHIE_hihats!2 [SOPHIE_hihats*4?]] [SOPHIE_hihats!4]" # n "<1 1 1 0>" # gain ((range 0.8 1 rand)*beat2) # orbit 5
-chords stopAll zero one two restart =
+chordprog stopAll zero one two restart =
   do
     if stopAll == 1
       then do
