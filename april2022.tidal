@@ -16,8 +16,8 @@ brokenHeart
 
 p "vocals0" $ loopAt 2 $ chop 32 $ s "IGLOOGHOST_vocals:18" # delayIn # gain (cF 0.5 "moverX") # orbit 0
 
-vocals 1 1 0 -- hush volume0 volume1
-iglooBeat 1 0 0 0 -- hush beat0 beat1 beat2
+vocals 1 0 1 -- hush volume0 volume1
+iglooBeat 1 0 0 1 -- hush beat0 beat1 beat2
 drums 0 1 1 -- hush lowOctave highOctave
 bigBeat 0 0.9 2 0.185 -- hush gain slow degrade ***ONLY ONE SOUND***
 glitch 1 1 1 1 -- hush glitch0 glitch1 glitch2
@@ -32,6 +32,14 @@ do
 xfade "melody" silence
 
 hush
+
+d3 $ qtrigger 3 $ seqP [
+  (0, 1, s "hh*16"),
+  (1,5,loopAt 4 $ chop 32 $ s "IGLOOGHOST_drum_loops:7" # gain (1.2) # orbit 1),
+  (5,6, s "hh*16")
+] # room 0.3
+
+p "igloo2" --10
 
 -- all this has been added to BootTidal.hs
 vocals stopAll mainVocal glitchVocal =
