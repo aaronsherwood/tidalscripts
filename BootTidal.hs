@@ -250,6 +250,120 @@ let p = streamReplace tidal
     anabd   = 13
     anasn   = 14
     anahh   = 15
+    vocals stopAll mainVocal glitchVocal =
+      do
+        if stopAll == 1
+          then do
+            hush
+        else return ()
+        p "vocals0" $ loopAt 2 $ chop 32 $ s "IGLOOGHOST_vocals:18" # delayIn # gain mainVocal # orbit 0
+        p "vocals1" $ loopAt 4 $ chop 32 $ s "IGLOOGHOST_vocals:17" # delayIn # gain glitchVocal # orbit 0 --17 is 5 16 is 1
+    iglooBeat stopAll vol0 vol1 vol2 =
+      do
+        if stopAll == 1
+          then do
+            hush
+        else return ()
+        p "igloo0" $ loopAt 4 $ chop 32 $ s "IGLOOGHOST_drum_loops:0" # gain (1.2*vol0) # orbit 1-- 5
+        p "igloo1" $ loopAt 8 $ chop 64 $ s "IGLOOGHOST_drum_loops:1" # gain (1.2*vol1) # orbit 1-- 8
+        p "igloo2" $ loopAt 4 $ chop 32 $ s "IGLOOGHOST_drum_loops:7" # gain (1.2*vol2) # orbit 1--10
+    drums stopAll zero one =
+      do
+        if stopAll == 1
+          then do
+            hush
+        else return ()
+        if zero == 1
+          then do
+            p "drums0" $ loopAt 4 $ chop 32 $ s "33:28" # delayIn # pan 0 # orbit 2
+        else return ()
+        if one == 1
+          then do
+            p "drums1" $ loopAt 2 $ chop 32 $ s "33:28" # delayIn # pan 1 # orbit 2 -- 10
+        else return ()
+    bigBeat stopAll gainAmount slowAmount degradeAmount =
+      do
+        if stopAll == 1
+          then do
+            hush
+        else return ()
+        d6 $ rotL 1 $ slow slowAmount $ every 4 (# speed 0.5) $ someCyclesBy degradeAmount (degrade)$ s "[[monomachine:0!2] [~ monomachine:0@3] [monomachine:0] ~]" # gain gainAmount # speed (range 1 0.125 (saw)) # krush 10 # room 0.7 # orbit 3
+    glitch stopAll zero one two =
+      do
+        if stopAll == 1
+          then do
+            hush
+        else return ()
+        if zero == 1
+          then do
+            p "glitch0" $ s "[glitch:4 ~ ~ ~ glitch:4? ~ ~]*<8 4 16>" # gain (range 1 1.2 (rand)) # room 0.2 # orbit 4-- 8
+        else return ()
+        if one == 1
+          then do
+            p "glitch1" $ s "~ [~ [click:3] ~ ~ ~ ~ ~] ~ [~ ~ ~ click:3  ~ ~ ~]" # room 0.2 # gain "1.3" # nudge 0.027 # orbit 4-- 7
+        else return ()
+        if two == 1
+          then do
+            p "glitch2" $ density 0.5 $ s "~ glitch:2 ~ glitch:2?" # room 0.9 # gain 1.3 # speed 2 # orbit 4--10
+        else return ()
+    sophie stopAll beat0 beat1 beat2 =
+      do
+        if stopAll == 1
+          then do
+            hush
+        else return ()
+        p "sophie0" $ slow 2 $ s "SOPHIE_fx_kicks(3,8)" # n "2" # gain (1.2*beat0) # room 0.4 # orbit 5
+        p "sophie1" $ s "[~ SOPHIE_percussion]" # n 5 # gain (beat1) # nudge "-0.02" # orbit 5
+        p "sophie2" $ every 4 (slow 2) $ s "[SOPHIE_hihats!4] [[SOPHIE_hihats*4] SOPHIE_hihats!2] [SOPHIE_hihats!2 [SOPHIE_hihats*4?]] [SOPHIE_hihats!4]" # n "<1 1 1 0>" # gain ((range 0.8 1 rand)*beat2) # orbit 5
+    chordprog stopAll zero one two restart =
+      do
+        if stopAll == 1
+          then do
+            hush
+        else return ()
+        if zero == 1
+          then do
+            if (restart==1)
+              then do
+                p "chords" $ qtrigger "chords" $ loopAt 32 $ chop 32 $ s "44comp:32" # gain 1 # room 0.5  # orbit 6 -- # nudge "-0.027"
+            else do
+              p "chords" $ loopAt 32 $ chop 32 $ s "44comp:32" # gain 1 # room 0.5  # orbit 6 -- # nudge "-0.027"
+        else if one == 1
+          then do
+            if (restart==1)
+              then do
+                p "chords" $ qtrigger "chords" $ loopAt 16 $ chop 32 $ s "44comp:33" # gain 1 # room 0.5  # orbit 6 # krush 1
+            else do
+              p "chords" $ loopAt 16 $ chop 32 $ s "44comp:33" # gain 1 # room 0.5  # orbit 6 # krush 1
+        else if two == 1
+          then do
+            if (restart==1)
+              then do
+                p "chords" $ qtrigger "chords" $ loopAt 8 $ chop 32 $ s "44comp:34" # gain 1 # room 0.5  # orbit 6
+            else do
+              p "chords" $ loopAt 8 $ chop 32 $ s "44comp:34" # gain 1 # room 0.5  # orbit 6
+        else return ()
+    climax stopAll zero one two restart =
+      do
+        if stopAll == 1
+          then do
+            hush
+        else return ()
+        if (restart==1)
+          then do
+            p "windarp" $ qtrigger "windarp" $ loopAt 8 $ chop 32 $ s "44comp:21" # gain (1.2*zero) # room 0.5 # pan 0 # orbit 7
+        else do
+          p "windarp" $ loopAt 8 $ chop 32 $ s "44comp:21" # gain (1.2*zero) # room 0.5 # pan 0 # orbit 7
+        if (restart==1)
+          then do
+            p "dpoarp" $ qtrigger "dpoarp" $ loopAt 8 $ chop 32 $ s "44comp:6" # gain (0.9*one) # room 0.5 # pan 1 # orbit 7
+        else do
+          p "dpoarp" $ loopAt 8 $ chop 32 $ s "44comp:6" # gain (0.9*one) # room 0.5 # pan 1 # orbit 7
+        if (restart==1)
+          then do
+            p "melody" $ qtrigger "melody" $ loopAt 32 $ chop 32 $ s "44comp:24" # gain (1.3*two) # room 0.5 # orbit 7
+        else do
+          p "melody" $ loopAt 32 $ chop 32 $ s "44comp:24" # gain (1.3*two) # room 0.5 # orbit 7
 :}
 
 :{
