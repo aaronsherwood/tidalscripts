@@ -17,21 +17,45 @@ brokenHeart
 p "vocals0" $ loopAt 2 $ chop 32 $ s "IGLOOGHOST_vocals:18" # delayIn # gain (cF 0.5 "moverX") # orbit 0
 
 vocals 1 0 1 -- hush volume0 volume1
-iglooBeat 1 0 0 1 -- hush beat0 beat1 beat2
+iglooBeat 0 0 1 1 -- hush beat0 beat1 beat2
 drums 0 1 1 -- hush lowOctave highOctave
-bigBeat 0 0.9 2 0.185 -- hush gain slow degrade ***ONLY ONE SOUND***
-glitch 1 1 1 1 -- hush glitch0 glitch1 glitch2
-sophie 0 1.2 0.8 0.8 -- hush vol0 vol1 vol2
-chordprog 1 1 1 1 0 -- hush prog-0-1-2 restart
+bigBeat 0 1 2 0.185 -- hush gain slow degrade ***ONLY ONE SOUND***
+glitch 0 1 1 1 -- hush glitch0 glitch1 glitch2
+sophie 0 0 0 0.8 -- hush vol0 vol1 vol2
+chordprog "0" "1" "0" 0 -- hush prog-0-1-2 restart
 climax 1 0 1 0 0 -- hush vol0 vol1 vol2 restart
 
+do {
+  vocals 0 (cF 0 "vocal0") (cF 0 "vocal1"); -- hush volume0 volume1
+  iglooBeat 0 (cF 0 "igloo0") (cF 0 "igloo1") (cF 0 "igloo2");  -- hush beat0 beat1 beat2
+  drums 0 (cF 0 "drums0") (cF 0 "drums1"); -- hush lowOctave highOctave
+  bigBeat 0 (cF 0 "bigBeat") 2 0.15; -- hush gain slow degrade ***ONLY ONE SOUND***
+  glitch 0 (cF 0 "glitch0") (cF 0 "glitch1") (cF 0 "glitch2"); -- hush glitch0 glitch1 glitch2
+  sophie 0 (cF 0 "sophie0") (cF 0 "sophie1") (cF 0 "sophie2"); -- hush vol0 vol1 vol2
+  chordProg (cF 0 "chords0") (cF 0 "chords1") (cF 0 "chords2");  -- hush prog-0-1-2
+  climax 0 (cF 0 "climax0") (cF 0 "climax1") (cF 0 "climax2") 0; -- hush vol0 vol1 vol2 restart
+  thisLove (cF 0 "thisLove");
+  gormaduli
+}
+
 do
-  chordprog 0 0 0 1 0 -- hush prog-0-1-2 restart
+  chordProg 0 0 0 -- hush prog-0-1-2 restart
   climax 1 1 1 1 0   -- hush vol0 vol1 vol2 restart
 
 xfade "melody" silence
 
 hush
+
+water
+
+water1 = loopAt 4 $ chop 32 $ s "44comp:39" # room 0.7 # cloudsDelayIn # pan perlin -- # gain perlin
+water2 = loopAt 8 $ chop 32 $ s "44comp:39" # room 0.7 # pan perlin -- # gain perlin
+water3 = loopAt 16 $ chop 32 $ s "44comp:39" # room 0.7 # gain 1.1 # cloudsGrain -- # gain (perlin2With (cosine*2) (sine*2))
+water4 = chop 32 $ loopAt 4 $ sound "44comp:39" # gain 1.2 # room 0.9
+water = do
+  p "water1" $ water3
+  p "water2" $ water2
+  p "water3" $ water3
 
 d3 $ qtrigger 3 $ seqP [
   (0, 1, s "hh*16"),
@@ -41,6 +65,25 @@ d3 $ qtrigger 3 $ seqP [
 
 p "igloo2" --10
 
+
+
+cow1 = loopAt 4 $ chop 32 $ s "44comp:31" # room 0.7 # cloudsDelayIn # pan perlin # gain (1*(cF 0 "gormaduli"))-- # gain perlin
+cow2 = loopAt 8 $ chop 32 $ s "44comp:31" # room 0.7 # pan perlin # gain (1*(cF 0 "gormaduli"))-- # gain perlin
+cow3 = loopAt 16 $ chop 32 $ s "44comp:31" # room 0.7 # gain (1.1*(cF 0 "gormaduli")) -- # gain (perlin2With (cosine*2) (sine*2))
+cow4 = chop 32 $ loopAt 4 $ sound "44comp:31" # gain (1.2*(cF 0 "gormaduli")) # room 0.9
+gormaduli = do
+  p "cow1" $ cow1
+  p "cow2" $ cow2
+  p "cow3" $ cow3
+thisLove zero = do
+  xfadeIn "thisLove0" 8 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # room "0.9" # size "0.9" # speed "1" # slow 4 ( gain (zero) ) # up "-4" -- # up "5"-- # slow 4 ( crush (range 2 32 rand) )
+  xfadeIn "thisLove1" 8 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36"  # room "0.9" # size "0.9" # speed "-2" # slow 4 ( gain ( zero) ) # up "-4" -- # up "5"
+  xfadeIn "thisLove2" 8 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36"  # room "0.9" # size "0.9" # speed "0.5" # slow 4 ( gain (zero)) # up "-4" -- # up "5"
+chordProg gain0 gain1 gain2 =
+  do
+    p "chords0" $ loopAt 32 $ chop 32 $ s "44comp:32" # gain (1*gain0) # room 0.5  # orbit 6 -- # nudge "-0.027"
+    p "chords1" $ loopAt 16 $ chop 32 $ s "44comp:33" # gain (1*gain1) # room 0.5  # orbit 6 -- # krush 1
+    p "chords2" $ loopAt 8 $ chop 32 $ s "44comp:34" # gain (1*gain2) # room 0.5  # orbit 6
 -- all this has been added to BootTidal.hs
 vocals stopAll mainVocal glitchVocal =
   do
@@ -65,14 +108,8 @@ drums stopAll zero one =
       then do
         hush
     else return ()
-    if zero == 1
-      then do
-        p "drums0" $ loopAt 4 $ chop 32 $ s "33:28" # delayIn # pan 0 # orbit 2
-    else return ()
-    if one == 1
-      then do
-        p "drums1" $ loopAt 2 $ chop 32 $ s "33:28" # delayIn # pan 1 # orbit 2 -- 10
-    else return ()
+    p "drums0" $ loopAt 4 $ chop 32 $ s "33:28" # gain zero # delayIn # pan 0 # orbit 2
+    p "drums1" $ loopAt 2 $ chop 32 $ s "33:28" # gain one # delayIn # pan 1 # orbit 2 -- 10
 bigBeat stopAll gainAmount slowAmount degradeAmount =
   do
     if stopAll == 1
@@ -86,18 +123,18 @@ glitch stopAll zero one two =
       then do
         hush
     else return ()
-    if zero == 1
-      then do
-        p "glitch0" $ s "[glitch:4 ~ ~ ~ glitch:4? ~ ~]*<8 4 16>" # gain (range 1 1.2 (rand)) # room 0.2 # orbit 4-- 8
-    else return ()
-    if one == 1
-      then do
-        p "glitch1" $ s "~ [~ [click:3] ~ ~ ~ ~ ~] ~ [~ ~ ~ click:3  ~ ~ ~]" # room 0.2 # gain "1.3" # nudge 0.027 # orbit 4-- 7
-    else return ()
-    if two == 1
-      then do
-        p "glitch2" $ density 0.5 $ s "~ glitch:2 ~ glitch:2?" # room 0.9 # gain 1.3 # speed 2 # orbit 4--10
-    else return ()
+    p "glitch0" $ s "[glitch:4 ~ ~ ~ glitch:4? ~ ~]*<8 4 16>" # gain ((range 1 1.2 (rand))*zero) # room 0.2 # orbit 4-- 8
+    p "glitch1" $ s "~ [~ [click:3] ~ ~ ~ ~ ~] ~ [~ ~ ~ click:3  ~ ~ ~]" # room 0.2 # gain (1.3*one) # nudge 0.027 # orbit 4-- 7
+    p "glitch2" $ density 0.5 $ s "~ glitch:2 ~ glitch:2?" # room 0.9 # gain (1.3*two) # speed 2 # orbit 4--10
+    -- if zero == 1
+    --   then do
+    --     else return ()
+    -- if one == 1
+    --   then do
+    --     else return ()
+    -- if two == 1
+    --   then do
+    --     else return ()
 sophie stopAll beat0 beat1 beat2 =
   do
     if stopAll == 1
@@ -107,27 +144,30 @@ sophie stopAll beat0 beat1 beat2 =
     p "sophie0" $ slow 2 $ s "SOPHIE_fx_kicks(3,8)" # n "2" # gain (1.2*beat0) # room 0.4 # orbit 5
     p "sophie1" $ s "[~ SOPHIE_percussion]" # n 5 # gain (beat1) # nudge "-0.02" # orbit 5
     p "sophie2" $ every 4 (slow 2) $ s "[SOPHIE_hihats!4] [[SOPHIE_hihats*4] SOPHIE_hihats!2] [SOPHIE_hihats!2 [SOPHIE_hihats*4?]] [SOPHIE_hihats!4]" # n "<1 1 1 0>" # gain ((range 0.8 1 rand)*beat2) # orbit 5
-chordprog stopAll zero one two restart =
+chordprog zero one two restart =
   do
-    if stopAll == 1
-      then do
-        hush
-    else return ()
-    if zero == 1
+    -- if stopAll == 1
+    --   then do
+    --     hush
+    -- else return ()
+    -- p "chords" $ loopAt 32 $ chop 32 $ s "44comp:32" # gain gain0 # room 0.5  # orbit 6 -- # nudge "-0.027"
+    -- p "chords" $ loopAt 16 $ chop 32 $ s "44comp:33" # gain gain1 # room 0.5  # orbit 6 -- # krush 1
+    -- p "chords" $ loopAt 8 $ chop 32 $ s "44comp:34" # gain gain2 # room 0.5  # orbit 6
+    if zero == "1"
       then do
         if (restart==1)
           then do
             p "chords" $ qtrigger "chords" $ loopAt 32 $ chop 32 $ s "44comp:32" # gain 1 # room 0.5  # orbit 6 -- # nudge "-0.027"
         else do
           p "chords" $ loopAt 32 $ chop 32 $ s "44comp:32" # gain 1 # room 0.5  # orbit 6 -- # nudge "-0.027"
-    else if one == 1
+    else if one == "1"
       then do
         if (restart==1)
           then do
             p "chords" $ qtrigger "chords" $ loopAt 16 $ chop 32 $ s "44comp:33" # gain 1 # room 0.5  # orbit 6 # krush 1
         else do
           p "chords" $ loopAt 16 $ chop 32 $ s "44comp:33" # gain 1 # room 0.5  # orbit 6 # krush 1
-    else if two == 1
+    else if two == "1"
       then do
         if (restart==1)
           then do
