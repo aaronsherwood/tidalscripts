@@ -250,14 +250,33 @@ let p = streamReplace tidal
     anabd   = 13
     anasn   = 14
     anahh   = 15
-    vocals stopAll mainVocal glitchVocal =
+    cow1_medusa = loopAt 4 $ chop 32 $ s "44comp:31" # room 0.7 # cloudsDelayIn # pan perlin # gain (1*(cF 0 "gormaduli"))-- 1 -- # gain perlin
+    cow2_medusa = loopAt 8 $ chop 32 $ s "44comp:31" # room 0.7 # pan perlin # gain (1*(cF 0 "gormaduli"))--1 -- # gain perlin
+    cow3_medusa = loopAt 16 $ chop 32 $ s "44comp:31" # room 0.7 # gain (1.1*(cF 0 "gormaduli")) --1.1 -- # gain (perlin2With (cosine*2) (sine*2))
+    -- cow4 = chop 32 $ loopAt 4 $ sound "44comp:31" # gain (1.2*(cF 0 "gormaduli")) # room 0.9
+    gormaduli_medusa = do
+      p "cow1" $ cow1_medusa # orbit 11
+      p "cow2" $ cow2_medusa # orbit 11
+      p "cow3" $ cow3_medusa # orbit 11
+      -- p "cow4" $ cow4 # orbit 11
+    thisLove_medusa zero = do
+      xfadeIn "thisLove0" 8 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # room "0.9" # size "0.9" # speed "1" # slow 4 ( gain (zero) ) # up "-4" # orbit 10 -- # up "5"-- # slow 4 ( crush (range 2 32 rand) )
+      xfadeIn "thisLove1" 8 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36"  # room "0.9" # size "0.9" # speed "-2" # slow 4 ( gain ( zero) ) # up "-4" # orbit 10  -- # up "5"
+      xfadeIn "thisLove2" 8 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36"  # room "0.9" # size "0.9" # speed "0.5" # slow 4 ( gain ( zero)) # up "-4"  # orbit 10 -- # up "5"
+    chordProg gain0 gain1 gain2 =
+      do
+        p "chords0" $ loopAt 32 $ chop 128 $ s "44comp:32" # gain (1*gain0) # room 0.5  # orbit 6 -- # nudge "-0.027"
+        p "chords1" $ loopAt 16 $ chop 64 $ s "44comp:33" # gain (1*gain1) # room 0.5  # orbit 6 -- # krush 1
+        p "chords2" $ loopAt 8 $ chop 32 $ s "44comp:34" # gain (1*gain2) # room 0.5  # orbit 6
+    vocals stopAll mainVocal glitchVocal glitchVocal2 =
       do
         if stopAll == 1
           then do
             hush
         else return ()
         p "vocals0" $ loopAt 2 $ chop 32 $ s "IGLOOGHOST_vocals:18" # delayIn # gain mainVocal # orbit 0
-        p "vocals1" $ loopAt 4 $ chop 32 $ s "IGLOOGHOST_vocals:17" # delayIn # gain glitchVocal # orbit 0 --17 is 5 16 is 1
+        p "vocals1" $ loopAt 4 $ chop 32 $ s "IGLOOGHOST_vocals:17" # delayIn # gain (0.8*glitchVocal) # orbit 0 --17 is 5 16 is 1
+        p "vocals2" $ loopAt 8 $ chop 32 $ s "IGLOOGHOST_vocals:16" # delayIn # gain (0.8*glitchVocal2) # orbit 0
     iglooBeat stopAll vol0 vol1 vol2 =
       do
         if stopAll == 1
@@ -273,14 +292,8 @@ let p = streamReplace tidal
           then do
             hush
         else return ()
-        if zero == 1
-          then do
-            p "drums0" $ loopAt 4 $ chop 32 $ s "33:28" # delayIn # pan 0 # orbit 2
-        else return ()
-        if one == 1
-          then do
-            p "drums1" $ loopAt 2 $ chop 32 $ s "33:28" # delayIn # pan 1 # orbit 2 -- 10
-        else return ()
+        p "drums0" $ loopAt 4 $ chop 32 $ s "33:28" # gain zero # delayIn # pan 0 # orbit 2
+        p "drums1" $ loopAt 2 $ chop 32 $ s "33:28" # gain (one) # delayIn # pan 1 # orbit 2 -- 10
     bigBeat stopAll gainAmount slowAmount degradeAmount =
       do
         if stopAll == 1
@@ -294,18 +307,9 @@ let p = streamReplace tidal
           then do
             hush
         else return ()
-        if zero == 1
-          then do
-            p "glitch0" $ s "[glitch:4 ~ ~ ~ glitch:4? ~ ~]*<8 4 16>" # gain (range 1 1.2 (rand)) # room 0.2 # orbit 4-- 8
-        else return ()
-        if one == 1
-          then do
-            p "glitch1" $ s "~ [~ [click:3] ~ ~ ~ ~ ~] ~ [~ ~ ~ click:3  ~ ~ ~]" # room 0.2 # gain "1.3" # nudge 0.027 # orbit 4-- 7
-        else return ()
-        if two == 1
-          then do
-            p "glitch2" $ density 0.5 $ s "~ glitch:2 ~ glitch:2?" # room 0.9 # gain 1.3 # speed 2 # orbit 4--10
-        else return ()
+        p "glitch0" $ s "[glitch:4 ~ ~ ~ glitch:4? ~ ~]*<8 4 16>" # gain ((range 1 1.2 (rand))*zero) # room 0.2 # orbit 4-- 8
+        p "glitch1" $ s "~ [~ [click:3] ~ ~ ~ ~ ~] ~ [~ ~ ~ click:3  ~ ~ ~]" # room 0.2 # gain (1.3*one) # nudge 0.027 # orbit 4-- 7
+        p "glitch2" $ density 0.5 $ s "~ glitch:2 ~ glitch:2?" # room 0.9 # gain (1.3*two) # speed 2 # orbit 4--10
     sophie stopAll beat0 beat1 beat2 =
       do
         if stopAll == 1
@@ -315,34 +319,6 @@ let p = streamReplace tidal
         p "sophie0" $ slow 2 $ s "SOPHIE_fx_kicks(3,8)" # n "2" # gain (1.2*beat0) # room 0.4 # orbit 5
         p "sophie1" $ s "[~ SOPHIE_percussion]" # n 5 # gain (beat1) # nudge "-0.02" # orbit 5
         p "sophie2" $ every 4 (slow 2) $ s "[SOPHIE_hihats!4] [[SOPHIE_hihats*4] SOPHIE_hihats!2] [SOPHIE_hihats!2 [SOPHIE_hihats*4?]] [SOPHIE_hihats!4]" # n "<1 1 1 0>" # gain ((range 0.8 1 rand)*beat2) # orbit 5
-    chordprog stopAll zero one two restart =
-      do
-        if stopAll == 1
-          then do
-            hush
-        else return ()
-        if zero == 1
-          then do
-            if (restart==1)
-              then do
-                p "chords" $ qtrigger "chords" $ loopAt 32 $ chop 32 $ s "44comp:32" # gain 1 # room 0.5  # orbit 6 -- # nudge "-0.027"
-            else do
-              p "chords" $ loopAt 32 $ chop 32 $ s "44comp:32" # gain 1 # room 0.5  # orbit 6 -- # nudge "-0.027"
-        else if one == 1
-          then do
-            if (restart==1)
-              then do
-                p "chords" $ qtrigger "chords" $ loopAt 16 $ chop 32 $ s "44comp:33" # gain 1 # room 0.5  # orbit 6 # krush 1
-            else do
-              p "chords" $ loopAt 16 $ chop 32 $ s "44comp:33" # gain 1 # room 0.5  # orbit 6 # krush 1
-        else if two == 1
-          then do
-            if (restart==1)
-              then do
-                p "chords" $ qtrigger "chords" $ loopAt 8 $ chop 32 $ s "44comp:34" # gain 1 # room 0.5  # orbit 6
-            else do
-              p "chords" $ loopAt 8 $ chop 32 $ s "44comp:34" # gain 1 # room 0.5  # orbit 6
-        else return ()
     climax stopAll zero one two restart =
       do
         if stopAll == 1
@@ -356,14 +332,28 @@ let p = streamReplace tidal
           p "windarp" $ loopAt 8 $ chop 32 $ s "44comp:21" # gain (1.2*zero) # room 0.5 # pan 0 # orbit 7
         if (restart==1)
           then do
-            p "dpoarp" $ qtrigger "dpoarp" $ loopAt 8 $ chop 32 $ s "44comp:6" # gain (0.9*one) # room 0.5 # pan 1 # orbit 7
+            p "dpoarp" $ qtrigger "dpoarp" $ loopAt 8 $ chop 32 $ s "44comp:6" # gain (0.8*one) # room 0.5 # pan 1 # orbit 7
         else do
-          p "dpoarp" $ loopAt 8 $ chop 32 $ s "44comp:6" # gain (0.9*one) # room 0.5 # pan 1 # orbit 7
+          p "dpoarp" $ loopAt 8 $ chop 32 $ s "44comp:6" # gain (0.8*one) # room 0.5 # pan 1 # orbit 7
         if (restart==1)
           then do
             p "melody" $ qtrigger "melody" $ loopAt 32 $ chop 32 $ s "44comp:24" # gain (1.3*two) # room 0.5 # orbit 7
         else do
           p "melody" $ loopAt 32 $ chop 32 $ s "44comp:24" # gain (1.3*two) # room 0.5 # orbit 7
+    moreDrums zero one two three =
+      do
+        p "moreDrums0" $ density 2 $ brak $ sound ("glitch2:0 yeah:3? glitch:4 glitch:1") # room "0.15" # size "0.1" # speed "0.8" # (gain (1.1*zero)) # orbit 8
+        p "moreDrums1" $ density 0.5 $ every 4 (# speed "0.95") $ "<0 1 0.5 0.125>" <~ sound "[808bd:3][808bd:7*2?][808bd:0*2?][808bd:5*2?]" # gain ((range 0.7 1.2 (rand))*one) # shape "0.9" # room "0.2" # speed "1.95" # up "-5" # orbit 8
+        p "moreDrums2" $ every 4 (density 2) $ sound "dr2*8" # up "-5" # n (irand 6) # speed "12" # cut "1" # pan (rand) # room "0.1" # gain ((range 0.75 1.2 $ rand)*two) # crush "1" # orbit 8
+        p "moreDrums3" $ degradeBy 0.1 $ s "lighter*16" # n (irand 33) # gain ((range 0.75 1.3 $ rand)*three) # orbit 8
+    morePerc zero one two three four five=
+      do
+        p "morePerc0" $ degradeBy 0.3 $ s "{808bd:0 808sd:7 808bd:2}%16" # room "0.25" # crush (slow 4 (range 4 8 sine)) # gain zero # orbit 9
+        p "morePerc1" $ fast 2 $ s "hh*2 hh*2 hh*2 <hh*6 [hh*2]!3>" # room 0.7 # gain ((range 1 1.2 rand)*one) # orbit 9
+        p "morePerc2" $ rotL 1 $ degradeBy 0.35 $ every 4 (# n "30 20 10 6 7 25 11 13") $ s "tabla2*8" # n (run 8) # room "1" # gain ((range 0.85 1 rand)*two) # up "2" # orbit 9
+        p "morePerc3" $ rotL 1 $ degradeBy 0.35 $ (fast 2) $ every 4 (# n "30 20 10 6 7 25 11 13") $ s "tabla2*8" # n (run 8) # room "1" # gain ((range 0.85 1 rand)*three) # up "2" # orbit 9
+        p "morePerc4" $ rotL 1 $ degradeBy 0.0 $ s "{tabla2:0 tabla2:10 tabla2:20 tabla2:30 tabla2:34}%8" # room "1" # gain ((range 0.85 1 rand)*four) # up "2" # orbit 9
+        p "morePerc5" $ rotL 1 $ degradeBy 0.0 $ s "{tabla2:0 tabla2:10 tabla2:20 tabla2:30 tabla2:34}%16" # room "1" # gain ((range 0.85 1 rand)*five) # up "2" # orbit 9
 :}
 
 :{
