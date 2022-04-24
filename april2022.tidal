@@ -14,15 +14,181 @@ gormaduliQuarantine
 thisLove
 brokenHeart
 
+d3 $ s "hh*8" # gain "1.4"
+
+d4 $ s "~ sd" # room 0.3
+
+paulineOliveros
+
+hush
+
+lock n offset = timeLoop n . (offset <~)
+
+
+
+
+lock n offset = timeLoop n . ((offset |- (slow n $ run n)) <~)
+
+
+
+do
+  let num =  (irand 8)
+  d4 $ degradeBy 0.0 $ struct "t(<4 5>,8)" $ lock 2 "<0 1>"  $ s "arpy*16" # n (irand 16) # room 0.3 # speed 0.25 # krush 3
+
+d3 $ degradeBy 0.0 $ n (("{0 1 2 3 4}%8"+"0") ) # s "IGLOOGHOST_bass*8" # cut 1 # room "1"  # gain ((range 0.85 1 rand)) -- # up (slow 2 (range 1 8 saw)) # orbit 9
+
+d2 $ degradeBy 0.0 $ lock 1 0 $ s "{IGLOOGHOST_bass}%8" # n (irand 5) # cut 1 # room "1"  # gain ((range 0.85 1 rand)) -- # up (slow 2 (range 1 8 saw)) # orbit 9
+
+d4 $ degradeBy 0.0 $ lock 2 "<0 1>" $ struct "t(3,8)" $ s "IGLOOGHOST_bass*8" # n ((irand 26)+0) # cut 1 # room "1"  # gain ((range 0.85 1 rand)) -- # up (slow 2 (range 1 8 saw)) # orbit 9
+
+d2 $ degradeBy 0.0 $ lock 2 "<1 2>" $ s "{arpy:0 arpy:1 arpy:2 arpy:3 arpy:4}%8" # cut 1 # room "1"  # gain ((range 0.85 1 rand)) -- # up (slow 2 (range 1 8 saw)) # orbit 9
+d4 silence
+setN notes modulo =
+  (parseBP_E  ("{"++notes++"}%"++modulo))
+
+lock n offset = timeLoop n . (offset <~)
+
+poly ss nn mm l ll=
+  do
+    d2 $ degradeBy 0.0 $ lock l ll $ s ss >| n (setN nn mm) # cut 1 # room "1"  # gain ((range 0.85 1 rand))
+
+poly "arpy" "8 4 0 5 30" "16" "2" "<0 1 2 4>"
+
+poly "{arpy!5}%8"
+
+hush
+
+(setN "1 2 4 5 6" "8") :: String
+
+let hhh = shuffle 8 (parseBP_E "1 2 3 4 5 6 7 8")
+
+hhh
+
+let ppp = (parseBP_E ("{++"(segment 5 (irand 8))++"}%8")) -- * (segment 5 (irand 8))
+
+do
+  let ppp = fast 5 (parseBP_E "{0 1 2 3 4}%8")
+  ppp
+
+
+
+playPat = (lock 4 "<0 1 2 3>" $ s "SOPHIE_fx" >|  n (select 1 [(parseBP_E ("{"++(unwords (map show [0..4]))++"}%16")), (segment 8 (irand 26))]))
+
+
+
+
+lock n offset = timeLoop n . ((offset |- (slow n $ run n)) <~)
+
+do
+  let lkLength = 4
+  let runOrRand = "< 1  >"
+  let divi = "<8>"
+  let shiftAmount ="<4>"
+  let runAmount = [0,1..4] -- [0 .. 3]
+  let sampleBank = "IGLOOGHOST_drum_loops"
+  let playPat = (lock lkLength (parseBP_E ("<"++(unwords (map show [0..lkLength-1]))++">")) $ s sampleBank >|  n (select runOrRand [(parseBP_E ("{"++(unwords (map show runAmount ))++"}%"++divi)), (segment divi (irand 32))]))
+  d1 $ degradeBy 0.0 $ playPat |+| n shiftAmount # legato 1 # room 0.96 # speed 1 # krush "1" # gain "1"
+
+  do
+    let lkLength = 4
+    let runOrRand = "0 0 1 1"
+    let divi = "<16 [16@1 8@3]>"
+    let shiftAmount ="<0 2>"
+    let runAmount = [0,4..20] -- [0,3..15] -- [0 .. 3]
+    let sampleBank = "tabla"
+    let playPat = (lock lkLength (parseBP_E ("<"++(unwords (map show [0..lkLength-1]))++">")) $ s sampleBank >|  n (select runOrRand [(parseBP_E ("{"++(unwords (map show runAmount ))++"}%"++divi)), (segment divi (irand 32))]))
+    d1 $ degradeBy 0.1 $ playPat |+| n shiftAmount # cut 1 # room 0.96 # speed "0.5 2" # krush "0" # gain "1"
+
+blackRain
+paulineOliveros
+sunshine "xfade"
+thisLove
+brokenHeart
+xfade "pauline oliveros" silence
+
+p "chords" silence
+
+  do
+    let lkLength = 1
+    let runOrRand = "<0 1>"
+    let divi = "<16 [16 8 8 8]>"
+    let euc = "8"
+    let shiftAmount = "<12 20>"
+    let runAmount = [0,1..4] -- [0,3..15] -- [0 .. 3]
+    let sampleBank = (wchoose [("tabla",0.8), ("IGLOOGHOST_bass",0.1)])
+    let playPat = (lock lkLength (parseBP_E ("<"++(unwords (map show [0..lkLength-1]))++">")) $ s sampleBank >|  n (select runOrRand [(parseBP_E ("{"++(unwords (map show runAmount ))++"}%"++divi)), (segment divi (irand 32))]))
+    d1 $ degradeBy 0.0 $ (struct (parseBP_E ("t("++euc++","++divi++")"))) $ playPat |+| n shiftAmount # cut 1 # room 0.96 # speed "0.5 2" # krush "0" # gain "1" # up 4
+
+d2 $ degradeBy 0.6 $ whenmod 8 7 (density 2) $ jux (# n 5) $ s "[[arpy*<4@3 8 12 9 6@2>] [arpy*2?]]" # speed (density 1 $ range "-2" "6" saw) # up "-8" # gain 0.9 # room 0.9 # krush 50 # n (0) # legato 2
+
+-- d2 $ degradeBy 0.0 $ whenmod 8 7 (density 2) $ s "[[pluck*<4@3 8 12 9 6@2>] [pluck*2?]]" # speed (density 1 $ range "-2" "6" saw)  # gain 0.8 # room 0.9 # freeze 0.00 # krush 40 # n (0) # cut 2 # orbit 3
+
+d3 $ slow 1 $ s "808bd:1 ~ sd? ~" # krush 10 # speed (range "<2 1.5 1 1>" 1 saw) # gain 1 # up "<22@2 9 -3>" # room 0.5
+
+d4 $ loopAt 4 $ randslice 8 $ chop 16 $ s "SOPHIE_loops:9" # room 0.1
+
+d5 $ slow 4 $ jux (striate 16) $ s "[sax:10 sax:21] sax:14" # gain 1 # legato 1 # room 0.8
+
+d5 $ s "bd bd sd ~" # room 0.5
+
+d1 silence
+
+unsolo 1
+
+hush
+
+[first,second..last]
+[0,2..10]
+
+hush
+
+   |+| n 0 # cut 1 # room 0.6
+
+playPat lkLength = do
+  d1 $ (lock lkLength (parseBP_E ("<"++(unwords (map show [0..lkLength-1]))++">")) $ s "SOPHIE_fx" >|  n (select 1 [(parseBP_E ("{"++(unwords (map show [0..4]))++"}%16")), (segment 8 (irand 26))])) |+| n 0 # cut 1 # room 0.6
+
+(playPat 4)-- # krush 3 # room 0.3
+
+d1 $ playPat 4 |+| n 0 # cut 1 # room 0.6 -- # krush 3 # room 0.3
+d1 $ playPat 4 # cut 1
+
+d2 $ s "808bd:1 808bd:1 sd ~" # krush 10 # speed (range "<2 1.5 1 1>" 1 saw) # up "<22@2 9 -3>" # room 0.5
+
+
+d3 silence
+
+
+
+
+
+d2 $ s "808bd:1 808bd:1 sd ~" # krush 10 # speed (range "<2 1.5 1 1>" 1 saw) # up "<22@2 9 -3>" # room 0.5
+
+d2 silence
+
+hush
+
+
+
+
+
+
+
+
+
+
+hush
+
+p "vocals0" silence
+
 p "vocals0" $ loopAt 2 $ chop 32 $ s "IGLOOGHOST_vocals:18" # delayIn # gain (cF 0.5 "moverX") # orbit 0
 
-vocals 1 0 1 -- hush volume0 volume1
+vocals 0 0 0 -- hush volume0 volume1
 iglooBeat 0 0 1 1 -- hush beat0 beat1 beat2
 drums 0 1 1 -- hush lowOctave highOctave
 bigBeat 0 1 2 0.185 -- hush gain slow degrade ***ONLY ONE SOUND***
 glitch 0 1 1 1 -- hush glitch0 glitch1 glitch2
 sophie 0 0 0 0.8 -- hush vol0 vol1 vol2
-chordprog "0" "1" "0" 0 -- hush prog-0-1-2 restart
+chordProg 0 0 0 -- hush prog-0-1-2 restart
 climax 1 0 1 0 0 -- hush vol0 vol1 vol2 restart
 
 do {
