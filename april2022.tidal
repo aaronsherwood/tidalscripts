@@ -85,14 +85,14 @@ do
   let divi = "<8>"
   let shiftAmount ="<4>"
   let runAmount = [0,1..4] -- [0 .. 3]
-  let sampleBank = "IGLOOGHOST_drum_loops"
+  let sampleBank = "IGLOOGHOST_bass"
   let playPat = (lock lkLength (parseBP_E ("<"++(unwords (map show [0..lkLength-1]))++">")) $ s sampleBank >|  n (select runOrRand [(parseBP_E ("{"++(unwords (map show runAmount ))++"}%"++divi)), (segment divi (irand 32))]))
   d1 $ degradeBy 0.0 $ playPat |+| n shiftAmount # legato 1 # room 0.96 # speed 1 # krush "1" # gain "1"
 
   do
-    let lkLength = 4
+    let lkLength = 1
     let runOrRand = "0 0 1 1"
-    let divi = "<16 [16@1 8@3]>"
+    let divi = "<4 [16@1 8@3]>"
     let shiftAmount ="<0 2>"
     let runAmount = [0,4..20] -- [0,3..15] -- [0 .. 3]
     let sampleBank = "tabla"
@@ -109,21 +109,21 @@ xfade "pauline oliveros" silence
 p "chords" silence
 
   do
-    let lkLength = 1
+    let lkLength = 2
     let runOrRand = "<0 1>"
-    let divi = "<16 [16 8 8 8]>"
-    let euc = "8"
-    let shiftAmount = "<12 20>"
+    let divi = "16" --"<16 [16 8 8 8]>"
+    let euc = "<8 12>"
+    let shiftAmount = "<0 2>"
     let runAmount = [0,1..4] -- [0,3..15] -- [0 .. 3]
-    let sampleBank = (wchoose [("tabla",0.8), ("IGLOOGHOST_bass",0.1)])
+    let sampleBank = (wchoose [("tabla",0.5), ("IGLOOGHOST_bass",0.0)])
     let playPat = (lock lkLength (parseBP_E ("<"++(unwords (map show [0..lkLength-1]))++">")) $ s sampleBank >|  n (select runOrRand [(parseBP_E ("{"++(unwords (map show runAmount ))++"}%"++divi)), (segment divi (irand 32))]))
-    d1 $ degradeBy 0.0 $ (struct (parseBP_E ("t("++euc++","++divi++")"))) $ playPat |+| n shiftAmount # cut 1 # room 0.96 # speed "0.5 2" # krush "0" # gain "1" # up 4
+    d1 $ degradeBy 0.0 $ (struct (parseBP_E ("t("++euc++","++divi++")"))) $ playPat |+| n shiftAmount # cut 1 # room 0.96 # speed "0.5 2" # krush "2" # gain "1" # up 4
 
-d2 $ degradeBy 0.6 $ whenmod 8 7 (density 2) $ jux (# n 5) $ s "[[arpy*<4@3 8 12 9 6@2>] [arpy*2?]]" # speed (density 1 $ range "-2" "6" saw) # up "-8" # gain 0.9 # room 0.9 # krush 50 # n (0) # legato 2
+d2 $ degradeBy 0.0 $ whenmod 8 7 (density 2) $ jux (# n 5) $ s "[[arpy*<4@3 8 12 9 6@2>] [arpy*2?]]" # speed (density 1 $ range "-2" "6" saw) # up "-8" # gain 0.75 # room 0.9 # krush 20 # n (0) # legato 2
 
 -- d2 $ degradeBy 0.0 $ whenmod 8 7 (density 2) $ s "[[pluck*<4@3 8 12 9 6@2>] [pluck*2?]]" # speed (density 1 $ range "-2" "6" saw)  # gain 0.8 # room 0.9 # freeze 0.00 # krush 40 # n (0) # cut 2 # orbit 3
 
-d3 $ slow 1 $ s "808bd:1 ~ sd? ~" # krush 10 # speed (range "<2 1.5 1 1>" 1 saw) # gain 1 # up "<22@2 9 -3>" # room 0.5
+d3 $ slow 1 $ s "808bd:1 ~ sd? ~" # krush 10 # speed (range "<2 1.5 1 1>" 1 saw) # gain 1.1 # up "<22@2 9 -3>" # room 0.5
 
 d4 $ loopAt 4 $ randslice 8 $ chop 16 $ s "SOPHIE_loops:9" # room 0.1
 
@@ -136,6 +136,20 @@ d1 silence
 unsolo 1
 
 hush
+cabal install random --lib
+
+import random
+
+d6 $ s "arpy*8"
+
+d1  $ timeLoop 1 $ 0 ~> n "{[0 | 1 | 2 | 3 | 4]}%8" # s "arpy"
+d1  $ timeLoop 1 $ 0 ~> n "{0 1 2 3 4}%8" # s "arpy"
+
+0 ~> (parseBP_E "{[0 | 1 | 2 | 3]}%8")
+
+(parseBP_E "[0 | 1 | 2]")
+
+
 
 [first,second..last]
 [0,2..10]
