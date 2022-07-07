@@ -1,0 +1,63 @@
+lock n offset = timeLoop n . ((offset |- (slow n $ run n)) <~)
+
+tidal_version
+
+hush
+
+do
+  let lkLength = 1
+  let runOrRand = "<0>"
+  let euc = "<12 6 8 4>" --"<9 12>"
+  let divi = "16" --"<4 [16@1 8@3]>"--"16" --"<16 [16 8 8 8]>"
+  let shiftAmount = 0 --"<1>"
+  let runAmount = [0,1..40] -- [0,3..15] -- [0 .. 3]
+  let sampleBank = (wchoose [("tabla",0.8), ("IGLOOGHOST_bass",0.2)])
+  let playPat = (lock lkLength (parseBP_E ("<"++(unwords (map show [0..lkLength-1]))++">")) $ s sampleBank >|  n (select runOrRand [(parseBP_E ("{"++(unwords (map show runAmount ))++"}%"++divi)), (segment divi (irand 32))]))
+  d1 $ degradeBy 0.0625 $ (struct (parseBP_E ("t("++euc++","++divi++")"))) $ playPat |+| n shiftAmount # cut 1 # room 0.96 # speed "0.5 2" # krush "2" # gain "1" # up 4 # orbit 1
+
+
+-- notes
+-- work to choose smaple bank,
+-- shift amount button to choose random value as well as some set numbers to choose from, maybe do chooseBy to select which number
+  -- could be 8 values stored in tidal that can be changed and chosen from the monome
+-- degradeby - should be pattern so fine
+
+  do
+    let lkLength = 2--(cI 2 "len")-1 --2 -- (cF 0 "vocal0")
+    let runOrRand = "<1 0>"
+    let shiftAmount = (chooseBy "^shiftAmount" [1,2,3,5,6,13,21,34,55,89,144,233,377,610,987,1597]) --(chooseBy "^shiftAmount" ["0","1","10","4","100","15","20","34","98","75","120","340"]) --"^shiftAmount" -- "<12 6 8 4>"
+    let runAmount = [0,1..40] -- [0,3..15] -- [0 .. 3]
+    let sampleBank = (wchoose [("tabla",0.8), ("IGLOOGHOST_bass",0.2)])
+    let playPat = (lock lkLength (parseBP_E ("<"++(unwords (map show [0 .. lkLength]))++">")) $ s sampleBank >|  n (select runOrRand [(parseBP_E ("{"++(unwords (map show runAmount ))++"}%^div")), (segment "^div" (irand 32))]))
+    -- "euc" is the osc route and is coming in directly in the mini notation as a state
+    d1 $ degradeBy "^degradeIt" $ (struct ("t(^euc,^div)")) $ playPat |+| n shiftAmount # cut 1 # room 0.96 # speed "0.5 2" # krush "2" # gain "1" # up 7 # orbit 1
+
+
+d3 $ slow 1 $ s "808bd:1? ~ sd ~" # krush 10 # speed (range "<2 1.5 1 1>" 1 saw) # gain (1*(cF 0 "beat0")) # up "<22@2 9 -3>" # room 0.5 # orbit 5
+
+d2 $ degradeBy 0.0 $ whenmod 8 7 (density 2) $ jux (# n 5) $ s "[[arpy*<4@3 8 12 9 6@2>] [arpy*2?]]" # speed (density 1 $ range "-2" "6" saw) # up "<-12 0>" # gain (0.75*(cF 0 "arps")) # room 0.9 # krush 20 # n (0) # legato 2 # orbit 3
+
+d4 $ loopAt 4 $ randslice 8 $ chop 16 $ s "SOPHIE_loops:9" # room 0.1 # gain (1*(cF 0 "soph0")) # orbit 7
+
+d5 $ s "hh*16" # room 0.5 # orbit 9 # gain ((range 0.5 1.2 rand)*(cF 0 "hh0"))
+
+d6 $ chop 240 $ loopAt 240 $ s "aaron" # orbit 11 # room 0.2 # nudge 0.2
+
+d6 $ slow 240 $ slice 240 ((run 240)) $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 0.2 # up 2
+
+d6 $ slice 240 ((run 16)) $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 0.2 # up 2
+
+d6 $ randslice 240 $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 0.2 # up 2
+
+
+d6 $ slice 240 "20 10 8 200 8 9 3 6" $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 0.2 # up 2
+
+
+
+d6 $ slice 240 "20 10 40 200" $ sound "aaron" # cut 1 # orbit 11 # room 0.2 # nudge 0.2 # up 2
+
+d7 $ s "bd bd sn ~" # gain 1.2
+
+d7 silence
+
+hush
