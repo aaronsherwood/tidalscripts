@@ -2,4 +2,6 @@
 !.gitignore
 !*.tidal
 !*.hs
+!*.py
+!*.scd
 !*/
