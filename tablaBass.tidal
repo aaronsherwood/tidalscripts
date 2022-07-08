@@ -4,6 +4,8 @@ tidal_version
 
 hush
 
+setcps 0.565
+
 do
   let lkLength = 1
   let runOrRand = "<0>"
@@ -41,22 +43,40 @@ d4 $ loopAt 4 $ randslice 8 $ chop 16 $ s "SOPHIE_loops:9" # room 0.1 # gain (1*
 
 d5 $ s "hh*16" # room 0.5 # orbit 9 # gain ((range 0.5 1.2 rand)*(cF 0 "hh0"))
 
-d6 $ chop 240 $ loopAt 240 $ s "aaron" # orbit 11 # room 0.2 # nudge 0.2
+-- d6 $ chop 240 $ loopAt 240 $ s "aaron" # orbit 11 # room 0.2 # nudge 0.2
+--
+-- d6 $ slow 240 $ slice 240 ((run 240)) $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 1.8 # up 2 # gain 0.9
+--
+-- d6 $ slow 1 $ (slice 240 ((irand 20)+1)) $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 1.8 # up 2 # gain 0.9
+--
+-- d6 $ slow 2 $ slice 240 ((run 32)) $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 1.8 # up 2 # gain 0.95
+--
+-- d6 $ randslice 240 $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 1.8 # up 2 # gain 0.9
+--
+--
+-- d6 $ slow 2 $ slice 240 "20 10 40 200 8 9 3 6" $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 1.8 # up 2 # gain 0.95
 
-d6 $ slow 240 $ slice 240 ((run 240)) $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 0.2 # up 2
+d9 silence
 
-d6 $ slice 240 ((run 16)) $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 0.2 # up 2
+d6 $ sometimesBy ("^degradeIt2"*"^degradeIt2"*"^degradeIt2") (selectF "^degradeIt2"[(# gain (((segment 4 (irand 2)))*0.9)), (# gain 0)]) $ lock 1 "^choosePat" $ slow 2 $ slice 240 (segment ("^segments"+1) (irand 240)) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.4 # size "0.0" # nudge 1.8 # up "2" # gain (0.9) # speed 1 # djf 0.48
 
-d6 $ randslice 240 $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 0.2 # up 2
+d7 $ jux (# speed "-0.5") $ slow 4 $ striateBy 64 (1/8) $ sound "aaron" # legato 3 # orbit 7 # room "0.9" # size "0.9" # nudge 1.8 # up "2" # gain (0.75) # djf ("0.45")
 
-
-d6 $ slice 240 "20 10 8 200 8 9 3 6" $ sound "aaron" # cut 1 # orbit 11 # room 0.4 # nudge 0.2 # up 2
-
+xfade 7 silence
 
 
-d6 $ slice 240 "20 10 40 200" $ sound "aaron" # cut 1 # orbit 11 # room 0.2 # nudge 0.2 # up 2
 
-d7 $ s "bd bd sn ~" # gain 1.2
+d7 silence
+
+
+
+
+
+
+
+d7 $ s "808bd 808bd sn ~" # n (irand 20) # gain 1.2
+
+
 
 d7 silence
 
