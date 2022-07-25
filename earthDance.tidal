@@ -2,7 +2,7 @@ lock n offset = timeLoop n . ((offset |- (slow n $ run n)) <~)
 
 hush
 
-setcps 0.565
+setcps 0.95
 
 -- grid version
 
@@ -11,15 +11,31 @@ do
   let runOrRand = "<1 0>"
   let shiftAmount = (chooseBy "^shiftAmount" [1,2,3,5,6,13,21,34,55,89,144,233,377,610,987,1597])
   let runAmount = [0,1..40]
-  let sampleBank = (wchoose [("tabla",0.8), ("IGLOOGHOST_bass",0.2)])
+  let sampleBank = (wchoose [("tabla",1.0), ("IGLOOGHOST_bass",0.1)])
   let playPat = (lock lkLength (parseBP_E ("<"++(unwords (map show [0 .. lkLength]))++">")) $ s sampleBank >|  n (select runOrRand [(parseBP_E ("{"++(unwords (map show runAmount ))++"}%^div")), (segment "^div" (irand 32))]))
-  d1 $ degradeBy "^degradeIt" $ (struct ("t(^euc,^div)")) $ playPat |+| n shiftAmount # cut 1 # room 0.96 # speed "0.5 2" # krush "2" # gain "1" # up 7 # orbit 1
+  d1 $ degradeBy "^degradeIt" $ (struct ("t(^euc,^div)")) $ playPat |+| n shiftAmount # cut 1 # room 0.96 # speed "0.5 2" # krush "1.1" # gain "1" # up 7 # orbit 1
 
-d2 $ sometimesBy ("^degradeIt2"*"^degradeIt2"*"^degradeIt2") (selectF "^degradeIt2"[(# gain (((segment 4 (irand 2)))*0.9)), (# gain 0)]) $ lock 1 "^choosePat" $ slow 2 $ slice 240 (segment ("^segments"+1) (irand 240)) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.4 # size "0.0" # nudge 1.8 # up "2" # gain (0.9) # speed 1 # djf 0.48
+d2 $ sometimesBy ("^degradeIt2"*"^degradeIt2"*"^degradeIt2") (selectF "^degradeIt2"[(# gain (((segment 4 (irand 2)))*0.9)), (# gain 0)]) $ lock 1 "^choosePat" $ slow 2 $ slice 240 (segment ("^segments"+1) (irand 240)) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.4 # size "0.0" # nudge 1.8 # up "2" # gain (0.9) # speed 1 # djf 0.45
 
 -- start at slow 512 then work down to 16 then back up before fading out
-xfade 3 $ jux (# speed "-0.5") $ slow 16 $ striateBy 64 (1/8) $ sound "aaron" # legato 3 # orbit 7 # room "0.9" # size "0.9" # nudge 1.8 # up "2" # gain (0.75) # djf ("0.45")
+xfade 3 $ jux (# speed "-0.5") $ slow 512 $ striateBy 64 (1/8) $ sound "aaron" # legato 3 # orbit 7 # room "0.9" # size "0.9" # nudge 1.8 # up "2" # gain (0.75) # djf ("0.45")
 
 xfade 3 silence
 
+d3 $ slow 2 $ s "[808bd:2 ~ sd? ~]" # room 0.5 # krush 10 # speed (slow 2 (range 4 1 saw)) # nudge 0.3
+
 hush
+
+asap $ s "tabla" # n (irand 30) # room 0.96 # speed "1" # krush "2" # speed (range 0.5 2.5 (irand 2)) -- # up 7 # orbit 1
+
+asap $ s "arpy" # room 0.96 # speed "1" # krush "2" # speed (range 0.5 2.5 (irand 2)) -- # up 7 # orbit 1
+
+d1 $ loopAt 8 $ chop 512 $ s "paf_organ" # room 0.5 # krush 1
+
+do
+  once $ s "[IGLOOGHOST_vocals:3,IGLOOGHOST_vocals:4,IGLOOGHOST_vocals:7,IGLOOGHOST_vocals:8]" # room 0.5 -- # up "-1"
+  once $ s "[IGLOOGHOST_vocals:0,IGLOOGHOST_vocals:5,IGLOOGHOST_vocals:6]" # room 0.5 -- # up "6"
+
+d1 $ loopAt 16 $ chop 128 $ s "<aaron:1 aaron:2>"
+
+d2 $ loopAt 8 $ s "aaron:6"

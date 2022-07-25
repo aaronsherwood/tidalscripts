@@ -22,6 +22,21 @@ class SoundOnOff():
     def sendMessage(self):
         client.send_message("/ctrl", [self.route, self.onOff])
 
+class EvalLine():
+    def __init__(self, y, x, type, row):
+        self.y = y
+        self.x = x
+        self.type = type
+        self.basicBrightness = 4
+        self.pressed = 0
+        self.row = row
+
+    def draw(self):
+        return self.pressed* 11 + self.basicBrightness;
+
+    def sendMessage(self):
+        client2.send_message("/atom/eval", ["type", self.type, "row", self.row, "column", 1])
+
 class Fader():
     def __init__(self, x, route):
         self.y = [0,0,0,0,0,0,0,0]
@@ -105,6 +120,11 @@ class MirroringMedusa(monome.GridApp):
 
         asyncio.ensure_future(self.play())
 
+        self.evals = []
+
+        self.evals.append(EvalLine(4,0,"line",29))
+        self.evals.append(EvalLine(4,1,"line",31))
+
         self.onOff = 0
 
     async def play(self):
@@ -132,6 +152,10 @@ class MirroringMedusa(monome.GridApp):
         for v in self.values:
             for index, column in enumerate(v.x):
                 buffer.led_level_set(index, v.y, v.draw(index))
+
+        for e in self.evals:
+            buffer.led_level_set(e.x, e.y, e.draw())
+            e.pressed=0
 
         # update grid
         buffer.render(self.grid)
@@ -162,6 +186,11 @@ class MirroringMedusa(monome.GridApp):
                 if y == v.y:
                     v.toggleButton(x)
 
+            for e in self.evals:
+                    if e.x == x:
+                        e.pressed = 1
+                        e.sendMessage()
+
             self.draw()
 
 
@@ -177,6 +206,7 @@ if __name__ == '__main__':
     serialosc.device_added_event.add_handler(serialosc_device_added)
 
     client = udp_client.SimpleUDPClient("127.0.0.1", 6010)
+    client2 = udp_client.SimpleUDPClient("127.0.0.1", 3333)
 
     loop.run_until_complete(serialosc.connect())
     loop.run_forever()
