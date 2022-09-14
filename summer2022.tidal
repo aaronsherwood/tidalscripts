@@ -60,7 +60,7 @@ d2 $ selectF ("^18") [lock 0.5 0, lock 0.75 0, lock 1 0, lock 1.25 0, lock 1.75 
 
 d2 $ selectF ("^18") [lock 0.5 0, lock 0.75 0, lock 1 0, lock 1.25 0, lock 1.75 0] $ s "tabla2*8" # n (irand 48) # room 0.2
 
-d2 $ lock 1.75 0 $ s "tabla2*8" # n (irand 48) # room 0.2
+d3 $ lock 1.75 0 $ s "tabla2*8" # n (irand 48) # room 0.2
 
 d3 $ s "[808bd:1(5,8)?, ~ SOPHIE_snares:2*9?, hh*16?]" # room 0.4 # speed (range 4 0.5 saw) # krush 10 # gain 0.8
 
@@ -89,13 +89,109 @@ d8 $ slow 1 $ struct "t(<6 5 11 3 7>,16)" $ n (arp "<thumbupdown pinkyupdown upd
 
 d9 $ slow 1 $ struct "t(<3 6 10>,16)" $ n (arp "<thumbupdown pinkyupdown updown up >" (("[ef3,ef4]")-"<12>") ) # s "midi" # amp (range 0.5 0.8 rand) # sustain 1
 
-d8 $ slow 1 $ struct "t(< 7  >,16)" $ n (arp "<thumbupdown >" (("[fs5,bf5,d6,ef6,f6] ")-"<12>") ) # s "midi" # amp (range 0.5 0.7 rand) # sustain 0.8
-
-unsolo 8
+d8 $ slow 1 $ struct "t(< 7 9 14  >,16)" $ n (arp "<thumbupdown pinkyupdown updown up >" (("[fs5,bf5,d6,ef6,f6] ")-"<12>") ) # s "midi" # amp (range 0.5 0.7 rand) # sustain 0.8
+unsolo 1
+unsolo 2
 unsolo 9
-d9 silence
+d1 silence
+hush
+
+d1 $ struct "t(5,8)"$ sometimesBy 0.1 (struct "t*48") $ s "amencutup*16" # n (irand 32) # speed (slow 2 (range 0.5 1.2 saw)) # room 1
+d1 $ sometimesBy 0.05 (struct "t*48") $ s "amencutup*15?# " # n (irand 32) # speed (slow 2 (range 1 1.5 saw)) # room 1 # pan 0.8 # gain 1.2
+d1 $ sometimesBy 0.05 (struct "t*48") $ s "amencutup*15" # n (irand 32) # speed (slow 8 (range 0.95 5.5 perlin)) # room 0.4  # gain 1.2 -- # crush 4
+d1 $ jux (# cutoff (slow 4 5000*saw+500)) $ sometimesBy 0.025 (struct "t*48")$ off (0.125) (# speed 5)  $ s "amencutup*15" # n (irand 32) # speed ("3") # room 1 # gain 1.2 # crush 3 -- # cutoff (slow 4 5000*isaw+500)
+
+unsolo 1
+
+d2 $ slow 4 $ s "[SOPHIE_fx_kicks:8, percussion:1, percussion:10]" # room 0.7  -- # krush 2 # note
 
 
+
+d4 $ lock 4 "<20 21>" $ slow 1 $ slice 240 (segment 16 (irand 240)) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.4 # up "6"
+
+d4 $ lock 2 "<10 11>" $ slow 1 $ slice 240 (segment 16 (irand 240)) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.4 # up "6"
+
+d4 $ lock 4 "<200 200 201 201>" $ slow 1 $ slice 240 (segment 16 (irand 240)) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.4 # up "6"
+d4 $ lock 4 "<0 10 0 2>" $ sometimesBy 0.0 (# gain 0)
+d4 $ swingBy (1/7) 4 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+300)) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("<1 [1 1 1? 0] 1 [1 0 1 0]>"*1)
+d4 $ swingBy (1/7) 4 $ slice 240 (segment 16 ((run 32)*(run "<16 8>")+300)) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "6" # gain ("<1>"*1)
+
+d8 $ slow 1 $ struct "t(< 7 9 14  >,16)"  $ n (arp "<thumbupdown pinkyupdown updown up>" ((elementsSea)-"<24>") ) # s "midi" # amp (range 0.5 0.9 rand) # sustain 0.75
+d8 $ slow 1 $ struct "t*8" $ n (arp "<up  >" (("[bf3,bf5,d6,ef6,f6]")-"<12>") ) # s "midi" # amp (range 0.5 0.9 rand) # sustain 0.75
+
+d9 $ chunk 6 (# note ((scale "pelog" "-7 .. 10")-4)) $ s "midi*16?" # note ((scale "pelog" "0 .. 10")-4) # sustain 0.4 # amp (range 0.5 0.7 rand)
+
+d9 $ bite 4 "0 2 1 <2 3>" $ s "midi*24?" # note ((scale "pelog" "0 .. 19")-4) # sustain 0.5 # amp (range 0.5 0.7 rand)
+
+d9 $ bite 4 "0 2 1 <2 3>" $ s "midi*24?" # note ((scale "pelog" "0 .. 19")-4) # sustain 0.5 # amp (range 0.5 0.7 rand)
+
+d7 $ scramble 16 $ s "midi(12,16)" # note ((scale "pelog" "0 .. 7")+8) # amp (range 0.5 0.7 rand)
+
+d5 $ slow 1 $ lock 4 "<0 1 3 4>" $ shuffle 16 $ s "supersaw(<9 12 10 15>,16)" # note ((scale "pelog" "-15 .. 15")-4) # room 0.4 # sustain 0.1 # gain (range 0.8 1.2 rand)
+d5 $ slow 1 $ bite 4 "0 2 1 <2 3>"$ s "supersaw(<9 12 10 15>,16)" # note ((scale "pelog" "0 .. 7")-4) # room 0.4 # sustain 0.1 # gain (range 0.8 1.2 rand)
+
+d5 $ slow 1 $ bite "<15 10 5>" "0 2 1 <2 3>" $ s "supersaw*15" # note ((scale "pelog" "-6 .. 18")-4) # room 0.4 # resonance 0 # lfo (range 0 30 rand)  # pitch1 rand  # sustain 0.1 # gain (range 0.8 1 perlin)
+
+d6 $ slow 1 $ bite "<8 6 5>" "0 2 1 <2 3>" $ s "midi*15" # note ((scale "pelog" "-6 .. 18")+8) # amp (range 0.5 0.7 perlin) # sustain 0.2
+
+d7 $ slow 2 $ s "midi(3,8)" # note ("<e4 [fs4@3 gs4] [a4@3 as4] [b4 c5] [cs5 gs4] [fs4 ds4]>"-24) # amp (0.7) # sustain 1.5
+d3 $ slow 2 $ s "[superhoover(3,8)]" # note "<e4 [fs4@3 gs4] [a4@3 as4] [b4 c5] >" # gain 1.2 # room 1 # size 0.5 # decay 0 -- [cs5 gs4] [fs4 ds4]
+hush
+
+d5 $ s "supersaw*15" # note (arp "updown" "[<g5 fs5 f5 ds5>,bf5,d6,ef6,f6]")
+d6 $ s "midi*15" # note (arp "updown" "[<g5 fs5 f5 ds5>,bf5,d6,ef6,f6]"-12) # midichan 0 # amp (range 0.6 1 rand)
+d7 $ s "<midi>" # note ("[<g5 fs5 f5 ds5>,bf5,d6,ef6,f6]") # midichan 1 # amp (range 0.6 1 rand)
+d8 $ s "superhoover" # note ("<g5@1 fs5@1 f5@1 ds5@1>") # room 0.8
+once $ slow 2 $ s "midi" <| note ( arp "up" ("[g5,bf5,d6,ef6,f6,f5,bf5,d6,ef6,f6,fs5,bf5,d6,ef6,f6,af5,c6,df6,ef6,f6, fs5,b5,df6,ef6,f6, g5,bf5,df6,ef6,f6,gf5,bf5,df6,ef6,f6 ]"-12)) # midichan 1 # amp 0.9 # sustain 0.2
+
+d7 silence
+-- mecury arpbonus
+
+d9 $ s "midi*5" # note (arp "updown" "[<g5 fs5 f5 ds5>,bf5,d6,ef6,f6]"-12) # midichan 0
+
+d9 $ slow 8 $ s "midi*<0 1 1 2 3 5 8 13 21>" # note (("[g5]"+4)) # amp (range 0.5 0.9 rand)
+d10 $ slow 2 $ s "midi*<0 1 1 2 3 5 8 13 21>" # note (("[as3]"+4)) # nudge 1 # amp (range 0.5 0.9 rand)
+d15 $ slow 1 $ s "midi*<0 1 1 2 3 5 8 13 21>?" # note (("[c3]"+4)) # nudge 4 # amp (range 0.5 0.9 rand)
+d12 $ slow 1 $ s "midi*<0 1 1 2 3 5 8 13 21>" # note (("[c4]"+4)) # nudge 2.3 # amp (range 0.5 0.9 rand)
+d13 $ slow 1 $ s "midi*<0 1 1 2 3 5 8 13 21>?" # note (("[ds4]"+4)) # nudge 1.5 # amp (range 0.5 0.9 rand)
+d14 $ slow 1 $ s "midi*<0 1 1 2 3 5 8 13 21>" # note (("[g4]"+4)) # nudge 5 # amp (range 0.5 0.9 rand)
+d15 $ slow 1 $ s "midi*<0 1 1 2 3 5 8 13 21>" # note (("ds5"+4)) # nudge 6 # amp (range 0.5 0.9 rand) # midichan 1
+
+d1 $ off 0.25 (# vowel "<a o i>")
+  $ juxBy 0.4 rev $ every 2 (rot "<1 3 2>") $ n "0 <0 4> [2 0] [2 3]" # sound "feel" # speed "1.75 2"
+
+
+d2 $ juxBy 0.5 rev $ chunk 4 ((+ speed (1 + sine)) . ply 8) $ note "3(3,8)" # sound "bass"
+  # speed "<2 4>"
+  # legato 1
+
+
+unsolo 9
+
+d7 silence
+
+
+d1 $ s "hh!8 bd"
+
+once $ s "[808bd:2, dr_few:0, dr_few:1, SOPHIE_fx_kicks:8, percussion:1]" # krush 50 # room 0.9 # size 0.9 # speed 0.75  # up "3"
+d3 $ s "tibet1*1?" # n ("<[4 5] [6 7]>") # room 0.5 # gain 1.3 # speed 1.02
+
+d3 $ degradeBy 0.5 $ whenmod 24 16 (# speed (slow 2 (range 0.5 4 square))) $ s "[808bd:2(7,16)?, ~ <feelfx:5 dr_few:1> ~ <dr_few:0 dr_few:0 dr_few:0 dr_few:1*9?>, realclaps:(5,8)?, 808:1(11,16)]" # speed (slow 2 (range 0.5 4 saw)) # gain (range 0.6 0.9 rand) # krush 50 # room 0.9 # up "-3"
+
+
+do
+  hush
+  once $ s "elements_00_e_flat_sodium" # n ("<0>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<1>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<2>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<3>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<4>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<5>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<6>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<7>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<8>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<9>") # gain 1
+  once $ s "elements_00_e_flat_sodium" # n ("<10>") # gain 1
 
 
 do
@@ -129,7 +225,7 @@ do
 do
   hush
   d8 $ fast 0.6 $ s "elements_06_g_flat_potassium" # n ("<0 1 2 3 4 11 13 15 16 18>") # gain 1 # pan 0.25
-  d9 $ fast 0.43 $ s "elements_06_g_flat_potassium" # n ("<9 10 5 6 7 8 12 14 17>") # gain 1 # pan 0.75 # nudge 0.45
+  d9 $ fast 0.4 $ s "elements_06_g_flat_potassium" # n ("<9 10 5 6 7 8 12 14 17>") # gain 1 # pan 0.75 # nudge 0.45
 
 
 
@@ -144,7 +240,7 @@ d7 $ fast 1 $ s "elements_e_flat_" # n ("<1>") # gain 1
 
 d7 $ fast 3 $ s "elements_e_flat_water" # n (irand 10) # gain 1.2
 
-d9 silence
+d8We  silence
 
 
 hush

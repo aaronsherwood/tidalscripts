@@ -2,6 +2,23 @@
 "/Users/ags419/Documents/Code/tidalscripts/customDirtStart.scd".load;
 
 SuperDirt.start
+
+
+(
+s.waitForBoot {
+    ~dirt = SuperDirt(2, s); // two output channels
+// load samples from multiple folders:
+	~dirt.loadSoundFiles("/Users/ags419/Library/Application\ Support/SuperCollider/downloaded-quarks/cello/*");
+	~dirt.loadSoundFiles("/Users/ags419/Library/Application\ Support/SuperCollider/downloaded-quarks/Dirt-Samples/*");
+   // ~dirt.loadSoundFiles("/Users/myUserName/recordings/chaska-sessions/*");
+   // ~dirt.loadSoundFiles("/Users/myUserName/recordings/super-duper-experiments/*");
+s.sync; // wait for supercollider to finish booting up
+    ~dirt.start(57120, 0 ! 12); // start superdirt, listening on port 57120, create two orbits each sending audio to channel 0
+};
+);
+
+
+
 //////////////////////////////////////////
 
 ServerOptions.devices;

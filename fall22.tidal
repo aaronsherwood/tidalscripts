@@ -1,0 +1,245 @@
+lock n offset = timeLoop n . ((offset |- (slow n $ run n)) <~)
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("2"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("<1 [1 1 1? 0] 1 [1 0 1 0]>"*1) -- 1 [1(12,16)] 1 [1 0 1 0]
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("2"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("1 0 1 1 0 0 1 0 1 1 1 0 0 1 1 0"*1) --
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("2"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("1 0 1 1 0 0 <1 0> 0"*1)
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("2"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("1(3,8)"*1) -- "1 0 1 1 0 0 1 0 1 1 1 0 0 1 1 0"
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("2"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("{1(2,5)}%5"*"<[1]!3 [1 <1 0>]>")
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("2"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("{1(3,7)}%1"*"<[1!3 <1 0>]>") -- "1 0 1 1 0 0 1 0 1 1 1 0 0 1 1 0"
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<15 30>")+("2"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("{1(2,5)}%5"*"<[1] [1 <1 0>]>")
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("14"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain (1)
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("15"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain (1)
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<15 30>")+("2"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain (1)
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("21"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain (1)
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16 <4 3> 16 8>")+("24"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain (1)
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<32!2 8 16>")+("32"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("1(12,16)")
+
+p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run "<16>")+("2"))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.75 # up "-6" # gain ("{1(3,5)}%6")
+
+
+allRunAmounts = [
+  "<16 <4 3> 16 8>", -- 0
+  "<32!2 8 16>", -- 1
+  "<15 30>" -- 2
+  ]
+allLocations = [
+  "2", -- 0
+  "14", -- 1
+  "15", -- 2
+  "21", -- 3
+  "24", -- 4
+  "32" -- 5
+  ]
+allGainBases = [
+  "1", -- 0
+  "1(3,8)", -- 1
+  "{1(2,5)}%5", -- 2
+  "1(12,16)", -- 3
+  "{1(2,5)}%15" -- 4
+  ]
+allGainMults = [
+  "1", -- 0
+  "0", -- 1
+  "<[1]!3 [1 <1 0>]>", -- 2
+  "<[1] [1 <1 0>]>", -- 3
+  "<1 [1 1 1? 0] 1 [1 0 1 0]>" -- 4
+  ]
+heartChant r l b m =
+  do
+    let runAmounts = allRunAmounts!!r
+    let location = allLocations!!l
+    let gainBase = allGainBases!!b
+    let gainMult = allGainMults!!m
+    p "heartChant" $ swingBy (1/3) 16 $ slice 240 (segment 16 ((run 32)*(run runAmounts)+(location))) $ sound "aaron*240" # cut 1 # orbit 11 # room 0.1 # up "-6" # gain (gainBase*gainMult+0.2)
+
+heartChant 0 0 1 0
+heartChant 0 0 2 0
+heartChant 0 0 4 0
+heartChant 2 0 2 3
+heartChant 2 0 0 0
+heartChant 1 5 3 0
+heartChant 0 1 0 0
+heartChant 0 2 0 0
+heartChant 0 3 0 0
+heartChant 0 4 0 0
+heartChant 0 0 0 4
+
+hush
+p "heartChant" silence
+
+d1 $ jux (rev) $ lock 8 "<1 1 2 2 3 4 3 4>" $ s "SOPHIE_percussion*4" # n (irand 20) # gain ("{1(3,7)}%<2 5 8>"*"<1>") # room 0.1 # up "-5" # speed (slow 2 (range 2 1 saw))
+
+d2 $ slow 4 $ s "[SOPHIE_fx_kicks:8, percussion:1, percussion:10]" # room 0.7  -- # krush 2 # note
+
+newSlop = do
+  p "slop1" $ slow 4 $ degradeBy 0.6 $ s "dr_few ~ [~ dr_few] ~ dr_few dr_few ~ [~ dr_few] ~ dr_few dr_few ~ [~ dr_few] ~ ~ dr_few ~ [~ dr_few] ~ dr_few" # room 0.9 # krush 20 # nudge "-0.01" # gain 1 # nudge 0.01  # speed (("{0.375 0.75}")) # up 14 # orbit 3-- # up ( ("<9 12 16 15 10 13 8 17>"+1))
+  xfade "slop2" $ slow 4 $ jux rev $ s "{808:3?}%40" # speed "2" # gain (range 0.5 1.1 (rand)) # nudge "-0.01" # room 0.07 # orbit 2-- # speed (slow 4 (range 8 6 (saw)))
+  p "slop3" $ degradeBy 0.0 $ s "{808bd}%4" # gain 2 # orbit 2 # krush 20
+  p "lovano2" $ slow 5 $ slice 18 "<9 9 9 9 9 9 9 9 9 9>*10" $ s "33:28" # gain 1 # speed "2" # room 0.5 # up 1 # nudge "0.02"
+  p "lovano1" $ slow 5 $ jux rev $ slice 16 "<0 1 1 0 1 0 0 1 1 1>*40" $ s "33:28*40" # room 0.5 # gain 1.2 # speed "8" # up 0 # cut 1
+
+newSlop
+
+p "lovano2" silence
+
+hush
+
+
+d1 $ degradeBy 0.3 $ s "[808bd:1(<3 <2 1> 3 5>,8),~ cp ~ cp]" # note "f7 c7 a6 f6" # room 0.4 # krush 6 -- # up "-6"
+d9 $ s "[808bd:1(<3 <2 1> 3 5>,8),~ cp ~ cp]" # room 0.4 # krush 6
+
+d2 $ degradeBy 0.7 $ jux (rev) $ off (0.25) (# s "sine:0") $ note (slow 2 (off 0.125 (+12) (off 0.25 (+7) (slow 2 "d(3,8) a [c(3,8,2) e*2] e(3,8)")))) # s "arpy:2" # speed "0.5" # room 0.5 -- # cutoff (slow 8 tri * 10000 + 50) # resonance 0.0
+
+d3 $ degradeBy 0.0 $ sometimes (# speed "2") $ chunk 4 (density 2) $ jux rev $ iter 4 $ n ((run 8)+"<0 1 1 1>") # sound "sid" # room 0.95 # up "-3" # krush 5
+
+d4 $ fast 2 $ someCycles (# n 1 ) $ struct "t*2 t*2? t*2 <t*6 [t*2]!3>" $ s "808" # room 0.7 # gain (range 0.9 1.2 rand) # up "4" # speed 2
+
+setcps(0.6)
+
+d5 $ degradeBy 0.4 $ jux (rev) $ off (0.25) (# s "glitch:3") $ note (slow 2 (off 0.125 (+12) (off 0.25 (+7) (slow 2 "d(3,8) a [c(3,8,2) e*2] e(3,8)")))) # s "casio:1" # speed "0.5" # room 0.5 # gain 0.8 # up "-7" -- # speed 0.9
+
+d2 $ degradeBy 0.0 $ jux rev $ off (0.25) (# s "glitch:2") $ note (slow 2 (off 0.125 (+12) (off 0.25 (+7) "d*2 [g*3? a*4?] [c3 e*2] e" ))) # sound "arpy:2" # room 0.5 # gain 1.1 # speed 0.5 # krush 1
+
+d2 $ degradeBy 0.2 $ jux rev $ note (slow 2 (off 0.125 (+12) (off 0.25 (+7) "d*2 [g*3? a] [c3 e*2?] e" ))) # sound "arpy:2" # room 0.5 # gain 1.1 # speed 0.5 # krush 1
+
+d2 $ degradeBy 0.0 $ slow 2 $ struct "t(<3 5>,16)" $ jux rev $ note (slow 2 (off 0.125 (+12) (off 0.25 (+7) "d [g3*2 a] [c3 e] e" ))) # sound "arpy:2" # room 0.5 # gain 1.1 # speed 0.5 # krush 1
+
+d3 $ degradeBy 0.2 $ sometimes (# speed "2") $ chunk 4 (density 2) $ jux rev $ iter 4 $ n ((run 8)+"<0 1 1 1>") # sound "sid" # room 0.95 # up "4" # krush 5
+
+d1 $ degradeBy 0.35 $ s "[808bd:1(<3 <2 1> 3 5>,8),~ cp ~ cp]" # note "f7 c7 a6 f6" # room 0.4 # krush 6
+
+d2 $ whenmod 4 2 (# up "-3") $ s "[808bd:1(<3 0 3 0>,8),~ cp ~ cp]" # room 0.2 # krush 6 # up "-8"
+
+d3 $ degradeBy 0.0 $ slow 2 $ struct "t(<3 5>,16)" $ jux rev $ note (slow 2 (off 0.125 (+12) (off 0.25 (+7) "d [g3*2 a] [c3 e] e" ))) # sound "arpy:2" # room 0.5 # gain 1.1 # speed 0.5 # krush 1
+
+d4 $ degradeBy 0.4 $ slow 1 $ jux (rev) $ off (0.25) (# s "glitch:3") $ note (slow 2 (off 0.125 (+12) (off 0.25 (+7) (slow 2 "d(3,8) a [c(3,8,2) e*2] e(3,8)")))) # s "casio:1" # speed "0.5" # room 0.5 # gain 0.8 # up "-7" -- # speed 0.9
+
+do
+  d1 $ s "bd bd sd ~"
+  d2 $ s "808bd:1 cp ~ cp" # speed 4
+
+do
+  d1 $ qtrigger 1 $ filterWhen (>=0) $ s "bd bd sd ~"
+  d2 $ qtrigger 2 $ filterWhen (>=0) $ s "808bd:1 cp ~ cp" # speed 4
+
+d2 silence
+hush
+
+d6 $ note "c" # s "juno:7" # room 0.3 # speed 0.5
+d7 $ slow 2 $ note "d? [c,e?] b4 c" # s "juno:8*4" # speed 0.5
+
+d2 $ s "cello-plucked*4" # n (irand 15) # note (slow 2 (off 0.125 (+12) (off 0.25 (+7) "d*2 [g*3? a] [c3 e*2?] e" ))) # pan 0.4 # room 0.3
+
+a3=[" e3 e4 gs4 b4 cs5", "g3 g4 b4 cs4 ", "b3 fs4 b4 cs5 ds5 ", "as3 fs4 as4 b4 ds5 ", "f3 ds4 gs4 cs5 ", "gs3 ds4 gs4 b4 cs5 ", "ds3 fs4 b4 cs5 ", "c4 gs4 bs4 ds4 "]
+b3 = ["e3 e4 g4 b4 c5 ", "g3 g4 b4 cs5 ds5 ", "b3 fs4 b4 cs5 ds5 ", "as3 fs4 gs4 cs5 ", "f3 ds4 gs4 cs5 ", "gs3 e4 gs4 b4 cs5 ", "ds3 fs4 gs4 b4 cs5 ", "c4 ds4 gs4 cs5 "]
+
+c3 = ["e3 e4 gs4 b4 cs5 ", "g3 f4 as4 ds5 ", "b3 e4 gs4 b4 ds5 ", "as3 fs4 as4 b4 ds5 ", "f3 ds4 gs4 cs5 ", "gs3 ds4 gs4 b4 cs5 ", "ds3 fs4 b4 cs5 ", "c4 gs4 as4 ds5 "]
+rhythms = ["@5","@4","@3","@6","@7","@6","@5","@4"]
+
+
+c4="<[e3 e4 gs4 b4 cs5 ] [g3 f4 as4 ds5 ] [b3 e4 gs4 b4 ds5 ] [as3 fs4 as4 b4 ds5 ] [f3 ds4 gs4 cs5 ] [gs3 ds4 gs4 b4 cs5 ] [ds3 fs4 b4 cs5 ] [c4 gs4 as4 ds4 ]>"
+
+c5="<[f3 ds4 gs4 cs5 ] [as3 fs4 as4 b4 ds5 ] [b3 e4 gs4 b4 ds5 ] [ds3 fs4 b4 cs5 ]>"
+
+
+
+
+a3!!0
+
+hush
+d2 silence
+unsolo 1
+d1  $ slow 2 $ ghost $ chunk 4 (fast 2) $ s "~ SOPHIE_claps ~ SOPHIE_claps" # n 14 # room 0.1 # gain (range 0.6 1 rand)
+d3 $ sometimes (# speed 2) $ chunk 4 (fast 2) $ s "808*8" # n (run 8) # speed 4 # krush 2 # gain (range 0.6 1 rand)
+
+do
+  d2 $ slow 1  $ s "midi" <| note (slow 2 ( off 0.125 (+12)(off 0.25 (+24)(struct "<[t*3 t*3]>" (slow 1 (parseBP_E (a3!!0)-12))) ))) # sustain 1.4 # amp (range 0.5 0.7 rand)-- # speed 2
+
+  d2 $ degradeBy 0.0 $ slow 2  $ s "midi" <| note (slow 1 ( off 0.125 (+12)(off "+0.25" (+24)(struct "<[t*3, t(10,12)]>" (slow 1 (parseBP_E (b3!!6)-12))) ))) # sustain 0.5 # amp (range 0.1 0.7 rand)
+
+  d2 $ degradeBy 0.5 $ slow 1  $ s "midi" <| note (slow 1 ( off 0.125 (+12)(off "+0.25" (+24)(struct "<[t*2, t(5,8), t*8]>" (slow 1 (parseBP_E (c3!!)-12))) ))) # sustain 0.75 # amp (range 0.1 0.7 rand)
+
+  d2 $ degradeBy 0.1 $ slow 1 $ s "midi" <| note (slow 1 ( off 0.125 (+12)(off "+0.25" (+24)(struct "<[t*2, t(5,8), t*8]>" (slow 2 (parseBP_E (c4)-12))) ))) # sustain 0.75 # amp (range 0.1 0.7 rand)
+
+  d4 $ degradeBy 0.3 $ slow 2  $ s "cello-plucked" <| note (slow 1 ( off 0.125 (+12)(off "+0.25" (+24)(struct "<[t*3, t(10,12)]>" (slow 1 (parseBP_E (c4)-12))) ))) # amp (range 0.1 0.7 rand) # n (run 8)
+hush
+
+  do
+    d2 $ rotR 0.125 $ degradeBy 0.1 $ slow 2  $ s "midi" <| note (slow 1 ( off 0.125 (+12)(off "+0.125" (+24)(struct "<[t*3, t(10,12)]>" (slow 2 (parseBP_E (c5)-12))) ))) # sustain 0.5 # amp (range 0.1 0.7 rand)-- # speed 2
+    d3 $ rotR 0.125 $ degradeBy 0.4 $ slow 2  $ s "ukulele" <| note (slow 1 ( off 0.125 (+12)(off "-0.25" (+24)(struct "<[t*3, t(10,12)]>" (slow 2 (parseBP_E (c5)-12))) ))) # amp (range 0.1 0.7 rand) # n (run 6)-- # speed 2
+    d4 $ rotR 0.125 $ degradeBy 0.3 $ slow 2  $ s "cello-plucked" <| note (slow 1 ( off 0.125 (+12)(off "+0.25" (+24)(struct "<[t*3, t(10,12)]>" (slow 2 (parseBP_E (c5)-12))) ))) # amp (range 0.1 0.7 rand) # n (run 8)
+
+  do
+    d2 $ degradeBy 0.1 $ slow 1  $ s "midi" <| note (slow 1 ( off 0.125 (+12)(off "+0.125" (+24)(struct "<[t*2, t(5,8), t*8]>" (slow 2 (parseBP_E (c5)-12))) ))) # sustain 0.75 # amp (range 0.3 0.7 rand)-- # speed 2
+    d3 $ degradeBy 0.2 $ slow 1  $ s "ukulele" <| note (slow 1 ( off 0.125 (+12)(off "-0.25" (+24)(struct "<[t*2, t(5,8), t*8]>" (slow 2 (parseBP_E (c5)-12))) ))) # amp (range 0.1 0.7 rand) # n (run 6)-- # speed 2
+    d4 $ degradeBy 0.3 $ slow 1  $ s "cello-plucked" <| note (slow 1 ( off 0.125 (+12)(off "+0.25" (+24)(struct "<[t*2, t(5,8), t*8]>" (slow 2 (parseBP_E (c5)-12))) ))) # amp (range 0.1 0.7 rand) # n (run 8)
+    d5 $ degradeBy 0.0 $ slow 1  $ s "arpy" <| note (slow 1 ( off 0.125 (+12)(off "+0.5" (+24)(struct "<[t*2, t(5,8), t*8]>" (slow 2 (parseBP_E (c5)))) ))) # amp (range 0.1 0.5 rand) # speed 0.5 # room 0.1
+
+    hush
+
+  d3 $ slow 1  $ s "arpy" <| note (slow 2 ( off 0.125 (+12)(off 0.25 (+24)(struct "t*8 [t*3? t] [t t*2?] t*3" (slow 1 (parseBP_E (a3!!5)-12))) ))) # room 0.5 # speed 1 # gain (range 0.9 1.2 rand) # krush 5
+
+d2 $ slow 1  $ s "midi" >| note (slow 2 ( off 0.125 (+12)(off 0.25 (+24)(struct "t*2 [t*3? t(3,8)] [t(5,8) t*2?] t" (a4)) ))) # pan 0.4 # room 0.3 # sus 0.85 # amp (range 0.6 0.8 rand)
+
+d3 $ s "cello-bowed*4" # legato 3 # n (irand 18) # room 0.2 # pan 0.6
+d3 $ s "ukulele*16" # n (irand 14) # room 0.3 # note ((a3!!0))
+d4 $ iter 2 $ s "flbass*16?" # n (irand 17) # note ((c5)+13) # room 0.3 # krush 2 # nudge 0.5
+d4 $ iter 4 $ s "{flbass!17}%16" # n (irand 17) # note "c f d g b" # room 0.3 # krush 2
+
+d1 $ s " 808bd:1 < ~ [ ~ 808bd:1?] > ~ cp" # room 0.5 # krush 10 # speed 1
+
+unsolo 2
+d1 silence
+hush
+
+d2 $ slow 2 $ ghost  $  s "industrial" <| n (run 32) # pan 0.6
+d3 $ s "{mouth!15}%16" # n (run 15) # pan 0.4
+
+d2 $ s "808bd:1" # speed 4 # room 0.5 # krush 4
+d3 $ s "hh*8" # gain 1.2
+d1 $ loopAt 1 $ s "foo" # n 11 # room 0.3
+
+let pats =
+      [
+        ("a", stack [n "c4 c5 g4 f4 f5 g4 e5 g4" # s "superpiano" # gain "0.7",
+                     n "[c3,g4,c4]" # s "superpiano"# gain "0.7"
+                    ]
+        ),
+        ("b", stack [n "d4 c5 g4 f4 f5 g4 e5 g4" # s "superpiano" # gain "0.7",
+                     n "[d3,a4,d4]" # s "superpiano"# gain "0.7"
+                    ]
+        ),
+        ("c", stack [n "f4 c5 g4 f4 f5 g4 e5 g4" # s "superpiano" # gain "0.7",
+                     n "[f4,c5,f4]" # s "superpiano"# gain "0.7"
+                    ]
+        )
+      ]
+in
+d1 $ ur 12 "a b c" pats []
+
+let pats = [("drums", s "drum cp*2"),
+            ("melody", s "arpy:2 arpy:3 arpy:5"),
+            ("craziness", s "cp:4*8" # speed ( sine + 0.5))
+           ]
+    fx = [("higher", (# speed 2))]
+in
+d1 $ ur 8 "[drums, melody] [drums,craziness,melody] melody:higher" pats fx
+
+d1 silence
+d1 $ s "hh*16?" # speed 1 # room 0.4
+d2 $ iter "4" $ off ("0.25") (# s "808bd") $ n ( "1(3,8)") # s ("808ht") # room 0.1 # krush 4  # speed ("2 4")
+d2 $ n (iter "4" ("1(3,8)")) # s ("808bd") # room 0.4 # krush 4  # speed (range 8 1 saw)
+
+d1 $ sound "[bd hh cp mt, sd:2 odx arpy ]"
