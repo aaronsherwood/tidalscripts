@@ -1,0 +1,26 @@
+-- base loop
+d1 $ loopAt 2 $ s "aaron:7" # room 0.7 # speed 1 # gain 1.5
+
+do
+  hush
+  -- base beat
+  d1 $ loopAt 2 $ splice 8 "[<0 2 4 6> ~ ~ ~ ~ <5 ~> <6 ~> [7?]]" $ s "aaron:7" # room 0.7 # speed 1 # gain 1.5
+  -- back beat
+  d2 $ loopAt 2 $ splice 16 "[~ ~ 0 ~]*2" $ s "aaron:7" # room 2 # krush 5 # speed 8
+  -- noisey
+  d3  $ loopAt 2  $ every 4 (randslice 16) $ every 4 (fast 2) $ splice 16 (fast 4 "1 <1 3> 2 2") $ s "aaron:7" # room 0.7 # speed (range 1 0.25 saw) # gain "1 [1 0] [0 1] [0 0]" # djf 0.9 # squiz (range 1 2 saw)
+  -- clicks
+  d4 $ splice 16 ("<~ 3?> 2 ~ [2 <[~ [0*3]] ~>]") $ s "aaron:7" # speed 24 # squiz 2 # room 0.5 # legato 0.25
+  -- cowbell (sorta)
+  d5 $ loopAt 2 $ splice 16 "<[~ ~ 0 ~]*4 [~ ~ 0? 0?]*4 >" $ s "aaron:7" # room 1 # krush 1 # speed 8
+
+do {
+  d4 $ sometimesBy 0.3 (splice 8 "[3 3 3 3*6]!2") $ splice 16 ("3*16") $ s "aaron:7*32" # speed (24) # squiz 2 # room 0.5 # legato 0.25;
+  d5 $ qtrigger 5 $ seqPLoop [
+    (0, 4, loopAt 2 $ splice 16 "<[{0 3 5 4 7}%16]*2? >" $ s "aaron:7" # room 1 # krush 1 # speed "4" # crush "{1 2 3 5 8}%32"),
+    (4, 8, loopAt 2 $ splice 16 "<0*32>" $ s "aaron:7" # room 1 # krush 1 # speed "[{8 4 3 2 1.5}%<16>]*2" # gain "{1 1 0 1 1 0 1}%16")
+  ];
+  d6 $ loopAt 2 $ splice "<[8 16] 16>" "0 ~@3 ~ 0? ~ ~" $ s "aaron:7" # room 10 # size 0.5 # krush 100 # speed "[1,8]"
+}
+
+d7 $ whenmod 4 3 (trunc 0.5) $ slice 16 "[0]*8" $ s "<aaron:7(3,8) aaron:7(5,8,1)>" # room 2 # size 0.6 # krush 5 # speed 1 # note ("c6 b g c e c" + 8)
