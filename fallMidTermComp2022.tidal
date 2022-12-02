@@ -47,7 +47,43 @@ d6 $ degradeBy 0.0 $ s "rash" <| n (108 + "{0 2 4 5 9 11 12 14 <16 19 23 24>}%[2
 -- beat
 d7 $ struct "[t ] [~ [~ t? ~]] [~ ] [~ [~ t? ~]]" $ s "808bd:1" # note "f6 c6 a5 f5" # krush 30 # room 0.5
 
+p "bfAngle" $ ccv "<[64 127] [64 0]>" # ccn 3 # s "midi"
+p "wingAngle" $ ccv (segment 128 (fast 2 (range 0 127 tri))) # ccn 4 # s "midi"
+p "disolve" $ ccv (segment 128 (slow 1 (range 127 0 saw))) # ccn 5 # s "midi"
+p "xloc" $ ccv (segment 128 (slow 2 (range 127 0 sine))) # ccn 6 # s "midi"
 
+p "yloc" $ ccv (segment 128 (slow 4 (range 127 0 sine))) # ccn 7 # s "midi"
+
+p "xloc" $ ccv (segment 128 (slow 1 (range 127 0 perlin))) # ccn 6 # s "midi"
+
+p "yloc" $ ccv (segment 128 (slow 2 (range 127 0 perlin))) # ccn 7 # s "midi"
+
+p "xloc" $ ccv (64) # ccn 6 # s "midi"
+
+p "yloc" $ ccv (64) # ccn 7 # s "midi"
+
+p "zloc" $ ccv (segment 128 (slow 4 (range 127 0 sine))) # ccn 8 # s "midi"
+
+p "visuals" $ fast 1 $ ccv "1" # ccn 9 # s "midi"
+
+do
+  p "visuals" $ fast 1 $ ccv "<4 9> <1>" # ccn 9 # s "midi"
+  p "disolve" $ ccv "<15>" # ccn 5 # s "midi"
+
+
+p "visuals" $ fast 1 $ ccv  "6 <8 9>" # ccn 9 # s "midi"
+
+
+p "flyig" $ fast 1 $ ccv "0 1" # ccn 10 # s "midi"
+
+do
+  hush
+  p "flyig" $ fast 1 $ ccv "0" # ccn 10 # s "midi"
+  p "visuals" $ fast 1 $ ccv  "0" # ccn 9 # s "midi"
+  p "bfAngle" $ ccv "<[64 127] [64 0]>" # ccn 3 # s "midi"
+  p "wingAngle" $ ccv (segment 128 (fast 2 (range 0 127 tri))) # ccn 4 # s "midi"
+  d2 $ n "0 [~ 4  ? ~ 5?] <3 1 2>? [~ 7? <13? 11>]" # s "cello-plucked" # note "<f c <d fs a> [b4 g?] > d e c" # room 0.3 # gain (range 1 1.2 rand)
+  d4 $ slow 4 $ note ("<[c@2 d [e@6 d@2]] [[c [g@3 f]] [e@6 d@2]]>"+"[12]") # s "midi" # amp ((range 0.5 0.7 rand)*"1") # midichan 1
 
 -- COMP
 
@@ -85,7 +121,7 @@ do
   clutch 4 $ slow 4 $ note ("<[c@2 d [e@6 d@2]] [[c [g@3 f]] [e@6 d@2]]>"+"[12]") # s "midi" # amp ((range 0.5 0.7 rand)*"1  ") # midichan 1
   -- tri over 4
   d11 $ ccn "75*128" # ccv 32 # s "midi" # midichan 2
-  d10 $ slow 4 $ ccn "73*128" # ccv ((segment 128 ((range 64 100 tri)))) # s "midi" # midichan 2
+  d10 $ slow 4 $ ccn "73*128" # ccv ((segment 128 ((range 64 100 tri)))) # s "midi" # midichan 2 --
   d5 $ slow 1 $ note ("<[c5,d5,f5,<c6 <g5 a5>>] [c5,d5,e5,g5] <[c5,e5,a5]> [b4,d5,[a5 <g5 b5>]]>"+"0") # s "midi" # midichan 2
 
 -- build
@@ -109,6 +145,7 @@ do {
 -- drop
 do{
   hush;
+  d1 $ qtrigger 1 $ seqP [ (0, 1, fast "1" $ palindrome $ s "gretsch" <| n (slow 0.5 "{0 1 2 3 4 5 6 7 8 9 10 11 12}%8") # gain (range 1.3 0.7 saw) # room 0.4 # speed 5)];
   d9 $ qtrigger 9 $ slow 4 $ s "percussion:32" # room 0.5 # gain 1.3;
   d7 $ qtrigger 7 $ s "808bd:1" <| note ("<[f6 ~ e6 [f6 [~ ~ ~]]] [~ f6 e6*3? [~ [~ ~ ~]]]>"+"<[<12>,-12]>") # krush 20 # room 0.9 # gain 1.2;
   -- filter
@@ -122,7 +159,7 @@ do{
   d2 $ qtrigger 2 $ n "0 [~ 4  ? ~ 5?] <3 1 2> [~ 7? <13 11>]" # s "cello-plucked" # note ("[25 13 1 -11]*6"+(c5)) # room 0.3 # gain (range 1 1.2 rand);
   d3 $ qtrigger 3 $ silence;
   d8 $ qtrigger 8 $ s "[<[~ percussion:11] [~ [percussion:12,percussion:11]]>]";
-  d1 $ qtrigger 1 $ silence;
+  -- d1 $ qtrigger 1 $ silence;
   d4 $ qtrigger 4 $ silence
 }
 

@@ -1,3 +1,5 @@
+VSTPlugin.search;
+
 (
 // two VST plugins in series:
 SynthDef(\synths, { arg bus;
