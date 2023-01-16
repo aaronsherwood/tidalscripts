@@ -3,6 +3,7 @@
 
 import Sound.Tidal.Context
 import System.IO (hSetEncoding, stdout, utf8)
+
 hSetEncoding stdout utf8
 
 -- total latency = oLatency + cFrameTimespan
@@ -327,17 +328,17 @@ let p = streamReplace tidal
         else return ()
         if (restart==1)
           then do
-            p "windarp" $ qtrigger "windarp" $ loopAt 8 $ chop 32 $ s "44comp:21" # gain (1.2*zero) # room 0.5 # pan 0 # orbit 7
+            p "windarp" $ qtrigger $ loopAt 8 $ chop 32 $ s "44comp:21" # gain (1.2*zero) # room 0.5 # pan 0 # orbit 7
         else do
           p "windarp" $ loopAt 8 $ chop 32 $ s "44comp:21" # gain (1.2*zero) # room 0.5 # pan 0 # orbit 7
         if (restart==1)
           then do
-            p "dpoarp" $ qtrigger "dpoarp" $ loopAt 8 $ chop 32 $ s "44comp:6" # gain (0.8*one) # room 0.5 # pan 1 # orbit 7
+            p "dpoarp" $ qtrigger $ loopAt 8 $ chop 32 $ s "44comp:6" # gain (0.8*one) # room 0.5 # pan 1 # orbit 7
         else do
           p "dpoarp" $ loopAt 8 $ chop 32 $ s "44comp:6" # gain (0.8*one) # room 0.5 # pan 1 # orbit 7
         if (restart==1)
           then do
-            p "melody" $ qtrigger "melody" $ loopAt 32 $ chop 32 $ s "44comp:24" # gain (1.3*two) # room 0.5 # orbit 7
+            p "melody" $ qtrigger $ loopAt 32 $ chop 32 $ s "44comp:24" # gain (1.3*two) # room 0.5 # orbit 7
         else do
           p "melody" $ loopAt 32 $ chop 32 $ s "44comp:24" # gain (1.3*two) # room 0.5 # orbit 7
     moreDrums zero one two three =

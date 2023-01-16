@@ -420,8 +420,27 @@ d3 $ s "[909*4, 808:1*16?, ~ 808:3 ~ 808:3]" # room "0.9" # speed 1 # gain 1
 
 d4 $ jux (striate 2) $ sometimes (rev) $ every 4 (const $ sound "arpy*12" # n (run 11) # speed "1" # gain (range 0.8 1 rand) # speed 2) $ sound "arpy*8" # n (run 8) # room "0.3" # gain (range 0.8 1 rand) # speed (2)
 
-d1 $ fast 4 $ s "midi" <| note ("[c,e,<g a b>,c4*4]") # midichan 0 
+d1 $ fast 4 $ s "midi" <| note ("[c,e,<g a b>,c4*4]") # midichan 0
 
 d2 $ fast 2 $ struct "t(3,8,<0 1 2 3>)" $ palindrome $ s "midi" <| note "c d e f g a b c6" # midichan 1
 
 d4 silence
+
+d1 $ s "hehe*4" # legato 1 # n (run 8)
+
+-- Tidalfight jan 2017
+--me
+d1 $ every 2 (# speed "0.5") $ sometimesBy 0.1 (rev) $ every 4 (# speed "13") $ sometimesBy 0.1 (slow 2) $ sound "[bd bd bd, sn cp sn cp, can(3,4)]" # crush "8" # gain "5.0"
+
+--glia
+d1 $ every 2 (# speed "0.5") $ sometimesBy 0.2 (rev) $ every 3 (# speed "13") $ sometimesBy 0.1 (slow 2) $ sound "[~ ~ ~, ~ bottle]" # delay "8" # gain "5.0 .3 1.7"
+
+d2 $ every 2 (# speed "0.5") $ sometimesBy 0.1 (rev) $ every 4 (# speed "13") $ sometimesBy 0.1 (slow 2) $ sound "[bd bd:4 bd:3, sn hh sn cp, can(3,4)]" # crush "8" # gain "5.0"
+
+-- me with glia and someone else
+d1 $ every 2 (# speed "0.5") $ sometimesBy 0.2 (rev) $ every 3 (# speed "13") $ sometimesBy 0.1 (slow 2) $ randcat [sound "[~ ~ ~, ~ bottle]", sound "[bd:5*2 can:5*0.6667 cp?, tabla:1/2]"] # delay "8" # gain "5.0 .3 1.7"
+
+d2 $ every 2 (# speed "0.5") $ sometimesBy 0.1 (rev) $ every 4 (# speed "13") $ sometimesBy 0.1 (slow 2) $ randcat [sound "[bd bd:4 bd:3, sn hh sn cp, can(3,4)]", sound "[drum(5,2) can:3, sid:3? hh cp, can?(3,4)]"] # crush "8" # gain "5.0"
+
+--2022 remix
+d1 $ every 2 (# speed "1") $ sometimes rev $ sometimesBy 0.1 (slow 2) $ sound "[808bd:1 808bd:1 808bd:1, ~ dr:1, can:6*4]" # room 0.5 # speed "[1,8,4]" # krush 50 
