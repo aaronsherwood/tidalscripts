@@ -29,13 +29,13 @@ d1 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx"
 d1 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx" # speed "2"
 
 -- scale speed
-d1 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx" # speed (slow 4 $ scale (-1) 8 saw)
+d1 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx" # speed (slow 4 (range "-1" "8" saw))
 
 -- layer patterns
 d1 $ slow 2 $ sound "[bd bd:3? cp [~ ~ ~ bd:4?], can:3*4]"
 
 -- layer sequences
-d2 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx" # speed (slow 4 $ scale (-1) 8 saw)
+d2 $ every 4 (rev) $ every 2 (slow 2) $ sound "bd hh cp mt sn:2 arpy drum odx" # speed (slow 4 (range "-1" "8" saw))
 
 -- gain
 d1 $ slow 2 $ sound "[bd bd:3? cp [~ ~ ~ bd:4?], can:3*0]" # gain "1.5"
@@ -62,7 +62,7 @@ d4 $ jux (striate 2) $ sometimes (rev) $ every 4 (const $ sound "arpy*12" # n (r
 --long form sound
 d5 $ slow 6 $ sound "ade"
 d6 $ slow 7 $ sound "ade" # n "2"
-d7 $ jux (striate 20) $ every 4 (density 2) $ slow 2 $ sound "ade" # n "9" # speed (slow 16 $ scale (0.1) 18 saw)
+d7 $ jux (striate 20) $ every 4 (density 2) $ slow 2 $ sound "ade" # n "9" # speed (slow 16 $ range 0.1 18 saw)
 
 d1 silence
 d2 silence
