@@ -1,0 +1,14 @@
+setcps 0.45 -- 108/60/4
+
+d1 $ s " 808bd:1 < ~ [ ~ 808bd:1?] > ~ cp" # room 0.75 # krush 50 # speed 1 # up "-1"
+
+d1 $ density 0.5 $ every 4 (# speed "0.95") $ "<0 1 0.5 0.125>" <~ sound "[808bd:3][808bd:7*2?][808bd:0*2?][808bd:5*2?]" # gain "1.2 0.7 0.8 0.9" # shape "0.9" # room "0.2" # speed "1.95" # up "-5"
+
+d2 $ s "aaron:2" # cut 0
+
+d3 silence
+
+d2 $ slice 64 (segment 1 "12") $ sound "aaron:8*64" # room 0.75 # up "0" -- # gain ("<1 [1 1 1? 0] 1 [1 0 1 0]>"*1)
+d3 $ slice 64 (segment 1 "16") $ sound "aaron:8*64" # room 0.75 # up "0"
+
+d2 $ slice 64 (segment 1 "12") $ sound "aaron:8*64" # room 0.75 # up "0"

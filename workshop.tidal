@@ -13,7 +13,7 @@ d1 $ slow 2 $ sound "bd bd cp ~"
 -- sub patterns
 d1 $ slow 2 $ sound "bd bd cp [~ ~ ~ bd]"
 
--- sometimes playing sounds and choose differnt notes
+-- sometimes playing sounds and choose different notes
 d1 $ slow 2 $ sound "bd bd:3? cp [~ ~ ~ bd:4?]"
 
 -- random sounds

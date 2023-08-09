@@ -25,7 +25,8 @@ do
 d1 $ fast 2 $ s "gretsch" <| n "[<13 22> ,[~ 19]/2]" # speed 3 # room 0.4
 
 do
-  d7 $ whenmod 4 3 (fast 2) $ ccn "73*128" # ccv ((segment 128 ((range 10 127 saw)))) # s "midi" # midichan 2
+  d7 $ whenmod 4 3 (fast 2) $ ccn "73*128" # ccv ((segment 128 ((range 0 127 saw)))) # s "midi" # midichan 2
+  d8 $ ccn "75*128" # ccv 32 # s "midi" # midichan 2
   d11 $ slow 1 $ note ("<[c5,d11,f5,<c6 <g5 a5>>] [c5,d11,e5,g5] <[c5,e5,a5]> [b4,d11,[a5 <g5 b5>]]>"+"[<0!7 [<[1 2][-1 -2 ][2 3]>]>]") # s "midi" # midichan 2
 
 -- piano notes
@@ -37,7 +38,7 @@ do
 d1 $ fast 2 $ whenmod 16 15 (const $ fast 0.75 $ palindrome $ degradeBy 0.3 $ scramble 12 $ s "gretsch" <| n "[20 23 22] [15 12 15] [20 12 15] [22 20 23]" # gain ((range 1.1 0.75 rand)) # room 0.4 # speed ("5")) $ s "gretsch" <| n "[<13 22> ,[~ 19]/2]" # speed 3 # room 0.4
 
 -- piano simple
-clutchIn 4 5 $ struct "t*<12>" $ note (arp "<updown>" (off 0.5 (+"-12") (off 0.25 (+"-7") "<[f] c <d fs a> [b4 g?] > d e c"))) # s "midi" # amp ((range 0.5 0.7 rand)*"1 [1 ~!7] <0 1? 0 1?> [[1 ~!7]? 1?]") # midichan 1
+clutchIn 10 5 $ struct "t*<12>" $ note (arp "<updown>" (off 0.5 (+"-12") (off 0.25 (+"-7") "<[f] c <d fs a> [b4 g?] > d e c"))) # s "midi" # amp ((range 0.5 0.7 rand)*"1 [1 ~!7] <0 1? 0 1?> [[1 ~!7]? 1?]") # midichan 1
 
 -- interlude
 do
@@ -47,7 +48,7 @@ do
   -- synth run
   d3 $ degradeBy 0.0 $ s "rash" <| n (108 + "{0 2 4 5 9 11 12 14 <16 19 23 24>}%[20]") # cutoff (slow 8 (tri*1500)) # room 0.4 # gain 1 # pan perlin
   -- piano notes
-  clutch 4 $ slow 4 $ note ("<[c@2 d [e@6 d@2]] [[c [g@3 f]] [e@6 d@2]]>"+"[12]") # s "midi" # amp ((range 0.5 0.7 rand)*"1  ") # midichan 1
+  clutch 10 $ slow 4 $ note ("<[c@2 d [e@6 d@2]] [[c [g@3 f]] [e@6 d@2]]>"+"[12]") # s "midi" # amp ((range 0.5 0.7 rand)*"1  ") # midichan 1
   -- tri over 4
   d8 $ ccn "75*128" # ccv 32 # s "midi" # midichan 2
   d7 $ slow 4 $ ccn "73*128" # ccv ((segment 128 ((range 64 100 tri)))) # s "midi" # midichan 2 --
