@@ -17,6 +17,8 @@ s.sync; // wait for supercollider to finish booting up
 };
 );
 
+Server.default.options.numWireBufs = 128
+
 
 
 //////////////////////////////////////////
@@ -39,6 +41,8 @@ Server.default.options.inDevice_("ZEDi10");
 Server.default.options.outDevice_(1);
 Server.default.options.outDevice_("JBL Xtreme 2")
 Server.default.options.outDevice_("JBL Charge 4")
+Server.default.options.inDevice_("AUDIO4c")
+Server.default.options.outDevice_("AUDIO4c")
 
 Server.default.reboot
 Server.default.quit

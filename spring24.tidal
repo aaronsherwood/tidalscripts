@@ -1,0 +1,79 @@
+
+
+
+sounds = "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" -- "SOPHIE_percussion IGLOOGHOST_kicks  east>"
+
+bols soundFolder= inhabit [
+            ("dha", n "0" # s soundFolder)
+            , ("dhi", n "1" # s soundFolder)
+            , ("ta", n "2" # s soundFolder)
+            , ("ti", n "3" # s soundFolder)
+            , ("ri", n "4" # s soundFolder)
+            , ("ki", n "5" # s soundFolder)
+            , ("na", n "6" # s soundFolder)
+            , ("ge", n "7" # s soundFolder)
+            , ("dhin", n "8" # s soundFolder)
+            , ("ka", n "9" # s soundFolder)
+            , ("tiri", n "10" # s soundFolder)
+            , ("tirikit", n "10 22*2" # s soundFolder)
+            , ("gha", n "11" # s soundFolder)
+            , ("ghi", n "12" # s soundFolder)
+            , ("na", n "13" # s soundFolder)
+            , ("tha", n "14" # s soundFolder)
+            , ("tin", n "15" # s soundFolder)
+            , ("thi", n "16" # s soundFolder)
+            , ("ra", n "17" # s soundFolder)
+            , ("thin", n "18" # s soundFolder)
+            , ("thi2", n "19" # s soundFolder)
+            , ("ta2", n "20" # s soundFolder)
+            , ("ti2", n "21" # s soundFolder)
+            , ("te", n "22" # s soundFolder)
+            , ("dhe", n "23" # s soundFolder)
+            , ("ga", n "24" # s soundFolder)
+            , ("tak", n "25" # s soundFolder)
+            , ("ti3", n "26" # s soundFolder)
+            , ("khi", n "27" # s soundFolder)
+            , ("kath", n "31" # s soundFolder)
+                        ]
+withflip = within (0.75, 1) (fast 2)
+withply = within (0.75, 1) (ply 2)
+
+d1
+    $ stack[
+        silence
+        ,
+            whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $
+            bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"
+        ,
+            whenmod 8 2 (# silence) $
+            sometimesBy 0.3 (jux (palindrome)) $
+            sometimesBy 0.2 (# speed 2.2) $
+            sometimes (withply) $ bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "[ti|ri|ra|thi|tha|tin]*5"
+    ] # cps 1.127 # room 0.2
+
+d2 $ slow "1" $ s "<flute@4.25 flute@1 flute@1.25>" # n "<0@4.25 1@1 2@1.25>" # legato 1 # speed 1 -- # nudge "-1"
+
+d4 $ slow 4 $ s "{~ hh}%5" # gain 2
+
+
+
+
+-- Teental; (16 beats; 4-4-4-4)
+d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ slow 1 $ bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "Dha dhin dhin dha dha dhin dhin dha Dha tin  tin  ta  na  dhin dhin dha"
+-- Jhaptal; (10 beats; 2-3-2-3)
+d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ bols "Dhin na  dhin dhin na  tin na  dhin dhin na" # cps (0.635)
+
+d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ bols "ti ti na dhi na dhi na" # cps (0.635)
+
+
+d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ fast 1 $ bols "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"  # room 0.1 -- # krush 5 -- # speed (slow 2 (range 0.9 1.1 perlin))
+
+d2 $ whenmod 8 2 (# silence) $ sometimesBy 0.3 (jux (palindrome)) $ sometimesBy 0.2 (# speed 2.2) $ bols "[ti|ri|ra|thi|tha|tin]*5"
+
+d1 $ stack[
+  s ("bd*4"),
+  mask "[0 1]/4" $ s ("~ cp ~ cp"),
+  mask "[0@3 1]/4" $ s ("hh27*8")
+]
+
+d2 silence
