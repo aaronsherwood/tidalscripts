@@ -74,3 +74,54 @@ d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ bols 
 d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ fast 1 $ bols "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"  # room 0.1 -- # krush 5 -- # speed (slow 2 (range 0.9 1.1 perlin))
 
 d2 $ whenmod 8 2 (# silence) $ sometimesBy 0.3 (jux (palindrome)) $ sometimesBy 0.2 (# speed 2.2) $ bols "[ti|ri|ra|thi|tha|tin]*5"
+
+
+let chords  = ["[0, 4, 7]","[-1, 4, 8,]","[-3, 0, 4, 9]","[-5, 0, 4, 10]","[-9, 1, 6, 11]","[-8, 0, 7, 12]","[-6, 2, 4, 13]","[-7, 4, 9, 14]","[-8, 0, 7, 16]","[-4, 0, 7, 17]","[-9, 1, 6, 11, 18]","[-8, 0, 7, 14, 19]","[-7, 2, 10, 14, 20]","[-3, 5, 7, 12, 21]","[-5, 3, 5, 14, 22]","[-4, 3, 5, 13, 23]"]
+
+d3 $ struct "{t}%16" $ arp "down" $ note (innerJoin $ (chooseBy "^chords1" chords)) <| s "midi*4"
+
+d3 $ degradeBy "^degradeIt" $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 1 (chooseBy "^chords1" chords)))+"[-12,0,12]") <| s "midi*<5 4 3>" # amp (range (0.0+"^midiVolume") (0.1+"^midiVolume") rand) # sustain (range 0.0 0.7 perlin) # cps "^tempo"
+
+d3 $ degradeBy 0.1 $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 1 (choose chords)))+"[-12,0,12]") <| s "midi*<5 4 3>" # amp (range 0.2 0.5 rand) # sustain (range 0.0 0.7 perlin)
+
+d3 $ degradeBy 0.1 $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 1 (choose chords)))+"[-12]") <| s "midi*<5 4 3>" # amp (range 0.2 0.5 rand) # sustain (range 0.0 0.7 perlin)
+
+d3 $ degradeBy 0.1 $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 1 (cycleChoose chords)))+"[-12]") <| s "midi*<5 4 3>" # amp (range 0.2 0.5 rand) # sustain (range 0.0 0.7 perlin)
+
+
+
+d3 $ degradeBy "^degradeIt" $ struct "{t}%8" $ arp "down" $ note ((innerJoin $ (chooseBy (fast 2 (range 0 1 "<0 0.0625 0.125 0.1875 0.25 0.3125 0.375 0.4375 0.5 0.5625 0.625 0.6875 0.75 0.8125 0.875 0.95>")) chords))+"[-12]") <| s "midi*<5 4 3>" # amp (range (0.0+"^midiVolume") (0.1+"^midiVolume") rand) # sustain (range 0.0 0.7 perlin) # cps "^tempo"
+
+d4 $ struct "{t}%12" $ arp "down" $ n ((innerJoin $ (chooseBy (fast 1 (range 0 1 "<0 0.0625 0.125 0.1875 0.25 0.3125 0.375 0.4375 0.5 0.5625 0.625 0.6875 0.75 0.8125 0.875 0.95>")) chords))+"[24]") <| s "rash*<3 5 4>" # gain (range 0.9 1 perlin) # cut 0
+
+d4 silence
+
+d1 $ s "~ hh ~ hh" # gain 1.6
+d2 $ s "bd" # gain 1.2
+setcps (135/60/4)
+
+setcps "^tempo"
+
+let chord whichChord modulo = do {
+  parseBP_E ("{" ++ chords!!whichChord ++ "}" ++ "%" ++ modulo );
+}
+
+let firstFour = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10"
+let sixteen = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10 -9 1"
+let all = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10 -9 1 6 11 -8 0 7 12 -6 2 4 13 -7 4 9 14 -8 0 7 16 -4 0 7 17 -9 1 6 11 18 -8 0 7 14 19 -7 2 10 14 20 -3 5 7 12 21 -5 3 5 14 22 -4 3 5 13 23"
+let chord1 modulo= "0 4 7"       -- d f# a         D
+let chord2  = "-1 4 8"        -- c# f# a#       F#
+let chord3  = "-3 0 4 9"      -- b d f# b       b-
+let chord4  = "-5 0 4 10"     -- a d f# c       D7
+let chord5  = "-9 1 6 11"     -- f d# g# c#     Db
+let chord6  = "-8 0 7 12"     -- f# d a d       D
+let chord7  = "-6 2 4 13"     -- g# e f# d#     Emaj7
+let chord8  = "-7 4 9 14"     -- g f# b e       e-
+let chord9  = "-8 0 7 16"     -- f# d a f#      D
+let chord10 = "-4 0 7 17"     -- a# d a g       g-
+let chord11 = "-9 1 6 11 18"  -- f d# g# c# g#  Db
+let chord12 = "-8 0 7 14 19"  -- f# d a e a     D
+let chord13 = "-7 2 10 14 20" -- g e c e a#     C7
+let chord14 = "-3 5 7 12 21"  -- b g a d b      G
+let chord15 = "-5 3 5 14 22"  -- a f g e c      F
+let chord16 = "-4 3 5 13 23"  -- a# f g d# c#   Eb9

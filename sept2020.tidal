@@ -98,10 +98,16 @@ print ((cS "t" "optflowX_sig") )
 d6 silence
 let current = chord8
 
+d1 $ s "bd bd sd ~"
+
+d5 $ every 8 (density 1) $ density 1 $ sound "midi" <| note (parseBP_E (chord1 "8")) -- # n (irand 4) -- # delay "0.0" # delaytime "0.00" # delayfeedback "0.0"
+
+print (chord1 "8")
+
 let firstFour = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10"
 let sixteen = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10 -9 1"
 let all = "0 4 7 -1 4 8 -3 0 4 9 -5 0 4 10 -9 1 6 11 -8 0 7 12 -6 2 4 13 -7 4 9 14 -8 0 7 16 -4 0 7 17 -9 1 6 11 18 -8 0 7 14 19 -7 2 10 14 20 -3 5 7 12 21 -5 3 5 14 22 -4 3 5 13 23"
-let chord1  = "0 4 7"         -- d f# a         D
+let chord1 modulo= "{0 4 7}%" ++ modulo         -- d f# a         D
 let chord2  = "-1 4 8"        -- c# f# a#       F#
 let chord3  = "-3 0 4 9"      -- b d f# b       b-
 let chord4  = "-5 0 4 10"     -- a d f# c       D7

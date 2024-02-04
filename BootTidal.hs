@@ -9,7 +9,7 @@ hSetEncoding stdout utf8
 -- total latency = oLatency + cFrameTimespan
 -- tidal <- startTidal (superdirtTarget {oLatency = 0.19, oAddress = "127.0.0.1", oPort = 57120}) (defaultConfig {cFrameTimespan = 1/20, cCtrlPort = 6010})
 
-tidal <- startTidal (superdirtTarget {oLatency = -0.01}) (defaultConfig {cCtrlAddr = "0.0.0.0", cCtrlPort = 6060, cEnableLink = True})
+tidal <- startTidal (superdirtTarget {oLatency = -0.3}) (defaultConfig {cCtrlAddr = "0.0.0.0", cCtrlPort = 6060, cEnableLink = True})
 
 :{
 let p = streamReplace tidal
