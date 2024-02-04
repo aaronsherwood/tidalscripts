@@ -16,7 +16,7 @@ do
 
 do {
   d4 $ sometimesBy 0.3 (splice 8 "[3 3 3 3*6]!2") $ splice 16 ("3*16") $ s "aaron:7*32" # speed (24) # squiz 2 # room 0.5 # legato 0.25;
-  d5 $ qtrigger 5 $ seqPLoop [
+  d5 $ qtrigger $ seqPLoop [
     (0, 4, loopAt 2 $ splice 16 "<[{0 3 5 4 7}%16]*2? >" $ s "aaron:7" # room 1 # krush 1 # speed "4" # crush "{1 2 3 5 8}%32"),
     (4, 8, loopAt 2 $ splice 16 "<0*32>" $ s "aaron:7" # room 1 # krush 1 # speed "[{8 4 3 2 1.5}%<16>]*2" # gain "{1 1 0 1 1 0 1}%16")
   ];

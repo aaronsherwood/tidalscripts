@@ -3,7 +3,7 @@
 
 sounds = "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" -- "SOPHIE_percussion IGLOOGHOST_kicks  east>"
 
-bols soundFolder= inhabit [
+bols soundFolder = inhabit [
             ("dha", n "0" # s soundFolder)
             , ("dhi", n "1" # s soundFolder)
             , ("ta", n "2" # s soundFolder)
@@ -51,12 +51,17 @@ d1
             sometimes (withply) $ bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "[ti|ri|ra|thi|tha|tin]*5"
     ] # cps 1.127 # room 0.2
 
-d2 $ slow "1" $ s "<flute@4.25 flute@1 flute@1.25>" # n "<0@4.25 1@1 2@1.25>" # legato 1 # speed 1 -- # nudge "-1"
+d2 $ slow "4" $ s "{flute@6 flute@1 flute@1}%5" # n "{0@6 1@1 2@1}%5" # legato 1 # speed 1 # nudge "-0.08"
 
-d4 $ slow 4 $ s "{~ hh}%5" # gain 2
+d4 $ slow 4 $ s "{~ hh}%5" # gain 2 # room 0.5
 
+d5 $ slow 8 $ s "{808bd ~ 808bd ~ }%5" # gain 2 # speed 1 # room 0.5 # krush 4 # n 1 # up "-2"
 
-
+d1 silence
+d2 silence
+d3 silence
+d4 silence
+d5 silence
 
 -- Teental; (16 beats; 4-4-4-4)
 d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ slow 1 $ bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "Dha dhin dhin dha dha dhin dhin dha Dha tin  tin  ta  na  dhin dhin dha"
@@ -69,11 +74,3 @@ d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ bols 
 d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ fast 1 $ bols "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"  # room 0.1 -- # krush 5 -- # speed (slow 2 (range 0.9 1.1 perlin))
 
 d2 $ whenmod 8 2 (# silence) $ sometimesBy 0.3 (jux (palindrome)) $ sometimesBy 0.2 (# speed 2.2) $ bols "[ti|ri|ra|thi|tha|tin]*5"
-
-d1 $ stack[
-  s ("bd*4"),
-  mask "[0 1]/4" $ s ("~ cp ~ cp"),
-  mask "[0@3 1]/4" $ s ("hh27*8")
-]
-
-d2 silence
