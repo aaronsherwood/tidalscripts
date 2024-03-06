@@ -136,6 +136,7 @@ d6 $ slow 1 $ bite "<8 6 5>" "0 2 1 <2 3>" $ s "midi*15" # note ((scale "pelog" 
 
 d7 $ slow 2 $ s "midi(3,8)" # note ("<e4 [fs4@3 gs4] [a4@3 as4] [b4 c5] [cs5 gs4] [fs4 ds4]>"-24) # amp (0.7) # sustain 1.5
 d3 $ slow 2 $ s "[superhoover(3,8)]" # note "<e4 [fs4@3 gs4] [a4@3 as4] [b4 c5] >" # gain 1.2 # room 1 # size 0.5 # decay 0 -- [cs5 gs4] [fs4 ds4]
+d3 $ slow 2 $ s "[superhoover(3,8)]" # note "<e4 [fs4@3 gs4] [a4@3 as4] [b4 c5] >" # gain 1.2 # room 1 # size 0.5 # decay 0
 hush
 
 d5 $ s "supersaw*15" # note (arp "updown" "[<g5 fs5 f5 ds5>,bf5,d6,ef6,f6]")
@@ -196,7 +197,9 @@ do
 
 do
   hush
-  d5 $ fast 0.5 $ s "elements_00_e_flat_sodium" # n ("<0 1 2 3 4 5 6 7 8 9 10>") # gain 1
+  d5 $ fast "6" $ s "elements_00_e_flat_sodium" # n ("<0 1 2 3 4 5 6 7 8 9 10>") # gain 1
+
+  d5 $ fast "3" $ s "elements_00_e_flat_sodium" # n (irand 11) # gain 1
 
 do
   hush
@@ -236,9 +239,9 @@ hush
 
 
 
-d7 $ fast 1 $ s "elements_e_flat_" # n ("<1>") # gain 1
+d7 $ fast 1 $ s "elements_00_e_flat_sodium" # n ("<1>") # gain 1
 
-d7 $ fast 3 $ s "elements_e_flat_water" # n (irand 10) # gain 1.2
+d7 $ fast 3 $ s "elements_00_e_flat_sodium" # n (irand 10) # gain 1.2
 
 d8We  silence
 

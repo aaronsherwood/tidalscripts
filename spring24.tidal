@@ -82,11 +82,15 @@ d3 $ struct "{t}%16" $ arp "down" $ note (innerJoin $ (chooseBy "^chords1" chord
 
 d3 $ degradeBy "^degradeIt" $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 1 (chooseBy "^chords1" chords)))+"[-12,0,12]") <| s "midi*<5 4 3>" # amp (range (0.0+"^midiVolume") (0.1+"^midiVolume") rand) # sustain (range 0.0 0.7 perlin) # cps "^tempo"
 
-d3 $ degradeBy 0.1 $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 1 (choose chords)))+"[-12,0,12]") <| s "midi*<5 4 3>" # amp (range 0.2 0.5 rand) # sustain (range 0.0 0.7 perlin)
+d3 $ degradeBy 0.1 $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 1 (choose chords)))+"[-12,0,12]") <| s "midi*<5 4 3>" # amp (range 0.2 0.5 rand) # sustain (range 0.3 0.7 perlin) # nudge (range "-0.1" "0.1" perlin)
 
 d3 $ degradeBy 0.1 $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 1 (choose chords)))+"[-12]") <| s "midi*<5 4 3>" # amp (range 0.2 0.5 rand) # sustain (range 0.0 0.7 perlin)
 
-d3 $ degradeBy 0.1 $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 1 (cycleChoose chords)))+"[-12]") <| s "midi*<5 4 3>" # amp (range 0.2 0.5 rand) # sustain (range 0.0 0.7 perlin)
+d3 $ degradeBy 0.1 $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 2 (cycleChoose chords)))+"[-12,0,12]") <| s "midi*<5 4 3>" # amp (range 0.2 0.6 rand) # sustain (range 0.3 0.7 perlin)
+
+d3 $ degradeBy "0 [0 0.3] 0 [0 0.4]" $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (chooseBy (fast 2 "<0 0.0625 0.125 0.1875 0.25 0.3125 0.375 0.4375 0.5 0.5625 0.625 0.6875 0.75 0.8125 0.875 0.95>") chords))+"[-12,0]") <| s "midi*<5 4 3>" # amp (range 0.2 0.6 rand) # sustain (range 0.2 0.7 perlin) # nudge (range "-0.04" "0.04" perlin)
+
+
 
 
 
@@ -97,8 +101,801 @@ d4 $ struct "{t}%12" $ arp "down" $ n ((innerJoin $ (chooseBy (fast 1 (range 0 1
 d4 silence
 
 d1 $ s "~ hh ~ hh" # gain 1.6
-d2 $ s "bd" # gain 1.2
+d2 $ s "bd" # gain 1
 setcps (135/60/4)
+
+d1 $ sound "sax" # legato 1 # squizbus 1 "1 2 5 1.5"
+d1 $ sound "sax" # legato 1 # squizbus 1 "1 2 5 1.5" # lpfbus 2 "400 2000 3000" # lpq 0.2
+
+d1 $ sound "sax" # legato 1 # lpfbus 2 "400 2000 5000" # lpq 0.4 # pan 0
+
+d2 $ sound "sax" # legato 1 # hpfrecv 2 # pan 1
+
+d1 $ slow 6 $ note "c'maj" # s "superpiano" # legato 2 # lpq 0.2 # (lpfbus 1 $ segment 512 $ fast 4 $ range 200 2000 $ sine)
+
+d1 $ slow 6 $ note "c'maj" # s "superpiano" # legato 2 # lpq 0.2 # (lpfbus 1 $ segment 512 $ fast 4 $ smooth "200 2000")
+
+d1 $ s "ade" # panrecv 1 # lpfrecv 2
+
+once $ slow 4 $ panbus 1 $ segment 128 $ range (-1) 1 $ fast 4 $ sine
+
+d2 $ lpfbus 2 $ segment 128 $ smooth "2000 0"
+
+d1 $ sew "t <f t> <f [f t] t>" (n "0 .. 15" # s "future") (s "cp:3*16" # speed saw + 1.2)
+d1 $ sew "t(1,8)" (n "0 .. 15" # s "future") (s "cp:3*16" # speed sine + 1.5)
+
+d1 $ jux rev $ n (off 0.5 (+ 12) $ off 0.125 (+ 7) "<c*2 a(3,8) f(3,8,2) e*2>")
+    # sound "supermandolin"
+    # legato 4
+
+d2 $ s "[bd*4|hh*12|cp*2]"
+
+d2 $ slow 2 $ s "supergrind"
+  >| note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[c5,c6]")
+  # lpfrecv 1
+
+  let ratio2 = pF "ratio2"
+
+  d1 $ sound "superfm" # ratio2 2.3
+
+  -- modulators
+mod11 = pF "mod11"
+mod12 = pF "mod12"
+mod13 = pF "mod13"
+mod14 = pF "mod14"
+mod15 = pF "mod15"
+mod16 = pF "mod16"
+mod21 = pF "mod21"
+mod22 = pF "mod22"
+mod23 = pF "mod23"
+mod24 = pF "mod24"
+mod25 = pF "mod25"
+mod26 = pF "mod26"
+mod31 = pF "mod31"
+mod32 = pF "mod32"
+mod33 = pF "mod33"
+mod34 = pF "mod34"
+mod35 = pF "mod35"
+mod36 = pF "mod36"
+mod41 = pF "mod41"
+mod42 = pF "mod42"
+mod43 = pF "mod43"
+mod44 = pF "mod44"
+mod45 = pF "mod45"
+mod46 = pF "mod46"
+mod51 = pF "mod51"
+mod52 = pF "mod52"
+mod53 = pF "mod53"
+mod54 = pF "mod54"
+mod55 = pF "mod55"
+mod56 = pF "mod56"
+mod61 = pF "mod61"
+mod62 = pF "mod62"
+mod63 = pF "mod63"
+mod64 = pF "mod64"
+mod65 = pF "mod65"
+mod66 = pF "mod66"
+-- operator envelope generator levels
+eglevel11 = pF "eglevel11"
+eglevel12 = pF "eglevel12"
+eglevel13 = pF "eglevel13"
+eglevel14 = pF "eglevel14"
+eglevel21 = pF "eglevel21"
+eglevel22 = pF "eglevel22"
+eglevel23 = pF "eglevel23"
+eglevel24 = pF "eglevel24"
+eglevel31 = pF "eglevel31"
+eglevel32 = pF "eglevel32"
+eglevel33 = pF "eglevel33"
+eglevel34 = pF "eglevel34"
+eglevel41 = pF "eglevel41"
+eglevel42 = pF "eglevel42"
+eglevel43 = pF "eglevel43"
+eglevel44 = pF "eglevel44"
+eglevel51 = pF "eglevel51"
+eglevel52 = pF "eglevel52"
+eglevel53 = pF "eglevel53"
+eglevel54 = pF "eglevel54"
+eglevel61 = pF "eglevel61"
+eglevel62 = pF "eglevel62"
+eglevel63 = pF "eglevel63"
+eglevel64 = pF "eglevel64"
+-- operator envelope generator rates
+egrate11 = pF "egrate11"
+egrate12 = pF "egrate12"
+egrate13 = pF "egrate13"
+egrate14 = pF "egrate14"
+egrate21 = pF "egrate21"
+egrate22 = pF "egrate22"
+egrate23 = pF "egrate23"
+egrate24 = pF "egrate24"
+egrate31 = pF "egrate31"
+egrate32 = pF "egrate32"
+egrate33 = pF "egrate33"
+egrate34 = pF "egrate34"
+egrate41 = pF "egrate41"
+egrate42 = pF "egrate42"
+egrate43 = pF "egrate43"
+egrate44 = pF "egrate44"
+egrate51 = pF "egrate51"
+egrate52 = pF "egrate52"
+egrate53 = pF "egrate53"
+egrate54 = pF "egrate54"
+egrate61 = pF "egrate61"
+egrate62 = pF "egrate62"
+egrate63 = pF "egrate63"
+egrate64 = pF "egrate64"
+-- operator output levels
+amp1 = pF "amp1"
+amp2 = pF "amp2"
+amp3 = pF "amp3"
+amp4 = pF "amp4"
+amp5 = pF "amp5"
+amp6 = pF "amp6"
+-- operator frequency ratios
+ratio1 = pF "ratio1"
+ratio2 = pF "ratio2"
+ratio3 = pF "ratio3"
+ratio4 = pF "ratio4"
+ratio5 = pF "ratio5"
+ratio6 = pF "ratio6"
+-- operator frequency detuners
+detune1 = pF "detune1"
+detune2 = pF "detune2"
+detune3 = pF "detune3"
+detune4 = pF "detune4"
+detune5 = pF "detune5"
+detune6 = pF "detune6"
+-- other
+feedback = pF "feedback"
+lfofreq = pF "lfofreq"
+lfodepth = pF "lfodepth"
+
+  d1 $ s "superfm" # n 0 #octave "<4 5 6>"
+    #mod 1
+    #ratio 3
+    #eglevel 0.1
+
+    d1 $ s "superfm/2"
+      # octave 4
+      # n "<0 5 11>"
+      # n (irand 40 -10)
+      # amp1 1
+      # amp2 1
+      # amp3 0.8
+      # amp4 0
+      # amp5 0.8
+      # amp6 1
+      # ratio2 2
+      # ratio3 8
+      # ratio4 5
+      # ratio5 5
+      # ratio6 6.5
+      # detune5 1
+      # feedback 0.8
+      # mod11 1
+      # mod16 2.5
+      # mod23 3.5
+      # mod34 4.8
+      # mod45 3.5
+      # mod65 2
+      # egrate11 0.01
+      # egrate21 0.01
+      # egrate31 0.5
+      # egrate61 0.1
+      # egrate62 0.5
+      # egrate63 1
+      # eglevel62 0.13
+      # eglevel63 1.5
+      # lfofreq 0.2
+      # lfodepth 0.01
+      # room 0.8 # size 0.8 # dry 0.2
+
+      d1 $ s "superfm"
+      # n 0
+      # amp1 1
+      # amp2 0
+      # amp3 1
+      # amp4 0
+      # amp5 0
+      # amp6 0
+      # ratio2 2.01
+      # ratio4 2
+      # ratio5 2
+      # mod12 0.75
+      # mod34 0.7
+      # mod45 0.6
+
+      -- sets the amount of operator 'op' in the superfm output mix
+-- (1 <= op <= 6)
+fmamp :: Int -> Pattern Double -> ControlPattern
+fmamp op = pF ("amp" ++ show op)
+
+-- sets the ratio for operator 'op'.
+-- the frequency is note * ratio + detune Hz
+-- (1 <= op <= 6)
+fmratio :: Int -> Pattern Double -> ControlPattern
+fmratio op = pF ("ratio" ++ show op)
+
+-- set the detune for operator 'op'
+fmdetune :: Int -> Pattern Double -> ControlPattern
+fmdetune op = pF ("detune" ++ show op)
+
+-- set the modulation of oerator opa by operator opb
+-- if opa == opb, then the modulation amount is multiplied by the
+-- 'feedback' parameter
+fmmod :: Int -> Int -> Pattern Double -> ControlPattern
+fmmod opa opb = pF ("mod" ++ show opa ++ show opb)
+
+-- feedback
+fmfeedback :: Pattern Double -> ControlPattern
+fmfeedback = pF "feedback"
+
+-- Envelope definition: each operator has an envelop with 4 steps
+fmeglevel :: Int -> Int -> Pattern Double -> ControlPattern
+fmeglevel op step = pF ("eglevel" ++ show op ++ show step)
+
+-- Envelope definition: sets the rate at which the envelope moves
+-- between steps.  Low numbers are slow, high numbers are fast.
+fmegrate :: Int -> Int -> Pattern Double -> ControlPattern
+fmegrate op step = pF ("egrate" ++ show op ++ show step)
+
+d1 $ stut 2 0.7 0.125 $ slow 3 $ s "superfm"
+  |+| note (arp "pinkyup" "[0,4,7,12] [0,5,7,9]" )
+  # fmfeedback 1    -- global multiplier for 'fmod x x' feedback parameters.
+  # fmamp 1 1      -- amplitudes default to '1', so probably need to set all 6 of them...
+  # fmamp 2 0
+  # fmamp 3 1
+  # fmamp 4 0
+  # fmamp 5 0
+  # fmamp 6 0
+  # fmratio 1 1 -- oscillator frequency is note * ratio + detune Hz.
+  # fmratio 2 0.5 -- (range 0.25 20 (slow 3 $ sine))
+  # fmdetune 2 1
+  # fmratio 3 0.26
+  # fmmod 1 1 "0"
+  # fmmod 1 2  (range 0 4 (slow 4 $ sine))   -- fmod a b Pattern  = modulate op a with op b..
+  # fmmod 1 3  (range 0 4 (slow 3 $ sine))
+  # fmmod 3 2  (range 0 3 (slow 2 $ sine))
+  # fmeglevel 1 1 "1" -- envelope generator has 4 rates and 4 steps for each operator...
+  # fmeglevel 1 2 "0.5"
+  # fmeglevel 1 3 "0"
+  # fmeglevel 1 4 "0"
+  # fmegrate 1 1 "10"
+  # fmegrate 1 2 "0.1"
+  # fmegrate 1 3 "0.1"
+  # fmegrate 1 4 "1"
+  # fmeglevel 2 1 "1" -- envelope generator has 4 rates and 4 steps for each operator...
+  # fmeglevel 2 2 "0"
+  # fmeglevel 2 3 "0"
+  # fmeglevel 2 4 "0"
+  # fmegrate 2 1 "1"
+  # fmegrate 2 2 "0.3"
+  # fmegrate 2 3 "0.7"
+  # fmegrate 2 4 "1"
+  # fmeglevel 3 1 "1" -- envelope generator has 4 rates and 4 steps for each operator...
+  # fmeglevel 3 2 "0.2"
+  # fmeglevel 3 3 "0"
+  # fmeglevel 3 4 "1"
+  # fmegrate 3 1 "10"
+  # fmegrate 3 2 "0.5"
+  # fmegrate 3 3 "0.4"
+  # fmegrate 3 4 "1"
+  # room 0.3
+
+  -- Parameters
+let fmamp op = pF ("amp" ++ show op)
+    fmratio op = pF ("ratio" ++ show op)
+    fmdetune op = pF ("detune" ++ show op)
+    fmmod opa opb = pF ("mod" ++ show opa ++ show opb)
+    fmegrate op step = pF ("egrate" ++ show op ++ show step)
+    fmeglevel op step = pF ("eglevel" ++ show op ++ show step)
+    fmfeedback = pF "feedback"
+
+-- Array functions
+let fmparam function = foldr (#) (gain 1) . zipWith function [1..]
+    lfma = fmparam fmamp
+    lfmr = fmparam fmratio
+    lfmd = fmparam fmdetune
+    lfmer op = fmparam (fmegrate op)
+    lfmel op = fmparam (fmeglevel op)
+    lfmm opa = fmparam (fmmod opa) -- didn't test, should work
+
+    d1 $ slow 2 $ s "superfm"
+      >| note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[c5,c6]")
+      # fmfeedback 3
+      # fmdetune 2 1
+      # lfmel 1 [1, 10.5, 0, 0]     -- EG Level (Operator 1)
+      # lfmer 1 [10, 10.1, 0.1, 1]  -- EG Rate (Operator 1)
+      # lfmel 2 [1, 0, 10, 0]       -- EG Level (Operator 2)
+      # lfmer 2 [1, 0.3, 0.7, 1]   -- EG Rate (Operator 2)
+      # lfmel 3 [1,0.2,0,1]        -- EG Level (Operator 3)
+      # lfmer 3 [10,0.5,0.4,1]     -- EG Rate (Operator 3)
+      # lfma [1, 1, 1, 0, 0, 1]    -- Amps (Operators 1..6)
+      # lfmr [1, 0.26, 0.75]        -- Ratios (Operators 1..3)
+
+      d1
+    -- $ stut 2 0.7 0.125
+    $ slow 4 $ s "superfm"
+    >| note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[c5,c6]")
+    # fmfeedback 1
+    # lfma [1, 1, 1, 0, 0, 0]
+    # lfmr [1, (range 0 4 (slow 4 sine)), 0.26, 0.5, 0.5, 0.5]
+    # lfmd [0, 1, 0, 0, 0, 0]
+    # fmmod 1 1 "<0 1.25>"
+    # fmmod 1 2 (range 0 4 (slow 4 sine))
+    # fmmod 1 3 (range 0 4 (slow 3 saw))
+    # fmmod 3 2 (range 0 3 (slow 2 sine))
+    # lfmel 1 [1, 0.5, 0, 0, 0, 0]
+    # lfmer 1 [10, 0.1, 0.1, 1, 0, 0]
+    # lfmel 2 [1, 0, 0, 0, 0, 0]
+    # lfmer 2 [1, 0.3, 0.7, 1, 0, 0]
+    # lfmel 3 [1, 0.2, 0, 1, 0, 0]
+    # lfmer 3 [10, 0.5, 0.4, 1, 0, 0]
+    # lpfbus 1 (segment 1000 (slow 4 (range 100 3000 saw)))
+    # room 0.3
+
+  d1 $ slow 2 $ s "moog:2"
+    >| note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[c5,c6]")
+    # legato 1
+    # lpfbus 1 (segment 1000 (slow 4 (range 100 3000 saw)))
+    # lpq 0.4
+    # gain 0.8
+
+    d2 $ slow 2 $ s "{midi*3}%2" # note ("[c4,<ef5 d5 f5 e5>]"+"-3") # amp 0.7
+
+    d6 $ slow 1 $ s "{midi*4}%2" # note "a3" # amp (range 0.7 0.9 rand)
+
+    d7 $ slow 1 $ s "{midi*5}%2" # note "cs4" # amp (range 0.7 0.9 rand)
+
+    d8 $ slow 4 $ s "midi"
+      >| note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[a4]")
+
+      d2 silence
+
+
+      d2 $ slow 2 $ s "[{arpy*3}%2]" # note ("[c4,<ef5 d5 f5 e5>]") # amp 0.7 # room 10 # krush 10 # speed "-1"
+
+
+      d6 $ slow 1 $ s "{arpy*4}%2" # note "c3" # amp 0.9 # krush 10
+
+      d7 $ slow 1 $ s "{arpy*5}%2" # note "g5" # amp (range 0.7 0.9 rand)
+
+        d8 $ slow 1 $ s "{arpy*2}%2" # note "[c5,c7(7,16)?]" # amp (range 0.7 0.9 rand)
+
+    d2 $ note "c(3,8)" # s "midi"
+
+    d5 $ s "808bd:1*4" # room 0.5 # speed (range 8 2 saw) # krush 40 # up "-1.4@3 -0.5"
+
+    d7 $ (1 <~) $ every 8 (density 2) $ sound "[arpy*8]? [arpy*2]? [cp*1] [bd*2]?" # speed (density 1 $ range (-2) 6 saw) # gain "1.2" # room "1.5"
+    d4 $ every 4 (density 2) $ sound "arpy*4 arpy*2" # speed (density 1 $ range "-2" "6" saw) # up "2" # room "1.5" # gain 1
+    lock n offset = timeLoop n . (offset <~)
+    d4 $ degradeBy 0.0 $ struct "t(<4 5>,8)" $ lock 2 "<0 1>"  $ s "arpy*16" # n (irand 16) # room 0.3 # speed 0.25 # krush 3
+    d3 $ s "~ cp" # room 0.5
+    d4 $ fast 2 $ s "hh*2 hh*2 hh*2 <hh*6 [hh*2]!3>" # room 0.7 # gain (range 1.2 1.4 rand)
+
+    -- d1 $ stack[
+    -- s "808*16" # speed 16 # n (irand 8) # room 0.5 # gain (range 1 1.5 rand)
+    -- ,ccv (segment 16 (irand 10)+10) # ccn 0 # s "midi"
+    --       ]
+
+    d1 $ stack[
+    -- s "midi" >| note "{a  cs d e gs a6}%16" # amp 0.8
+    -- ,
+    ccv (slow 8 (segment 5000 (range 0 127 saw))) # ccn 0 # s "midi"
+          ]
+
+    d1 $ slow 16 $ midibend (segment 1000 $ range 0 16383 $ saw) # s "midi"  # midichan 1
+
+    d1 $ stack[
+    s "808*16" # speed 16 # n (irand 8) # room 0.5 # gain (range 1 1.5 rand)
+    ,  fast 2 $ bite 5 ("{0 1 2 3 4}%8") $ midibend ((segment 1000 $ range 0 256 $ saw)+"<0@32 1000@32 >") # s "midi"  # midichan 1
+          ]
+
+setcps(135/60/4)
+lock n offset = timeLoop n . (offset <~)
+
+d1 $ degradeBy 0.1  $ stack[
+  sound "[arpy*<2@4 3@1 6@1 4@2 7@1 5@1 16@1 1@1 >] [arpy*2] [cp*1] [bd*2]" # speed (density 1 $ range (-2) 6 saw) # gain "1.2" # room "1.5" # note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[a5]")
+  , struct "[t*<2@4 3@1 6@1 4@2 7@1 5@1 16@1 1@1>] [t*2] [~] [~]?" $ ccv (segment 32 (irand 127)) # ccn 0 # s "midi"
+  ]
+
+  d1 $ degradeBy 0.1  $ stack[
+    sound "[arpy*<3 4 1 1>] [arpy*2] [cp*1] [bd*2]" # speed (density 1 $ range (-2) 6 saw) # gain "1.2" # room "1.5" # note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[a5]")
+    , struct "[t*<3 4 1 1>] [t*2] [~] [~]?" $ ccv (segment 32 (irand 127)) # ccn 0 # s "midi"
+    ]
+
+  d2 $ degradeBy 0.1  $ stack[
+    sound "[midi*<2@4 3@1 6@1 4@2 4@1 5@1 3@1 1@1 >] [midi*2]? [cp*1] [bd*2]" # note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[a4,a5]") # sustain 3 # amp 0.7 # speed (density 1 $ range (0.5) 6 rand) # gain "1.2" # room "1.5"
+    ]
+
+    d2 $ degradeBy 0.1  $ stack[
+      sound "[[midi*<16>]]" # note (scale "<minor hexSus yu saba>" ("[<-7 -5 -3 -1>,0,2]") + "[a4,a5,a6]") # sustain (range 4 2 rand) # amp (range 0.2 0.7 rand) # speed (density 1 $ range (0.5) 6 rand) # gain "1.2" # room "1.5"
+      ,  fast "<0.25@4 1@4 1.5@4 2@4 >" $ midibend ((segment 1000 $ range 0 512 $ saw)+"<8000 15000 5000 4000 >") # ccn 0 # s "midi" # midichan 1
+      ]
+
+      d3 $ note  (scale "<minor hexSus yu saba>" ("<-7*16 -5*16 -3*16 -1*16>") + "[a4]") # s "midi" # midichan 2 # amp (range 0.3 0.7 rand)
+
+    d1 $ sound "[midi*<2@4 3@1 6@1 4@2 7@1 5@1 16@1 1@1 >] [midi*2]? [cp*1] [bd*2]" # note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[a4,a5]") # speed (density 1 $ range (-2) 6 saw) # room "1.5" # sustain 3 # amp 0.6
+
+    d2 $ s "808:1(13,16)"
+    d3 $ iter 4 $ euclid "<7 11>" 16 $ s "808:2" # speed 4 # room 0.5 # crush "<2 3 4>"
+
+    d4 $ degrade $ stack [
+    s "808bd:1*16" # room 0.2 # speed (slow 4 (range 1 1.4 saw))
+    -- ,ccv (segment 16 (irand 127)) # ccn 0 # s "midi"
+    ]
+
+    d5 $ degradeBy 0.5 $ stack[
+      s "808bd:1*8" # krush 2 # speed ((range "-0.1" "0.1" rand)+2.1) # room 0.5,
+      ccv (segment 8 (irand 127)) # ccn 0 # s "midi"
+    ]
+
+    d2 $ every 1 (fast 2) $ note ("{c d e f g}%8"+"<[-15,-3]@8 [-17,-5]@8 >") # s " midi"  # room 0.5
+
+    d6 $ s "midi" >| note (arp "up" (scale "mixolydian" ("[0*3, 4*4,6*5,7*8? ]")+"a5")) # amp (range 0.4 0.5 rand)
+
+    d2 $ every 1 (fast 1) $ stack [
+       note ("{c d e f g}%8"+"<[-15,-3]@4 [-17,-5]@4>") # s " midi"  # room 0.5
+       ,  bite 5 ("{0 1 2 3 4 }%8") $ midibend ((segment 1000 $ range 0 512 $ saw)+"<8000@32 5000@32 >"+"<0@8 5000@8>") # s "midi"  # midichan 1
+       ]
+
+    d2 $ gain "{1 ~ [0.8*5?] ~ [~0.7*5?]}" # s "[{808bd:1*5}%8, SOPHIE_percussion:1]" # room 0.5 # krush 10 # speed (range 4 2 saw)
+
+    d6 $ iter 4 $ s "808:2(9,16)" # speed (slow 4 (range 2 4 isaw))
+
+    d6 $ iter 4 $ stack[
+      s "808:2(9,16)" # speed (slow 4 (range 2 4 isaw))
+      , struct "t(9,16)" $ ccv (segment 128 (slow 1 (range 127 0 saw))) # ccn 3 # s "midi"
+      ]
+
+      d6 $ iter 1 $ stack[
+      struct "t(<4 5>,8)" $ lock 2 "<0 1>"  $ s "arpy*16" # n (irand 16) # room 0.3 # speed 0.25 # krush 3
+        , struct "t(<4 5>,8)" $ ccv (segment 128 (slow 2 (range 127 0 saw))) # ccn 0 # s "midi"
+        ]
+
+      ""
+
+    d7 $ s "[808:4*16, 808:5*16?]" # speed (range 2 3 perlin) # gain (range 0.8 1 rand)
+    d8 $ loopAt 16 $ striate 128 $ slice 6 "0*2" $ s "44comp:35" # speed "1.21" # room 0.9 # size 0.9 # gain 0.9 -- # note 3
+
+    d9 $ slow 2 $ stack [
+      s "midi" >| note ("a5")  --(slow 4 (range 0.5 saw)
+    , ccv (segment 128 (range 0 127 isaw)) # ccn 1 # s "midi" # nudge 0.05
+    ]
+
+thisLove
+
+    d1 $ struct "t t t f" $ ccv (range 0 127 saw) # ccn 0 # s "midi"
+
+    d2 $ s "bd bd sd ~"
+
+    d9 $ slow 2 $ stack [
+      s "superpiano" >| note ("[a4]") # sustain 4 # lpf 700 # amp 0.5--(slow 4 (range 0.5 saw)
+    , ccv (segment 128 (range 0 127 isaw)) # ccn 1 # s "midi" # nudge 0.05
+    ]
+
+    d8 silence -- $ ccv (segment 128 (range 0 127 isaw)) # ccn 1 # s "midi"
+
+    d10 $ s "808bd:1" # speed 2.1 # krush 10
+
+    d11 $ slow 1 $ ccv ((segment 30 (range 127 0 saw))) # ccn 2 # s "midi"
+
+    d11  $ ccv 30 # ccn 2 # s "midi"
+
+    d12 $ ccv (segment 100 (slow 1 (range 5 1 isaw))) # ccn 4 # s "midi"
+    d12 $ ccv 20 # ccn 4 # s "midi"
+    d10 silence
+
+    d13 $ ccv 20 # ccn 5 # s "midi"
+    d13 $ fast 2 $ ccv (segment 15 (range 2 120 saw)) # ccn 5 # s "midi"
+
+
+    let
+      algs = [
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 2 3 1 # fmmod 3 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 2 3 1 # fmmod 3 4 1 # fmmod 4 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 2 3 1 # fmmod 2 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 2 3 1 # fmmod 2 4 1 # fmmod 4 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 2 3 1 # fmmod 1 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 2 3 1 # fmmod 1 4 1 # fmmod 4 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 1 3 1 # fmmod 3 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 1 3 1 # fmmod 3 4 1 # fmmod 4 4 1,
+        lfma [1,1,0,0,0,0] # fmmod 2 3 1 # fmmod 3 4 1,
+        lfma [1,1,0,0,0,0] # fmmod 2 3 1 # fmmod 3 4 1 # fmmod 4 4 1,
+        lfma [1,1,0,0,0,0] # fmmod 1 3 1 # fmmod 2 3 1 # fmmod 3 4 1,
+        lfma [1,1,0,0,0,0] # fmmod 1 3 1 # fmmod 2 3 1 # fmmod 3 4 1 # fmmod 4 4 1,
+        lfma [1,0,1,0,0,0] # fmmod 1 2 1 # fmmod 3 4 1,
+        lfma [1,0,1,0,0,0] # fmmod 1 2 1 # fmmod 3 4 1 # fmmod 4 4 1,
+        lfma [1,1,0,0,0,0] # fmmod 2 3 1 # fmmod 2 4 1,
+        lfma [1,1,0,0,0,0] # fmmod 2 3 1 # fmmod 2 4 1 # fmmod 4 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 1 3 1 # fmmod 1 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 1 3 1 # fmmod 1 4 1 # fmmod 4 4 1,
+        lfma [1,1,1,0,0,0] # fmmod 3 4 1,
+        lfma [1,1,1,0,0,0] # fmmod 3 4 1 # fmmod 4 4 1,
+        lfma [1,1,1,0,0,0] # fmmod 1 4 1 # fmmod 2 4 1 # fmmod 3 4 1,
+        lfma [1,1,1,0,0,0] # fmmod 1 4 1 # fmmod 2 4 1 # fmmod 3 4 1 # fmmod 4 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 1 3 1 # fmmod 2 4 1 # fmmod 3 4 1,
+        lfma [1,0,0,0,0,0] # fmmod 1 2 1 # fmmod 1 3 1 # fmmod 2 4 1 # fmmod 3 4 1 # fmmod 4 4 1
+              ]
+      alg p = select (p|/23) algs
+
+
+      d1
+        $ slow 2 $ note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[c5,c6]")
+          # s "superfm"
+          # alg 14
+          # fmfeedback 10.95
+          # lfmr [1]
+
+
+  # voicebus 2 (segment 32 (range 0.2 0.8 rand))
+
+  # rate 4 -- (slow 4 (range 0 4 saw))
+  -- # lpq 0.4
+
+  d1 $ s "supersquare*8" # note "c" # voice (rand) -- # rate 4
+
+d1 $ stack[
+
+  , shuffle "<1>" $ s "supertron(<9 12 10 13>,16)" # note ((scale "minPent" "<-7 -10 -5 -6> .. <8>")-0) # room 0.5 # gain (range 1 1.2 rand) # orbit 1
+]
+
+d1 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48")  $ s "amencutup*16" # n (irand 32) # speed ("3") # room 1 # gain 1.2 # crush 3 # cloudsGrainLess
+
+d2 $ s "supertron(<9 12 10 13>,16)" # note ((scale "<minPent@4 majPent@4>" "<-2> .. <8>")-0) # room 0.9 # gain (range 0.9 0.8 rand) # octave "[5,4]" # lpf (slow 4 (range "10" "2000" tri)) # orbit 2
+
+
+
+[g5,bf5,d6,ef6,f6]
+
+scaleList
+
+  d1  -- # cutoff (slow 4 5000*isaw+500)
+
+  d5 $ slow 1  $ bite 4 "0 2 1 <2 3>"$ s "supersaw(<9 12 10 15>,16)" # note ((scale "majPent" "0 .. 7")) # room 0.4 # sustain 0.1 # gain (range 0.8 1.2 rand)
+
+
+  d1 $ jux (# speed "-1") $ slow 1 $ s "bd bd sd ~" # gain 1 # cloudsGrain # n 0
+
+p "pauline oliveros" $ loopAt 32 $ chop 512 $ s "44comp:26" # room 0.7 # speed 1 # gain 1.1
+
+elementspitch = pF "elementspitch"
+    elementsstrength = pF "elementsstrength"
+    elementscontour = pF "elementscontour"
+    elementsbowlevel = pF "elementsbowlevel"
+    elementsblowlevel = pF "elementsblowlevel"
+    elementsstrikelevel = pF "elementsstrikelevel"
+    elementsflow = pF "elementsflow"
+    elementsmallet = pF "elementsmallet"
+    elementsbowtimb = pF "elementsbowtimb"
+    elementsblowtimb = pF "elementsblowtimb"
+    elementsstriketimb = pF "elementsstriketimb"
+    elementsgeom = pF "elementsgeom"
+    elementsbright = pF "elementsbright"
+    elementsdamp = pF "elementsdamp"
+    elementspos = pF "elementspos"
+    elementsspace = pF "elementsspace"
+    elementsmodel = pI "elementsmodel"
+    elementseasteregg = pI "elementseasteregg"
+
+    timbre = pF "timbre"
+    color = pF "color"
+    model = pI "model"
+    mode = pI "mode"
+    tidesshape = pF "tidesshape"
+    tidessmooth = pF "tidessmooth"
+    slope = pF "slope"
+    shift = pF "shift"
+    engine = pI "engine"
+    harm = pF "harm"
+    morph = pF "morph"
+    level = pF "level"
+    lpgdecay = pF "lpgdecay"
+    lpgcolour = pF "lpgcolour"
+    lpg d c = lpgdecay d # lpgcolour c
+
+d1 $ scramble 8 $ jux ((fast 0.5)) $ s "omi" >| note (scale "majPent" "0..7") # octave "[5,4]" # sustain 1 # gain 1.2  # elementsstrength 0.6 # elementsblowlevel 0.1 # elementsblowtimb 10 # elementsgeom  1 # elementsstrikelevel 0.1 # elementsstriketimb 0.4 # gain 1.4 -- # cloudsGrainLess
+
+d1 $ s "braids" >| note (scale "majPent" "0..7") >| model (segment 16 (irand 48)) # sustain 0.5 # gain 1 # room 0.5 # pan 0
+
+
+
+
+
+$
+
+fill = d1 $ swing 56 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ note (scale "majPent" "0..24"+"0")
+  # stack[
+    s "amencutup*24" # n (irand 32) # speed ("3") # room 1 # gain 1.3 # crush 3 # orbit 11
+    , s "plaits*24"
+        # note (scale "majPent" "0..2")
+        # sustain 0.5
+        # engine 15 --(segment 16 (irand 16))
+        # timbre (range 0.1 0.4 rand)
+        # harm (0.3)
+        # morph 0.5
+        # gain (range 0.9 1.6 rand)
+    ]
+
+xfadeIn 1 2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "0..24"+"0"))$ swing 56 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48") $ stack[
+  s "amencutup*16" # n (irand 32) # speed ("3") # room 1 # gain 1.3 # crush 3 # orbit 11
+  , s "plaits*16?"
+      # note (scale "majPent" "0..2")
+      # sustain 0.5
+      # engine 15 --(segment 16 (irand 16))
+      # timbre (range 0.1 0.4 rand)
+      # harm (0.3)
+      # morph 0.5
+      # gain (range 0.9 1.6 rand)
+  ]
+
+xfadeIn 1 2 silence
+
+d2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "0..24")) $ swing 56 $ struct "t*16" $ s "plaits" >| note (scale "majPent" "0..7")
+    # sustain 0.5
+    # engine (segment 16 (irand 16))
+    # timbre (slow 3 sine)
+    # harm (slow 4 saw)
+    # morph (slow 9 saw)
+    # gain 1.2
+    # pan 1
+
+
+    d5  $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48") $ s "plaits*16"
+      # note (scale "majPent" "0..2")
+      # sustain 0.5
+      # engine 15 --(segment 16 (irand 16))
+      # timbre (range 0.1 0.4 rand)
+      # harm (0.3)
+      # morph 0.5
+      # gain (range 0.9 1.6 rand)
+
+d3 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "0..24"+"-24")) $ swing 56 $ s "braids*16" # note (scale "majPent" "-4..16"+"-12") # model 28 # timbre rand # color rand # sustain 2 # gain 1.2 # pan 0
+
+d1 $ s "cp*16"
+  # rings 100 rand 0.7 1 0.9
+  # ringsmodel "[1]"
+  # ringspoly "[0]"
+  # ringsinternal "[1]"
+
+      d5 $ fast 4 $ s "~ hh" # gain 2 # room 0.9 # gain 2 # nudge (range "0.00" "-0.02" rand)
+
+      do
+      hush
+      fill
+
+      0:CSAW, 1:MORPH, 2:SAW_SQUARE, 3:SINE_TRIANGLE, 4:BUZZ, 5:SQUARE_SUB, 6:SAW_SUB, 7:SQUARE_SYNC,
+      8:SAW_SYNC, 9:TRIPLE_SAW, 10:TRIPLE_SQUARE, 11:TRIPLE_TRIANGLE, 12:TRIPLE_SINE, 13:TRIPLE_RING_MOD,
+      14:SAW_SWARM, 15:SAW_COMB, 16:TOY, 17:DIGITAL_FILTER_LP, 18:DIGITAL_FILTER_PK, 19:DIGITAL_FILTER_BP,
+      20:DIGITAL_FILTER_HP, 21:VOSIM, 22:VOWEL, 23:VOWEL_FOF, 24:HARMONICS, 25:FM, 26:FEEDBACK_FM,
+      27:CHAOTIC_FEEDBACK_FM, 28:PLUCKED, 29:BOWED, 30:BLOWN, 31:FLUTED, 32:STRUCK_BELL, 33:STRUCK_DRUM,
+      34:KICK, 35:CYMBAL, 36:SNARE, 37:WAVETABLES, 38:WAVE_MAP, 39:WAVE_LINE, 40:WAVE_PARAPHONIC,
+      41:FILTERED_NOISE, 42:TWIN_PEAKS_NOISE, 43:CLOCKED_NOISE, 44:GRANULAR_CLOUD, 45:PARTICLE_NOISE,
+      46:DIGITAL_MODULATION, 47:QUESTION_MARK
+
+d7 $ swing 56 $ jux (# cutoff (slow 4 2000*saw+500)) $ s "braids" >| note (scale "majPent" "<-4 -3 -1 -2>  0@2 3 4 ~@3 ") # model (14) # timbre (range 0.7 0.5 perlin) # color 0.0 # sustain 2 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # cutoff 4000 # orbit 3 # nudge 0.01
+
+d4 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 5 # cut 1 # gain 1.2 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[3]" # cutoff 3500 # orbit 3 # nudge "0.02"
+
+xfade 4 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 1 # cut 1 # gain 1 # shape (0.25) # verb 0.2 0.5 0.1 0.2 # octave "[4]" # cutoff 4000 # orbit 6
+
+d4 $ s "{braids*3}%2" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 0.5 # cut 1 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[4]" # cutoff 4000 # orbit 3 # nudge "0.02"
+
+d4 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 1 # cut 1 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[4]" # cutoff 4000 # orbit 3 # nudge "0.02"
+
+d6 $ s "braids" <| note (scale "major" "<0 [0@ -1] 0 [0 1]>") # model (5) # timbre (0.1) # color (0.5) # sustain 5 # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
+
+d9 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # model (34) # timbre (1) # color (1) # sustain 1 # cut 3 # note (scale "major" "-8") # gain 8 # shape 0.25-- # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
+
+
+d8 $ s "808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 [~ 808bd:1]" # cut 3 # krush 30 # note "-7" # gain 1 # room 0.5 # speed 1.96 # shape 0.25-- # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
+
+d6 silence
+
+
+d1  $ s "tides" >| note (scale "majPent" "0..7")
+    # sustain "{1 2 1}%8"
+    # mode "<0 1 2 3>"
+    # shift (slow 5 sine)
+    # tidesshape (slow 7 sine)
+    # tidessmooth (range 0.2 1 $ slow 8 sine)
+    # slope (slow 3 sine)
+
+    d1  $ s "[[bd sd], linnhats*8]"
+        # verb 0.9 0.9 0.1 0.2
+
+        d1  $ s "[[bd sd], [linnhats*8]]"
+    # clouds 0.1 0.5 0.05 0.1
+    # cloudsblend 1 0.2 0.33 0.8
+
+    d1  $ s "[[bd sd], linnhats*8]"
+    # warpstimb (slow 5 sine)
+    # warpsosc "<0 1 2 3>"
+    # warpsalgo "<0 1 2 3 4 5 6 7 6>"
+    # warpsfreq (slow 3 saw)
+    # warpseasteregg 1
+
+    d1  $ s "[[bd sd], linnhats*8]"
+    # elementsstrength "0.9"
+    # elementspitch (slow 3 sine)
+    # elementsblowlevel 0.6
+    # elementsblowtimb (slow 5 sine)
+    # elementsflow "{0.3 0.6 0.7}"
+    # elementsstrikelevel 1
+    # elementsstriketimb 0.1
+    # elementsmallet rand
+    # elementseasteregg "[1 | 0 | 0]"
+    # elementsmodel "[0 | 1]"
+    # elementscontour (slow 5 saw)
+    # elementsgeom 2
+    # elementsbright (slow 7 saw)
+    # elementsdamp 0
+    # elementspos 0.314
+    # elementsspace 0.9
+
+    d1  $ s "bass1:1"
+    # mu 5
+    # gain 0.7
+
+    d1  $ s "[[bd sd], linnhats*8]"
+    # rings 100 rand 0.7 (slow 3 sine) 0.9
+    # ringsmodel "[0|1]"
+    # ringspoly "[0|1|0]"
+    # ringsinternal "[1|0|1|1]"
+
+    d1  $ s "[[bd sd], linnhats*8]"
+    # ripplescf 0.1
+    # ripplesreson (range 0.5 2 $ slow 1 sine)
+    # ripplesdrive "{1 3 5}%2"
+
+
+
+
+marching
+
+  d2 silence
+
+
+  blackRain
+
+  paulineOliveros
+
+  gormaduli
+
+
+thisLove
+
+d4 $ whenmod 4 3 (const $ s "hh*8") $ struct "<t(3,8) t(3,8,1)>" $ s "moog:2" # legato 1 # note "c'maj e'min" # room 0.4
+
+hush
+
+do
+  d1 $ s "<808bd:1(3,8) 808bd:1(3,8,1)>" # room 0.9 # speed 2 # krush 10 # nudge (range 0.01 0.04 rand)
+  d2 $ s "~ cp" # room 2 # speed 2 # nudge (range "-0.08" "-0.01" rand)
+  -- 4*7=28 this is a 1/7 feel swing
+  -- 4*3=12, so 12 would give you a 1/3 feel swing
+  -- mult the number by 2 if you want to do 16 div, i.e.:
+  -- d3 $ swing 56 $ s "808:1*16" # room 0.8 # nudge 0.05
+  d3 $ swing 28 $ s "808:1*8" # room 1 # nudge (range 0 0.01 rand) # squiz 2 # speed 0.5
+
+do
+  d1 $ s "<808bd:1(3,8)>" # room 0.9 # speed 2 # krush 3 # nudge 0.08
+  d2 $ s "~ cp" # room 0.7 # speed 2 # nudge "-0.08"
+  -- 4*7=28 this is a 1/7 feel swing
+  -- 4*3=12, so 12 would give you a 1/3 feel swing
+  -- mult the number by 2 if you want to do 16 div, i.e.:
+  -- d3 $ swing 56 $ s "808:1*16" # room 0.8 # nudge 0.05
+  d3 $ swing 28 $ s "808:1*8" # room 0.8 # nudge 0.05
+
+  d4 $ s "bd*4" # gain 1.5
+
+  d4 silence
+
+  sloppy
+
+d3 silence
+
 
 setcps "^tempo"
 
