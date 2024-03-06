@@ -38,6 +38,8 @@ bols soundFolder = inhabit [
 withflip = within (0.75, 1) (fast 2)
 withply = within (0.75, 1) (ply 2)
 
+
+
 d1
     $ stack[
         silence
@@ -774,11 +776,63 @@ d1 $ s "cp*16"
       41:FILTERED_NOISE, 42:TWIN_PEAKS_NOISE, 43:CLOCKED_NOISE, 44:GRANULAR_CLOUD, 45:PARTICLE_NOISE,
       46:DIGITAL_MODULATION, 47:QUESTION_MARK
 
-d7 $ swing 56 $ jux (# cutoff (slow 4 2000*saw+500)) $ s "braids" >| note (scale "majPent" "<-4 -3 -1 -2>  0@2 3 4 ~@3 ") # model (14) # timbre (range 0.7 0.5 perlin) # color 0.0 # sustain 2 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # cutoff 4000 # orbit 3 # nudge 0.01
 
-d4 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 5 # cut 1 # gain 1.2 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[3]" # cutoff 3500 # orbit 3 # nudge "0.02"
 
-xfade 4 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 1 # cut 1 # gain 1 # shape (0.25) # verb 0.2 0.5 0.1 0.2 # octave "[4]" # cutoff 4000 # orbit 6
+detuneAmount = 0.004
+
+
+
+slide x = accelerate (2*(x/12))
+asynth detuneAmount = stack [sound "braids" # model "14" # pan 0 # speed (1+detuneAmount) # timbre 0.25 # color 0 # cut 1 # octave 4 # gain 1.2, sound "braids" # model "14" # pan 1 # speed (1-detuneAmount) # timbre 0.25 # color 0 # cut 2 # octave 4 # gain 1.2, sound "braids" # model "1" # timbre 0.4 # color 0 # cut 3 # octave 3  # gain 1, sound "braids" # model "0" # pan 0 # speed (1+detuneAmount) # cut 4 # octave 5 # gain 0.8, sound "braids" # model "0" # pan 1 # speed (1-detuneAmount) # cut 5 # octave 5 # gain 0.8]
+
+d1 $ jux (# shape 0.3) $ struct "t t [f f t] f t f " $ asynth 0.005 <| note (slow 1 "<c7 b6 g6 d6>") # sustain 4 # slide "-2" # orbit 1 # verb 0.7 0.5 0.1 0.2
+
+-- # clouds 0.3 0.4 0.5 0.5 # cloudsmode 2 # cloudsblend rand 1 0.75 0.85
+
+d2 $ s "bd bd sd ~" # room 0.6 # gain 2  # clouds perlin 0.4 0.5 0.5 # cloudsmode 2 # cloudsblend 1 rand 0.75 0.85
+
+# cloudswet w # cloudsspread s # cloudsfb f # cloudsrvb r
+# cloudspos p # cloudssize s # cloudsdens d # cloudstex t
+
+
+d4 $ struct ("t t [f f t] f t f ") $ stack [
+  sound "braids" # model "14" # pan 0 # speed (1+detuneAmount) # timbre 0.25 # color 0 # cut 1 # octave 4 # gain 1.2
+  , sound "braids" # model "14" # pan 1 # speed (1-detuneAmount) # timbre 0.25 # color 0 # cut 2 # octave 4 # gain 1.2
+  , sound "braids" # model "1" # timbre 0.4 # color 0 # cut 3 # octave 3  # gain 0.8
+  , sound "braids" # model "<0 6>" # pan 0 # speed (1+detuneAmount) # cut 4 # octave 5 # gain 0.8
+  , sound "braids" # model "<0 6>" # pan 1 # speed (1-detuneAmount) # cut 5 # octave 5 # gain 0.8
+] <| note (slow 2 "<c7 a6 g6 b6>"+"0") # sustain 8 # slide "-2" # orbit 4 # room 0.9
+
+
+d6  $ note "c c c c" # sound "braids" # gain 2
+
+d4 $ struct ("t t [f f t] f t f ")$ note "[c4,c5,c6]"
+  # sound "superhoover"
+   # gain ("<0.7,1>!3") -- # speed 1 # krush 2 # crush 4 # legato 1.5 # decay 0.2
+
+slide x = accelerate (2 **| (x |/ 12))
+
+d1 $ s "9c 9c 9c" # cut 1 # slide "0 12 3"
+
+d1 $ n "0" # sound "superchip" # voice 0.3  # gain 1 # slide "0 ~ ~ ~"
+
+slide x = accelerate (2*(x/12))
+
+d1 $ s "braids braids braids" # cut 1 # slide "1"
+
+
+
+
+ section = do
+ d7 silence
+
+
+
+d7 $ swing 56 $ jux (# cutoff (slow 4 2000*saw+500)) $ s "braids" >| note (scale "majPent" "<-4 -3 -1 -2>  0@2 3 4 ~@3 ") # model (14) # timbre (range 0.7 0.5 perlin) # color 0.0 # sustain 2 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # cutoff 4000 # orbit 7 # nudge 0.01
+
+d4 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 5 # cut 1 # gain 1.2 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[3]" # cutoff 3500 # orbit 4 # nudge "0.02"
+
+xfade 4 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 1 # cut 1 # gain 1 # shape (0.25) # verb 0.2 0.5 0.1 0.2 # octave "[4]" # cutoff 4000 # orbit 4
 
 d4 $ s "{braids*3}%2" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 0.5 # cut 1 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[4]" # cutoff 4000 # orbit 3 # nudge "0.02"
 
@@ -786,12 +840,12 @@ d4 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (r
 
 d6 $ s "braids" <| note (scale "major" "<0 [0@ -1] 0 [0 1]>") # model (5) # timbre (0.1) # color (0.5) # sustain 5 # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
 
-d9 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # model (34) # timbre (1) # color (1) # sustain 1 # cut 3 # note (scale "major" "-8") # gain 8 # shape 0.25-- # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
+d9 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # model (34) # timbre (1) # color (1) # sustain 1 # cut 3 # note (scale "major" "-8") # gain 1 # shape 0.25 # orbit 9-- # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
 
 
-d8 $ s "808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 [~ 808bd:1]" # cut 3 # krush 30 # note "-7" # gain 1 # room 0.5 # speed 1.96 # shape 0.25-- # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
+d8 $ s "808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 [~ 808bd:1]" # krush 30 # note "-7"  # speed 1.96  # gain 1 # room 0.7 # orbit 6
 
-d6 silence
+d9 silence
 
 
 d1  $ s "tides" >| note (scale "majPent" "0..7")
