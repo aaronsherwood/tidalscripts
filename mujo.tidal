@@ -1,0 +1,314 @@
+bols soundFolder = inhabit [
+            ("dha", n "0" # s soundFolder)
+            , ("dhi", n "1" # s soundFolder)
+            , ("ta", n "2" # s soundFolder)
+            , ("ti", n "3" # s soundFolder)
+            , ("ri", n "4" # s soundFolder)
+            , ("ki", n "5" # s soundFolder)
+            , ("na", n "6" # s soundFolder)
+            , ("ge", n "7" # s soundFolder)
+            , ("dhin", n "8" # s soundFolder)
+            , ("ka", n "9" # s soundFolder)
+            , ("tiri", n "10" # s soundFolder)
+            , ("tirikit", n "10 22*2" # s soundFolder)
+            , ("gha", n "11" # s soundFolder)
+            , ("ghi", n "12" # s soundFolder)
+            , ("na", n "13" # s soundFolder)
+            , ("tha", n "14" # s soundFolder)
+            , ("tin", n "15" # s soundFolder)
+            , ("thi", n "16" # s soundFolder)
+            , ("ra", n "17" # s soundFolder)
+            , ("thin", n "18" # s soundFolder)
+            , ("thi2", n "19" # s soundFolder)
+            , ("ta2", n "20" # s soundFolder)
+            , ("ti2", n "21" # s soundFolder)
+            , ("te", n "22" # s soundFolder)
+            , ("dhe", n "23" # s soundFolder)
+            , ("ga", n "24" # s soundFolder)
+            , ("tak", n "25" # s soundFolder)
+            , ("ti3", n "26" # s soundFolder)
+            , ("khi", n "27" # s soundFolder)
+            , ("kath", n "31" # s soundFolder)
+                        ]
+withflip = within (0.75, 1) (fast 2)
+withply = within (0.75, 1) (ply 2)
+
+d1 $ s "bd bd sd ~" # orbit "<0 1 2>"
+
+d9 $ loopAt 12 $ chop 100 $ jux (# djf (slow 2 (range 0.7 0.9 saw))) $ s "mujo" # room 1.1 # orbit 9 # gain 1.5 # krush 40 -- # djf 0.8
+
+d5 $ slow 1 $ s "808bd" # gain 2 # speed 1 # room 0.5 # krush 4 # n 1  -- # note ((scale "messiaen3" "<-4 -3 -1 -2>")+"16")
+
+d1 $ note ((whenmod 4 3 (fast 2)) "{g f e c}%8" + 12)# s "midi" # amp ((range 0.0 0.1 rand)+ "<0.4 0.3 0.2> 0.2 0.3 0.1" + (slow (16)(range 0 0.6 saw))) # sustain 0.2
+
+d2 $ someCyclesBy 0.4 (scramble 4) $ fast 4 $ jux (# cutoff (slow 4 2000*saw+500)) $ s "braids" >| note ("{g f e c}%3" + 12) # model (14) # timbre (range 0.6 0.5 perlin) # color 0.5 # sustain 1 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # cutoff 3000 # orbit 7
+
+-- 14:SAW_SWARM
+d7 $ slow 1 $ swing 56 $ jux (# cutoff (slow 4 2000*saw+500)) $ s "braids" >| note (scale "majPent" "<-4 -3 -1 -2>  0@2 3 4 ~@3 ") # model (14) # timbre (range 0.7 0.5 perlin) # color 0.0 # sustain 2 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # cutoff 4000 # orbit 7 # nudge 0.01
+
+d4 $ slow 1 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 5 # cut 1 # gain 1.1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[3]" # cutoff 3500 # orbit 4 # nudge "0.007"
+
+d1 $ note "<[c6,e5] [c6,a5] [c6 e6,b5] [d6 f6,f5]>" # s "midi"
+
+-- blackhole section
+
+0:CSAW, 1:MORPH, 2:SAW_SQUARE, 3:SINE_TRIANGLE, 4:BUZZ, 5:SQUARE_SUB, 6:SAW_SUB, 7:SQUARE_SYNC,
+8:SAW_SYNC, 9:TRIPLE_SAW, 10:TRIPLE_SQUARE, 11:TRIPLE_TRIANGLE, 12:TRIPLE_SINE, 13:TRIPLE_RING_MOD,
+14:SAW_SWARM, 15:SAW_COMB, 16:TOY, 17:DIGITAL_FILTER_LP, 18:DIGITAL_FILTER_PK, 19:DIGITAL_FILTER_BP,
+20:DIGITAL_FILTER_HP, 21:VOSIM, 22:VOWEL, 23:VOWEL_FOF, 24:HARMONICS, 25:FM, 26:FEEDBACK_FM,
+27:CHAOTIC_FEEDBACK_FM, 28:PLUCKED, 29:BOWED, 30:BLOWN, 31:FLUTED, 32:STRUCK_BELL, 33:STRUCK_DRUM,
+34:KICK, 35:CYMBAL, 36:SNARE, 37:WAVETABLES, 38:WAVE_MAP, 39:WAVE_LINE, 40:WAVE_PARAPHONIC,
+41:FILTERED_NOISE, 42:TWIN_PEAKS_NOISE, 43:CLOCKED_NOISE, 44:GRANULAR_CLOUD, 45:PARTICLE_NOISE,
+46:DIGITAL_MODULATION, 47:QUESTION_MARK
+
+d1 $ slow 1 $ jux (# cutoff (slow 4 10000*isaw+500)) $ s "<braids braids braids ~>" # note ("[0,7,<-1 -4 -8 ~>]"+"[<-4>]") # model "[31]" # timbre (slow 2 (segment 128 (range 0.0 0.5 rand))) # color (slow 2 (segment 128 isaw)) # sustain 8 # gain 0.85 # verb 0.2 0.5 0.1 0.2 # cutoff 4000 # orbit 1
+
+d6 $ slow 2 $ s "<midi midi midi ~>" # note ("[0,7,<-1 -4 -8 ~>,<-13 -16 -20 ~>]"+"8")  # sustain 2 # amp 0.8
+
+
+
+
+d2 $ slow 2 $ s "braids" # note (scale "major" "<4 2 0 ~>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 12 # cut 1 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[2]" # lpfbus 2 (slow 3 (segment 128 (range 500 8000 tri) )) # orbit 2
+
+d3 $ s "flute" # room 0.5 # gain 1 # n "<<~ 3> ~ <11~ > 2 >" # pan (segment 128 rand)
+
+
+d5 $ loopAt 8 $ chop 100 $ s "[33:28]" # room 0.9 # gain 1.1 # orbit 5 # pan (segment 128 perlin)
+
+d6 $ loopAt 4 $ chop 100 $ s "[33:29]" # room 0.9 # gain 1.4 # orbit 5 # pan (segment 128 perlin)
+
+d4
+    $ stack[
+        silence
+        ,
+            whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $
+            bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"
+        ,
+            whenmod 8 2 (# silence) $
+            sometimesBy 0.3 (jux (palindrome)) $
+            sometimesBy 0.2 (# speed 2.2) $
+            sometimes (withply) $ bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "[ti|ri|ra|thi|tha|tin]*5"
+    ] # room 0.2
+
+----------------
+
+hush
+setcps (116/60/4)
+
+d5 silence
+
+d1 $ s "808bd:1" # room 0.5 # speed 2
+
+resetCycles
+
+
+d3 $ s "808bd:1(5,8)" # room 0.9 # speed (range 4 1 saw)
+
+d4 $ s "percussion" # n (irand 100)
+
+d1
+    $ stack[
+        silence
+        ,
+            whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $
+            bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"
+        ,
+            whenmod 8 2 (# silence) $
+            sometimesBy 0.3 (jux (palindrome)) $
+            sometimesBy 0.2 (# speed 2.2) $
+            sometimes (withply) $ bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "[ti|ri|ra|thi|tha|tin]*5"
+    ] # room 0.2
+
+    d1
+        $ degradeBy 0.75 $ stack[
+            silence
+            ,
+                whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $
+                bols "[[percussion? SOPHIE_subs] ]" "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"
+            ,
+                whenmod 8 2 (# silence) $
+                sometimesBy 0.3 (jux (palindrome)) $
+                sometimesBy 0.2 (# speed 2.2) $
+                sometimes (withply) $ bols "[ [percussion? SOPHIE_subs]  ]" "[ti|ri|ra|thi|tha|tin]*5"
+        ] # room 0.2
+
+    d1
+        $ stack[
+            silence
+            ,
+                whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $
+                bols "[east, < <IGLOOGHOST_snares>!15 > ]" "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"
+            ,
+                whenmod 8 2 (# silence) $
+                sometimesBy 0.3 (jux (palindrome)) $
+                sometimesBy 0.2 (# speed 2.2) $
+                sometimes (withply) $ bols "[east, < <IGLOOGHOST_snares>!15 > ]" "[ti|ri|ra|thi|tha|tin]*5"
+        ] # room 0.2
+
+        thisLove
+
+        hush
+
+        resetCycles
+
+
+d1 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # gain 0.75 # room "0.9" # size "0.9" # speed "1"  # up "-6" -- # slow 4 ( gain (range 0.35 0.8 perlin) ) # up "5"-- # slow 4 ( crush (range 2 32 rand) )
+d2 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # gain 0.75 # room "0.9" # size "0.9" # speed "-2"  # up "-6" -- # slow 4 ( gain (range 0.35 0.8 perlin) ) # up "5"
+d3 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # gain 0.75 # room "0.9" # size "0.9" # speed "0.5" # up "-6" -- # slow 4 ( gain (range 0.35 0.8 perlin) ) # up "5"
+
+
+
+----------------------------------------------
+-- GLITCH SECTION
+----------------------------------------------
+setcps (1)
+
+d1
+    $ stack[
+        silence
+        ,
+            whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $
+            bols "[east ]" "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"
+        ,
+            -- fast 2 $
+            whenmod 8 2 (# silence) $
+            sometimesBy 0.3 (jux (palindrome)) $
+            sometimesBy 0.2 (# speed 2.2) $
+            sometimes (withply) $ bols "[east ]" "[ti|ri|ra|thi|tha|tin]*5"
+    ] # room 0.2
+
+d2
+    $ stack[
+        silence
+        ,
+            whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $
+            bols "[< <IGLOOGHOST_snares>!15 > ]" "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta>"
+        ,
+            whenmod 8 2 (# silence) $
+            sometimesBy 0.3 (jux (palindrome)) $
+            sometimesBy 0.2 (# speed 2.2) $
+            sometimes (withply) $ bols "[< <IGLOOGHOST_snares>!15 > ]" "[ti|ri|ra|thi|tha|tin]*5"
+    ] # room 0.2
+
+d3 $ slow "4" $ s "{flute@6 flute@1 flute@1}%5" # n "{0@6 1@1 2@1}%5" # legato 1 # speed 1 # nudge "-0.08" # room 0.2
+
+----------------------------------------------
+----------------------------------------------
+----------------------------------------------
+
+d4 $ slow 4 $ s "{~ hh}%5" # gain 2 # room 0.5
+
+d5 $ slow 8 $ s "{808bd ~ 808bd ~ }%5" # gain 1.2 # speed 8 # room 0.5 # krush 1 # n 1 # up "-2" # orbit 5
+
+
+
+d1 $ s "808" <| n (run 6) # orbit 1
+
+d3 $ s "808" <| n (run 6) # orbit 3
+
+hush
+
+d5 silence
+
+scaleList
+
+setcps (130/60/4)
+
+d1 $ rotL 2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "messiaen3" "0..24"+"0"))$ swing 56 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48") $ stack[
+ s "amencutup*16" # n (irand 32) # speed ("3") # room 1 # gain (range 0.8 1 rand) # crush 3 # orbit 11
+ , s "plaits*16?"
+     # note (scale "messiaen3" "0..2")
+     # sustain 0.5
+     # engine 15 --(segment 16 (irand 16))
+     # timbre (range 0.1 0.4 rand)
+     # harm (0.3)
+     # morph 0.5
+     # gain (range 0.8 1 rand)
+ ]
+
+ marching
+
+ d2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "messiaen3" "0..24")) $ swing 56 $ struct "t*16" $ s "plaits" >| note (scale "messiaen3" "0..7")
+     # sustain 0.5
+     # engine (segment 16 (irand 16))
+     # timbre (slow 3 sine)
+     # harm (slow 4 saw)
+     # morph (slow 9 saw)
+     # gain 1.2
+     # pan 1
+
+ scaleList
+
+
+hush
+ d1 $ s "midi*4" # n "c e g c6"
+
+ d2 $ ccv "0 60 80 100" # ccn "20" # s "midi"
+  d3 $ ccv ("0 60 80 100"+"10") # ccn "21" # s "midi" # nudge "0.01"
+
+     d5  $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48") $ s "plaits*16"
+       # note (scale "messiaen3" "0..2")
+       # sustain 0.5
+       # engine 15 --(segment 16 (irand 16))
+       # timbre (range 0.1 0.4 rand)
+       # harm (0.3)
+       # morph 0.5
+       # gain (range 0.9 1.6 rand)
+
+d2 silence
+
+d1 $ whenmod 2 1 (fast 2) $ s "east*8" # n (run "<4 8 16 24>")
+d2 $ s "east" # n 0 # gain 1.2
+
+d1 $ slow 3 $ s "percussion" # n ((irand 10)+"10") # pan (slow 9 perlin) # gain (slow 1 (range 0.9 1.1 perlin))-- # room 0.7 # size 0.9
+d2 $ slow ((irand 10)+"8") $ s "tibet_horns" # n (irand 14) # gain 1
+d3 $ loopAt 12 $ chop 36 $ s "desertMujo" # n 4 # pan (slow 4 perlin) # gain (range 0.7 1 perlin)
+d3 $ slice 16 "4" $ s "desertMujo" # n 4   # cut 1 -- # pan (slow 4 perlin) # gain (range 0.7 1 perlin)
+
+d3 $ slice 16 "<1 2>" $ s "desertMujo" # n 4  # cut 1  -- # pan 0.25-- # pan (slow 4 perlin) # gain (range 0.7 1 perlin)
+
+d3 $ slice 16 "4*4"  $ s "desertMujo" # n 4  # cut 1 # speed ((range 2 1) saw) # room 0.5 # squiz 1-- # note "12 16 13 12"
+
+do
+  hush
+  -- base beat
+  d1 $ loopAt 2 $ splice 8 "[<0 2 4 6> ~ ~ ~ ~ <5 ~> <6 ~> [7?]]" $ s "desertMujo:4" # room 0.7 # speed 1 # gain 1.5
+  -- back beat
+  d2 $ loopAt 2 $ splice 16 "[~ ~ 0 ~]*2" $ s "desertMujo:4" # room 2 # krush 5 # speed 8
+  -- noisey
+  d3  $ loopAt 2  $ every 4 (randslice 16) $ every 4 (fast 2) $ splice 16 (fast 4 "1 <1 3> 2 2") $ s "desertMujo:4" # room 0.7 # speed (range 1 0.25 saw) # gain "1 [1 0] [0 1] [0 0]" # djf 0.9 # squiz (range 1 2 saw)
+  -- clicks
+  d4 $ splice 16 ("<~ 3?> 2 ~ [2 <[~ [0*3]] ~>]") $ s "desertMujo:4" # speed 24 # squiz 2 # room 0.5 # legato 0.25
+  -- cowbell (sorta)
+  d5 $ loopAt 2 $ splice 16 "<[~ ~ 0 ~]*4 [~ ~ 0? 0?]*4 >" $ s "desertMujo:4" # room 1 # krush 1 # speed 8
+
+  do {
+    d4 $ sometimesBy 0.3 (splice 8 "[3 3 3 3*6]!2") $ splice 16 ("3*16") $ s "desertMujo:4*32" # speed (24) # squiz 2 # room 0.5 # legato 0.25;
+    d5 $ qtrigger $ seqPLoop [
+      (0, 4, loopAt 2 $ splice 16 "<[{0 3 5 4 7}%16]*2? >" $ s "desertMujo:4" # room 1 # krush 1 # speed "4" # crush "{1 2 3 5 8}%32"),
+      (4, 8, loopAt 2 $ splice 16 "<0*32>" $ s "desertMujo:4" # room 1 # krush 1 # speed "[{8 4 3 2 1.5}%<16>]*2" # gain "{1 1 0 1 1 0 1}%16")
+    ];
+    d6 $ loopAt 2 $ splice "<[8 16] 16>" "0 ~@3 ~ 0? ~ ~" $ s "desertMujo:4" # room 10 # size 0.5 # krush 100 # speed "[1,8]"
+  }
+
+  d7 $ whenmod 4 3 (trunc 0.5) $ slice 16 "[0]*8" $ s "<aaron:7(3,8) aaron:7(5,8,1)>" # room 2 # size 0.6 # krush 5 # speed 1 # note ("c6 b g c e c" + 8)
+
+
+d4 $ slice 16 "6(12,16,<0 1>)" $ s "desertMujo*4" # n 1 # speed (0.5)  -- # legato 4
+d4 $ slice 32 "<5>" $ s "desertMujo" # n 5   # cut 2 # pan 0.75
+
+d4 $ slice  16 "3" $ s "desertMujo" # n 5 -- # pan (slow 5 perlin) # gain (slow 6 (range 0.7 1 perlin))
+
+d6 $ slice 32 "0*16" $ s "flute" # n "0" # legato 1 # speed 1 # gain "1"
+d6 $ jux rev $ slow 16 $ striateBy 64 (1/4) $ sound "flute" # gain 0.6 -- # slow 4 ( gain (range 0.5 0.7 rand) )
+
+d4 $ loopAt 12 $ chop 36 $ s "desertMujo" # n 5 # pan (slow 5 perlin) # gain (slow 6 (range 0.7 1 perlin))
+d5 $ loopAt 32 $ chop 36 $ s "desertMujo" # n 6
+d6 $ slow "8" $ s "flute" # n (irand 32) # legato 1 # speed 1 # pan perlin
+
+d6 $ slow "4" $ s "{flute@6 flute@1 flute@1}%5" # n "{0@6 1@1 2@1}%5" # legato 1 # speed 1
+
+d7 $ ccv (segment 128 (slow 4 (range 100 10 saw))) # ccn "2" # s "midi"
+d8 $ ccv (segment 128 (slow 3 (range 100 10 cos))) # ccn "3" # s "midi"
+d9 $ ccv (segment 128 (slow 2 (range 100 10 tri))) # ccn "4" # s "midi"
+d10 $ ccv (slow 1(segment 1028  (range 100 10 perlin))) # ccn "5" # s "midi"

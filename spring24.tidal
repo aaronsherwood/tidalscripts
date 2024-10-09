@@ -65,6 +65,16 @@ d3 silence
 d4 silence
 d5 silence
 
+gormaduli
+
+blackRain
+
+sunshine "xfade"
+
+paulineOliveros
+
+d1 $ s "bd arpy sd hh" # michi # speed 0.5
+
 -- Teental; (16 beats; 4-4-4-4)
 d1 $ whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $ slow 1 $ bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "Dha dhin dhin dha dha dhin dhin dha Dha tin  tin  ta  na  dhin dhin dha"
 -- Jhaptal; (10 beats; 2-3-2-3)
@@ -93,6 +103,55 @@ d3 $ degradeBy 0.1 $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (fast 2 (
 d3 $ degradeBy "0 [0 0.3] 0 [0 0.4]" $ struct "{t}%12" $ arp "down" $ note ((innerJoin $ (chooseBy (fast 2 "<0 0.0625 0.125 0.1875 0.25 0.3125 0.375 0.4375 0.5 0.5625 0.625 0.6875 0.75 0.8125 0.875 0.95>") chords))+"[-12,0]") <| s "midi*<5 4 3>" # amp (range 0.2 0.6 rand) # sustain (range 0.2 0.7 perlin) # nudge (range "-0.04" "0.04" perlin)
 
 
+d1 $ struct "t(13,16)" $ slice 32 "{0 .. 7}" $ s "44comp:37" # legato 1 # gain 1 # speed 1
+# clouds perlin perlin perlin 0.5
+# cloudsblend 1 0.75 0.66 0.4
+# cloudsmode 2 --"<0 1 2 3>"
+# cloudsgain "5"
+
+d1 $ s "braids(<9>,16,2)"
+  # note ("<f e a c>"+"-12")
+  # model 15
+  # sustain 0.5
+  # timbre (slow 4 (range 0.4 0.7 saw))
+  # color 0.0
+
+d2 silence
+
+d2 $ s "bd arpy sd hh"
+  # ringsmodel "<0@4 1@4 2@4 3@4 4@4>"
+  # ringsfreq "32.703 65.406 130.813"
+  # ringsstruct "<1 0.75 0.5 0>"
+  # ringsbright (slow 2 (range 0.4 0.8 saw))
+  # ringsdamp 0.7
+  # ringspos (slow 4 isaw)
+  # ringsinternal "[0,1]"
+
+-- clouds: real time granular effect
+-- params are:
+-- clouds p s d t = # cloudspos p # cloudssize s # cloudsdens d # cloudstex t
+-- cloudsblend w s f r =  cloudswet w # cloudsspread s # cloudsfb f # cloudsrvb r
+d2 $ s "bd arpy sd hh" # up "-5"
+  # clouds 0.01 perlin 0.72 perlin
+  # cloudsblend 0.4 0.75 0.66 0.175
+
+d1 $ s "arpy*16" # n (run 16) # up "-5"
+  # clouds 0.5 0.5 0.05 0.1
+  # cloudsblend 1 0.2 0.33 0.8
+
+-- alternate modes (there are four modes: 0-3 https://web.archive.org/web/20210617075747/https://mutable-instruments.net/modules/clouds/alternate_modes/)
+d2 $ s "bd 808bd:1 sd hh" # up "-5"
+  # clouds perlin perlin perlin 0.5
+  # cloudsblend 1 0.75 0.66 0.4
+  # cloudsmode 2 --"<0 1 2 3>"
+  # cloudsgain "2"
+
+
+d1 $ jux rev $ slow 128 $ striateBy (2000+(irand 3000)) (1/128) $ sound "44comp:26" # room 0.95 # size 0.95
+
+
+
+d1 $ jux rev $ slow 128 $ striateBy (2000+(irand 3000)) (1/128) $ sound "33:27" # room 0.95 # size 0.95
 
 
 
@@ -124,6 +183,11 @@ once $ slow 4 $ panbus 1 $ segment 128 $ range (-1) 1 $ fast 4 $ sine
 d2 $ lpfbus 2 $ segment 128 $ smooth "2000 0"
 
 d1 $ sew "t <f t> <f [f t] t>" (n "0 .. 15" # s "future") (s "cp:3*16" # speed saw + 1.2)
+# clouds 0.01 perlin 0.72 perlin
+# cloudsblend 0.4 0.75 0.66 0.9
+# pan perlin
+
+
 d1 $ sew "t(1,8)" (n "0 .. 15" # s "future") (s "cp:3*16" # speed sine + 1.5)
 
 d1 $ jux rev $ n (off 0.5 (+ 12) $ off 0.125 (+ 7) "<c*2 a(3,8) f(3,8,2) e*2>")
@@ -134,7 +198,7 @@ d2 $ s "[bd*4|hh*12|cp*2]"
 
 d2 $ slow 2 $ s "supergrind"
   >| note (scale "<minor hexSus yu spanish>" ("[<-7 -5 -3 -1>,0,2]*<1 8 16 32>") + "[c5,c6]")
-  # lpfrecv 1
+
 
   let ratio2 = pF "ratio2"
 
@@ -533,7 +597,7 @@ d1 $ degradeBy 0.1  $ stack[
       ccv (segment 8 (irand 127)) # ccn 0 # s "midi"
     ]
 
-    d2 $ every 1 (fast 2) $ note ("{c d e f g}%8"+"<[-15,-3]@8 [-17,-5]@8 >") # s " midi"  # room 0.5
+    d2 $ every 1 (fast 2) $ note ("{c d e f g}%8"+"<[-15,-3]@8 [-17,-5]@8 >") # s " midi"  # room 0.5 # amp 0.6 # sustain 0.6
 
     d6 $ s "midi" >| note (arp "up" (scale "mixolydian" ("[0*3, 4*4,6*5,7*8? ]")+"a5")) # amp (range 0.4 0.5 rand)
 
@@ -565,6 +629,19 @@ d1 $ degradeBy 0.1  $ stack[
       s "midi" >| note ("a5")  --(slow 4 (range 0.5 saw)
     , ccv (segment 128 (range 0 127 isaw)) # ccn 1 # s "midi" # nudge 0.05
     ]
+
+d7 $ loopAt 1 $ randslice 16 $ s "africa*16" # room 2 # gain 1.2
+d2 $ s "amencutup*16" # n (irand 32) # speed 4 # room 0.5 # crush 3 # pan rand
+d3 $ s "casio*16?" # speed (slow 8 (range 2 1 saw)) # room 0.5 # gain (range 0.8 0.7 rand)
+d4 $ ccv (segment 128 (slow 2 (range 0 127 saw))) # ccn 0 # s "midi"
+d5 $ slow 2 $ s "808bd:1(5,16)" # krush 5 # speed 2 # room 0.5
+
+d3 $ s "808bd:1*4" # krush 5 # note "<0@2 3@2 5@2 8@2>" # room 0.6
+
+d3 silence
+d3 $ loopAt 4 $ slice 8 "0(3,8) [1 2] [2 1] [0 4 7]" $ s "africa" # room 0.8 # krush 3 # speed "<[1 1.5] [2 1.5]>" -- # clouds rand rand rand rand # cloudsblend 1 0.92 0.3 0.8
+
+
 
 thisLove
 
@@ -636,14 +713,13 @@ thisLove
   # rate 4 -- (slow 4 (range 0 4 saw))
   -- # lpq 0.4
 
-  d1 $ s "supersquare*8" # note "c" # voice (rand) -- # rate 4
+  d3 $ s "supersquare*8" # note "c" # voice (rand) -- # rate 4
 
 d1 $ stack[
-
-  , shuffle "<1>" $ s "supertron(<9 12 10 13>,16)" # note ((scale "minPent" "<-7 -10 -5 -6> .. <8>")-0) # room 0.5 # gain (range 1 1.2 rand) # orbit 1
+  shuffle "<1>" $ s "supertron(<9 12 10 13>,16)" # note ((scale "minPent" "<-7 -10 -5 -6> .. <8>")-0) # room 0.5 # gain (range 1 1.2 rand) # orbit 1
 ]
 
-d1 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48")  $ s "amencutup*16" # n (irand 32) # speed ("3") # room 1 # gain 1.2 # crush 3 # cloudsGrainLess
+d2 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48")  $ s "amencutup*16" # n (irand 32) # speed ("3") # room 1 # gain 1.2 # crush 3 # cloudsGrainLess
 
 d2 $ s "supertron(<9 12 10 13>,16)" # note ((scale "<minPent@4 majPent@4>" "<-2> .. <8>")-0) # room 0.9 # gain (range 0.9 0.8 rand) # octave "[5,4]" # lpf (slow 4 (range "10" "2000" tri)) # orbit 2
 
@@ -653,7 +729,7 @@ d2 $ s "supertron(<9 12 10 13>,16)" # note ((scale "<minPent@4 majPent@4>" "<-2>
 
 scaleList
 
-  d1  -- # cutoff (slow 4 5000*isaw+500)
+  d5 silence  -- # cutoff (slow 4 5000*isaw+500)
 
   d5 $ slow 1  $ bite 4 "0 2 1 <2 3>"$ s "supersaw(<9 12 10 15>,16)" # note ((scale "majPent" "0 .. 7")) # room 0.4 # sustain 0.1 # gain (range 0.8 1.2 rand)
 
@@ -720,7 +796,7 @@ fill = d1 $ swing 56 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# spe
         # gain (range 0.9 1.6 rand)
     ]
 
-xfadeIn 1 2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "0..24"+"0"))$ swing 56 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48") $ stack[
+xfadeIn 2 2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "0..24"+"0"))$ swing 56 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48") $ stack[
   s "amencutup*16" # n (irand 32) # speed ("3") # room 1 # gain 1.3 # crush 3 # orbit 11
   , s "plaits*16?"
       # note (scale "majPent" "0..2")
@@ -729,8 +805,15 @@ xfadeIn 1 2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "
       # timbre (range 0.1 0.4 rand)
       # harm (0.3)
       # morph 0.5
-      # gain (range 0.9 1.6 rand)
+      # gain (range 0.9 1.1 rand)
   ]
+
+  d1 $ s "braids(<9>,16,2)"
+    # note ("<f e a c>"+"-12")
+    # model 15
+    # sustain 0.5
+    # timbre (slow 4 (range 0.4 0.7 saw))
+    # color 0.0
 
 xfadeIn 1 2 silence
 
@@ -753,13 +836,20 @@ d2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "0..24")) 
       # morph 0.5
       # gain (range 0.9 1.6 rand)
 
+do
+hush
 d3 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "0..24"+"-24")) $ swing 56 $ s "braids*16" # note (scale "majPent" "-4..16"+"-12") # model 28 # timbre rand # color rand # sustain 2 # gain 1.2 # pan 0
 
-d1 $ s "cp*16"
-  # rings 100 rand 0.7 1 0.9
-  # ringsmodel "[1]"
-  # ringspoly "[0]"
-  # ringsinternal "[1]"
+d1 $ s "cp*8"
+  # rings 50 0.5 0.5 1 0.9
+  # ringsmodel "<0 1>"
+  # ringsinternal "1"
+
+  d1  $ s "[[bd sd], linnhats*8]"
+    # rings 100 rand 0.7 (slow 3 sine) 0.9
+    # ringsmodel "[0|1]"
+    # ringspoly "[0|1|0]"
+    # ringsinternal "[1|0|1|1]"
 
       d5 $ fast 4 $ s "~ hh" # gain 2 # room 0.9 # gain 2 # nudge (range "0.00" "-0.02" rand)
 
@@ -776,18 +866,60 @@ d1 $ s "cp*16"
       41:FILTERED_NOISE, 42:TWIN_PEAKS_NOISE, 43:CLOCKED_NOISE, 44:GRANULAR_CLOUD, 45:PARTICLE_NOISE,
       46:DIGITAL_MODULATION, 47:QUESTION_MARK
 
+d1 $ chop 16 $ sound "arpy ~ feel*2 newnotes"
 
+d1 $ chop "<16 128 32>" $ sound "arpy ~ feel*2 newnotes"
+
+d1 $ chop 16 $ sound (samples "arpy*8" (run 16))
+d1 $ chop 32 $ sound (samples "arpy*8" (run 16))
+d1 $ chop 256 $ sound "bd*4 [sn cp] [hh future]*2 [cp feel]"
+
+d1 $ slow 1 $ striate 300 $ sound "bev:1"
+
+d1 $ slow 1 $ striateBy 200 (1/32) $ slice 200 ("20*32"+ (segment 32 (irand 10))) $ sound "bev:1" # room 1 # attack 0.7 # gain 2
+
+d1 $ jux rev $ slow 128 $ striateBy (2000+(irand 3000)) (1/128) $ sound "bev:1" # room 0.95 # size 0.95
+
+d1 $ s ""
+
+d1 $ juxBy 0.6 (|* speed "2") $ loopAt "<4 6 2 3>" $ chop 12 $ sound "fm:14"
+
+d1 $ smash 3 [2,3,4] $ sound "ho ho:2 ho:3 hc"
 
 detuneAmount = 0.004
+
+setcps 0.635
+
+d1 $ loopAt 2 $ chop 64 $ s "breaks152" # cps (slow 0.5 (segment 64 (range 0.635 0.1 saw))) # room 0.5
+
+d2 $ loopAt 4 $ chop 64 $ s "breaks152" # room 0.5
+
+p "cpsfun" $ s "bd sd(3,8)" # cps (slow 8 $ 0.5 + saw)
 
 
 
 slide x = accelerate (2*(x/12))
 asynth detuneAmount = stack [sound "braids" # model "14" # pan 0 # speed (1+detuneAmount) # timbre 0.25 # color 0 # cut 1 # octave 4 # gain 1.2, sound "braids" # model "14" # pan 1 # speed (1-detuneAmount) # timbre 0.25 # color 0 # cut 2 # octave 4 # gain 1.2, sound "braids" # model "1" # timbre 0.4 # color 0 # cut 3 # octave 3  # gain 1, sound "braids" # model "0" # pan 0 # speed (1+detuneAmount) # cut 4 # octave 5 # gain 0.8, sound "braids" # model "0" # pan 1 # speed (1-detuneAmount) # cut 5 # octave 5 # gain 0.8]
 
-d1 $ jux (# shape 0.3) $ struct "t t [f f t] f t f " $ asynth 0.005 <| note (slow 1 "<c7 b6 g6 d6>") # sustain 4 # slide "-2" # orbit 1 # verb 0.7 0.5 0.1 0.2
+d8 $ jux (# shape 0.3) $ asynth 0.004 <| note (scale "major" "<0 [0@ -1] 0 [0 <1 ~>]>"+"24") # sustain 8 # orbit 8 # verb 0.7 0.5 0.1 0.2 # slide "<0 1 2 <3 48>>"
+
+d1 $ s "braids*12" # note (scale "majPent" "-7 .. 9") # model 7
+d2 $ s "bd bd sd ~"
 
 -- # clouds 0.3 0.4 0.5 0.5 # cloudsmode 2 # cloudsblend rand 1 0.75 0.85
+
+d1 $ fast 2 $ s "breaks125:1" # cps (120/60/4) # sustain 1
+d1 $ s "breaks125:2!3" # cps (120/60/4) # sustain "0.4 0.2 0.4" # begin "0 0 0.4"
+
+d1 $ stack [
+s "sax:5" # legato 1 # speed 1 # unit "c",
+s "bd*2"
+]
+
+d1 $ slow 2 $ s "breaks152" # legato 1 # timescale (152/130) # cps (130/60/4)
+
+d1 $ slow 2 $ s "breaks152" # legato 1 # timescale (152/130) # timescalewin 0.01 # cps (130/60/4)
+d1 $ slow 2 $ s "breaks152" # legato 1 # timescale (152/130) # timescalewin 10 # cps (130/60/4)
 
 d2 $ s "bd bd sd ~" # room 0.6 # gain 2  # clouds perlin 0.4 0.5 0.5 # cloudsmode 2 # cloudsblend 1 rand 0.75 0.85
 
@@ -821,31 +953,54 @@ slide x = accelerate (2*(x/12))
 d1 $ s "braids braids braids" # cut 1 # slide "1"
 
 
+0:CSAW, 1:MORPH, 2:SAW_SQUARE, 3:SINE_TRIANGLE, 4:BUZZ, 5:SQUARE_SUB, 6:SAW_SUB, 7:SQUARE_SYNC,
+8:SAW_SYNC, 9:TRIPLE_SAW, 10:TRIPLE_SQUARE, 11:TRIPLE_TRIANGLE, 12:TRIPLE_SINE, 13:TRIPLE_RING_MOD,
+14:SAW_SWARM, 15:SAW_COMB, 16:TOY, 17:DIGITAL_FILTER_LP, 18:DIGITAL_FILTER_PK, 19:DIGITAL_FILTER_BP,
+20:DIGITAL_FILTER_HP, 21:VOSIM, 22:VOWEL, 23:VOWEL_FOF, 24:HARMONICS, 25:FM, 26:FEEDBACK_FM,
+27:CHAOTIC_FEEDBACK_FM, 28:PLUCKED, 29:BOWED, 30:BLOWN, 31:FLUTED, 32:STRUCK_BELL, 33:STRUCK_DRUM,
+34:KICK, 35:CYMBAL, 36:SNARE, 37:WAVETABLES, 38:WAVE_MAP, 39:WAVE_LINE, 40:WAVE_PARAPHONIC,
+41:FILTERED_NOISE, 42:TWIN_PEAKS_NOISE, 43:CLOCKED_NOISE, 44:GRANULAR_CLOUD, 45:PARTICLE_NOISE,
+46:DIGITAL_MODULATION, 47:QUESTION_MARK
 
+d2 $ jux (# model 31) $ s "braids(<9@2 10@2 11>,16,2)" # note "[a3, c]" # model "46"  # timbre (slow 2 sine) # sustain 1 # color (slow 2 tri)  # gain 1 # cutoff 3000 # room 0.5
 
  section = do
  d7 silence
 
 
+d1 $ rotL 2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "0..24"+"0"))$ swing 56 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48") $ stack[
+ s "amencutup*16" # n (irand 32) # speed ("3") # room 1 # gain 1.3 # crush 3 # orbit 11
+ , s "plaits*16?"
+     # note (scale "majPent" "0..2")
+     # sustain 0.5
+     # engine 15 --(segment 16 (irand 16))
+     # timbre (range 0.1 0.4 rand)
+     # harm (0.3)
+     # morph 0.5
+     # gain (range 0.9 1.6 rand)
+ ]
+
+
 
 d7 $ swing 56 $ jux (# cutoff (slow 4 2000*saw+500)) $ s "braids" >| note (scale "majPent" "<-4 -3 -1 -2>  0@2 3 4 ~@3 ") # model (14) # timbre (range 0.7 0.5 perlin) # color 0.0 # sustain 2 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # cutoff 4000 # orbit 7 # nudge 0.01
 
-d4 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 5 # cut 1 # gain 1.2 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[3]" # cutoff 3500 # orbit 4 # nudge "0.02"
+d4 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 5 # cut 1 # gain 1.1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[3]" # cutoff 3500 # orbit 4 # nudge "0.007"
 
-xfade 4 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 1 # cut 1 # gain 1 # shape (0.25) # verb 0.2 0.5 0.1 0.2 # octave "[4]" # cutoff 4000 # orbit 4
+d5 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # note (scale "majPent" "<-4 -3 -1 -2>") # model (28) # timbre (range 0.7 0.5 perlin) # color 0.0 # sustain 1 # cut 1 # gain 1 # shape (0.25) # verb 0.2 0.5 0.1 0.2 # octave "[6]" # cutoff 4000 # orbit 5 # nudge "0.007" # pan rand
+
 
 d4 $ s "{braids*3}%2" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 0.5 # cut 1 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[4]" # cutoff 4000 # orbit 3 # nudge "0.02"
 
 d4 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 1 # cut 1 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[4]" # cutoff 4000 # orbit 3 # nudge "0.02"
 
-d6 $ s "braids" <| note (scale "major" "<0 [0@ -1] 0 [0 1]>") # model (5) # timbre (0.1) # color (0.5) # sustain 5 # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
+d6 $ s "braids" <| note (scale "major" "<0 [0@ -1] 0 [0 1]>") # model (1) # timbre (0.1) # color (0.5) # sustain 5 # cut 2 # gain 1.2 # verb 0.7 0.5 0.1 0.2 # octave "[5]" # cutoff 5000 # orbit 6
 
-d9 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # model (34) # timbre (1) # color (1) # sustain 1 # cut 3 # note (scale "major" "-8") # gain 1 # shape 0.25 # orbit 9-- # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
+d8 $ s "braids@1.5 braids@1.5 braids@1.5 braids@1.5 braids@1.5 [~ braids]" # model (34) # timbre (1) # color (1) # sustain 1 # cut 3 # note (scale "major" "-8") # gain 1 # shape 0.25 # orbit 9-- # cut 2 # gain 0.8 # verb 0.7 0.5 0.1 0.2 # octave "[6]" # cutoff 5000 # orbit 6
 
 
 d8 $ s "808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 808bd:1@1.5 [~ 808bd:1]" # krush 30 # note "-7"  # speed 1.96  # gain 1 # room 0.7 # orbit 6
 
-d9 silence
+d6 silence
 
 
 d1  $ s "tides" >| note (scale "majPent" "0..7")
@@ -904,7 +1059,8 @@ d1  $ s "tides" >| note (scale "majPent" "0..7")
     # ripplesdrive "{1 3 5}%2"
 
 
-
+gormaduli
+gormaduliQuarantine
 
 marching
 
@@ -914,6 +1070,13 @@ marching
   blackRain
 
   paulineOliveros
+
+
+p "pauline oliveros" $ loopAt 16 $ s "44comp:26" # room 0.7 # speed 0.95
+
+  marching
+
+  setcps 0.4
 
   gormaduli
 
@@ -925,8 +1088,8 @@ d4 $ whenmod 4 3 (const $ s "hh*8") $ struct "<t(3,8) t(3,8,1)>" $ s "moog:2" # 
 hush
 
 do
-  d1 $ s "<808bd:1(3,8) 808bd:1(3,8,1)>" # room 0.9 # speed 2 # krush 10 # nudge (range 0.01 0.04 rand)
-  d2 $ s "~ cp" # room 2 # speed 2 # nudge (range "-0.08" "-0.01" rand)
+  d1 $ s "<808bd:1(3,8) 808bd:1(3,8,1)>" # room 0.9 # speed 2 # krush 10 # nudge (range 0.02 0.04 rand)
+  d2 $ s "~ cp" # room 2 # speed 2 -- # nudge (range "-0.08" "-0.01" rand)
   -- 4*7=28 this is a 1/7 feel swing
   -- 4*3=12, so 12 would give you a 1/3 feel swing
   -- mult the number by 2 if you want to do 16 div, i.e.:
@@ -934,8 +1097,8 @@ do
   d3 $ swing 28 $ s "808:1*8" # room 1 # nudge (range 0 0.01 rand) # squiz 2 # speed 0.5
 
 do
-  d1 $ s "<808bd:1(3,8)>" # room 0.9 # speed 2 # krush 3 # nudge 0.08
-  d2 $ s "~ cp" # room 0.7 # speed 2 # nudge "-0.08"
+  d1 $ s "<808bd:1(3,8)>" # room 0.9 # speed 2 # krush 3 # nudge 0.04
+  d2 $ s "~ cp" # room 0.7 # speed 2 -- # nudge "-0.08"
   -- 4*7=28 this is a 1/7 feel swing
   -- 4*3=12, so 12 would give you a 1/3 feel swing
   -- mult the number by 2 if you want to do 16 div, i.e.:
