@@ -1,0 +1,297 @@
+bols soundFolder = inhabit [
+            ("dha", n "0" # s soundFolder)
+            , ("dhi", n "1" # s soundFolder)
+            , ("ta", n "2" # s soundFolder)
+            , ("ti", n "3" # s soundFolder)
+            , ("ri", n "4" # s soundFolder)
+            , ("ki", n "5" # s soundFolder)
+            , ("na", n "6" # s soundFolder)
+            , ("ge", n "7" # s soundFolder)
+            , ("dhin", n "8" # s soundFolder)
+            , ("ka", n "9" # s soundFolder)
+            , ("tiri", n "10" # s soundFolder)
+            , ("tirikit", n "10 22*2" # s soundFolder)
+            , ("gha", n "11" # s soundFolder)
+            , ("ghi", n "12" # s soundFolder)
+            , ("na", n "13" # s soundFolder)
+            , ("tha", n "14" # s soundFolder)
+            , ("tin", n "15" # s soundFolder)
+            , ("thi", n "16" # s soundFolder)
+            , ("ra", n "17" # s soundFolder)
+            , ("thin", n "18" # s soundFolder)
+            , ("thi2", n "19" # s soundFolder)
+            , ("ta2", n "20" # s soundFolder)
+            , ("ti2", n "21" # s soundFolder)
+            , ("te", n "22" # s soundFolder)
+            , ("dhe", n "23" # s soundFolder)
+            , ("ga", n "24" # s soundFolder)
+            , ("tak", n "25" # s soundFolder)
+            , ("ti3", n "26" # s soundFolder)
+            , ("khi", n "27" # s soundFolder)
+            , ("kath", n "31" # s soundFolder)
+                        ]
+withflip = within (0.75, 1) (fast 2)
+withply = within (0.75, 1) (ply 2)
+
+
+d1 $ s "[808bd:4(<5!3 11>,16)]" # speed (range "<1!3 2>" 1 saw) # krush 30 # room 0.5
+
+jumpMod 1 1 $ sound "hh*8"
+
+d1 $ sound "hh*4"
+d2 $ sound "bd"
+
+d5 $ s "moog:1" >| note ("<[e7!4] [e7*4 [ef7*2]]>"+"0.4") # att 0.1 # room 0.5
+
+-------
+--BIA--
+-------
+
+lock n offset = timeLoop n . (offset <~)
+
+-- pitch range is 0 to 16383
+-- other range is 0 to 8192
+do
+d1 $ midibend (range 0 8192 "0") # s "midi" # midichan 2--spread
+d2 $ midibend (range 0 8192 "0 0.4?") # s "midi" # midichan 1--morph
+d3 $ midibend (range 0 8192 "0") # s "midi" # midichan 0--fold
+d4 $ midibend (fast 1 $ segment 1000 $ range 0 8192 $ sine) # s "midi" # midichan 3--harmonic
+d5 $ midibend (range 0 8192 "0.5") # s "midi" # midichan 6--s/l/m
+d6 $ midibend (range 0 8192 "0") # s "midi" # midichan 5-- fil q
+d7 $ midibend (segment 128 $ range 0 (range 0 16383 "<0 0 0 0.0427>") saw) # s "midi" # midichan 4-- pitch
+d8 $ fast 1 $ note "0*16" # s "midi" -- trigger
+
+d6 $ lock 1 "<0>" $ midibend (segment 16 $ range 11500 1150 $ rand) # s "midi" # midichan 5--fliter q
+
+d1 $ ccv (fast 1 $ segment 100 $ range 0 645 saw) # ccn 2 # s "midi" --spread
+
+--super saw
+do
+d1 $ midibend (range 0 8192 "0.22") # s "midi" # midichan 2--spread (tuning)
+d2 $ midibend (range 0 8192 "[0.4 [0.0 0.4@3]]*2") # s "midi" # midichan 1--morph
+d3 $ midibend (range 0 8192 "0") # s "midi" # midichan 0--fold
+d4 $ midibend (range 0 8192 "0.65") # s "midi" # midichan 3--harmonic
+d5 $ midibend (range 0 8192 "0") # s "midi" # midichan 6--s/l/m
+d6 $ midibend (range 0 8192 "0") # s "midi" # midichan 5-- fil q
+d7 $ midibend (segment 128 $ range 0 (range 0 16383 "<0 0 0 0.0427>") saw) # s "midi" # midichan 4-- pitch
+d8 $ fast 1 $ note "0*16" # s "midi" -- trigger
+
+
+resetCycles
+
+-- midi clock
+p "midiclock" $ midicmd "midiClock*48" # s "midi"
+once $ midicmd "stop" # s "midi"
+p "midictl" $ midicmd "start/4" # s "midi"
+p "midictl" $ silence
+
+do
+d1 $ ccv "0" # ccn 2 # s "midi" --spread
+d2 $ ccv "0" # ccn 1 # s "midi" --morph
+d3 $ ccv "0" # ccn 0 # s "midi" --fold
+d4 $ ccv "0" # ccn 3 # s "midi" --harmonic
+
+do
+d1 $ ccv "16" # ccn 2 # s "midi" --spread
+d2 $ ccv "32" # ccn 1 # s "midi" --morph
+d3 $ ccv "32" # ccn 0 # s "midi" --fold
+d4 $ ccv "48" # ccn 3 # s "midi" --harmonic
+
+do
+d1 $ ccv "16" # ccn 2 # s "midi" --spread
+d2 $ ccv "0" # ccn 1 # s "midi" --morph
+d3 $ ccv "32" # ccn 0 # s "midi" --fold
+d4 $ ccv "48" # ccn 3 # s "midi" --harmonic
+
+do
+d1 $ fast 2 $ ccv "40 16" # ccn 2 # s "midi" --spread
+d2 $ fast 2 $ ccv "2 0" # ccn 1 # s "midi" --morph
+d3 $ fast 2 $ ccv "30 32" # ccn 0 # s "midi" --fold
+d4 $ fast 2 $ ccv "26 48" # ccn 3 # s "midi" --harmonic
+
+d4 $ ccv "0" # ccn 3 # s "midi" --harmonic
+
+-- fold 0-63
+d3 $ ccv (fast 2 $ segment 128 $ range 0 "64" $ saw) # ccn 0 # s "midi"
+d3 $ ccv (segment 16 $ range 0 40 $ saw) # ccn 0 # s "midi"
+d1 $ ccv "0!3 30" # ccn 0 # s "midi"
+d1 $ ccv "0" # ccn 0 # s "midi"
+-- morph 0-63
+d2 $ ccv (segment 128 $ range 0 20 $ saw) # ccn 1 # s "midi" -- (segment 100 $ range 0 47 $ saw)
+d2 $ lock 2 "<0 1>" $ ccv (segment 8 $ range 0 63 $ rand) # ccn 1 # s "midi"
+d2 $ ccv (segment 16 $ range 0 63 $ rand) # ccn 1 # s "midi"
+d2 $ ccv 0 # ccn 1 # s "midi"
+-- spread 0-63
+d3 $ ccv (segment 128 $ range 0 63 $ saw) # ccn 2 # s "midi" -- (segment 100 $ range 0 47 $ saw)
+d3 $ ccv 0 # ccn 2 # s "midi"
+
+-- harmonic 0-63
+d4 $ ccv (slow 1 $ segment 100 $ range 0 10 $ tri) # ccn 3 # s "midi" -- (segment 100 $ range 0 47 $ saw)
+d4 $ ccv 0 # ccn 3 # s "midi" -- (segment 100 $ range 0 47 $ saw)
+
+d12 $ s "~ cp ~ cp?" # room 0.5 # krush 5
+d12 silence
+
+-- pitch 0-127
+d7 $ ccv (slow 1 (segment 128 (slow 2 (range 0 10 isaw)))+"0") # ccn 4 # s "midi" -- (segment 100 $ range 0 47 $ saw)
+d7 $ whenmod 2 1 (# ccv 0) $ ccv (segment 100 $ range 0 10 $ isaw) # ccn 4 # s "midi"
+d7 $ ccv (segment 100 $ range 0 "<0 0 0 10>" $ isaw) # ccn 4 # s "midi"
+d7 $ ccv (0) # ccn 4 # s "midi"
+
+-- att & braids model
+d6 $ ccv "3*10" # ccn 5 # s "midi"
+d6 $ lock 1 "<0 1>" $ ccv (segment 16 $ range 0 127 $ rand) # ccn 5 # s "midi"
+
+-- model
+d6 $ ccv "[0 30]!7 60" # ccn 6 # s "midi" -- (segment 100 $ range 0 47 $ saw)
+d6 $ ccv "30" # ccn 6 # s "midi"
+
+
+-- dec
+d7 $ ccv (segment 16 $ range 30 40 $ saw) # ccn 6 # s "midi"
+
+-- trigger
+d8 $ sometimes (ply 6 ) $ chunk 4 ( shuffle 8) $ note "0(<5 11 7 11>,16)" # s "midi"
+d8 $ sometimes (ply 6 ) $ chunk 4 ( shuffle 8) $ note "0(<5 11>,16)" # s "midi"
+d8 $ ply "1 1 1 6 1 1 1 1" $ note "0*8" # s "midi"
+d8 $ slow 1 $ note "0*16" # s "midi"
+  d8 $ sometimesBy 0.025 (struct "t*48") $ note "0*16" # s "midi"
+
+d8 $ note "0*2 0*6? [0*2]? <0*6? [0*2]!3>" # s "midi"
+d8 $ fast 1 $ note "0*16" # s "midi"
+
+d1 $ midibend (slow 2 $ segment 128 $ range 0 300 tri) # s "midi"
+
+d1 $ midibend "-3000" # s "midi"
+
+setcps (100/60/4)
+
+d10 $ loopAt 1 $ randslice 16 $ s "africa*16" # room 2 # gain 1 # legato 0.78
+d10 $ s "amencutup*16" # n (irand 32) # speed 4 # room 0.5 # crush 3 # pan rand
+d11 $ s "casio*16?" # speed (slow 8 (range 2 1 saw)) # room 0.5 # gain (range 0.8 0.7 rand)
+
+d1 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # gain 0.95 # room "0.9" # size "0.9" # speed "1"  # up "-6" -- # slow 4 ( gain (range 0.35 0.8 perlin) ) # up "5"-- # slow 4 ( crush (range 2 32 rand) )
+d2 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # gain 0.95 # room "0.9" # size "0.9" # speed "-2"  # up "-6" -- # slow 4 ( gain (range 0.35 0.8 perlin) ) # up "5"
+d3 $ jux (rev) $ slow 8 $ striate' 64 (1/4) $ sound "44comp:36" # gain 0.95 # room "0.9" # size "0.9" # speed "0.5" # up "-6" -- # slow 4 ( gain (range 0.35 0.8 perlin) ) # up "5"
+
+
+d9 silence
+
+rhy
+
+https://chandrakantha.com/forums/?p=post%2Fidentifying-taal-8668721
+<[dha dhin dhin dha dha dhin dhin dha tha tin tin tha tha dhin dhin dha] [dhi na dhi dhi na thi na dhi dhi na na thi na dhi dhi na]>
+
+jumpMod 9 1
+    $ fast 2 $ stack[
+        silence
+        ,
+            whenmod 32 30 (sometimesBy 0.3 (jux (palindrome) . (# speed "-1"))) $
+            bols "[arpy, <[SOPHIE_snaps? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "dhi <na tiri ge> dhin ge <tirikit ti ra ga ta> dhi <na tiri ge> dhin" # up (slow 4 "<-5 -10>")
+        ,
+            whenmod 8 2 (# silence) $
+            sometimesBy 0.3 (jux (palindrome)) $
+            sometimesBy 0.2 (# speed 2.2) $
+            sometimes (withply) $ bols "[east, <[percussion? SOPHIE_subs] <IGLOOGHOST_snares>!15 > ]" "[ti|ri|ra|thi|tha|tin|tha|tin]*8"
+    ] # room 0.2
+
+
+
+xfade 4 $ swing 56 $ jux (# cutoff (slow 4 2000*saw+500)) $ s "braids" >| note (scale "majPent" "<-4 -3 -1 -2>  0@2 3 4 ~@3 ") # model (14) # timbre (range 0.7 0.5 perlin) # color 0.0 # sustain 2 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # cutoff 4000 # orbit 7 # nudge 0.01
+
+d5 $ s "braids" # note (scale "majPent" "<-4 -3 -1 -2>") # model (0) # timbre (range 0.7 0.5 perlin) # color 0 # sustain 5 # cut 1 # gain 1 # shape 0.25 # verb 0.2 0.5 0.1 0.2 # octave "[3]" # cutoff 3500 # orbit 5 # nudge "0.007"
+
+d4 $ whenmod 24 16 (# speed (slow 2 (range 0.5 4 square))) $ s "[808bd:2(7,16)?, ~ <feelfx:5 dr_few:1> ~ <dr_few:0 dr_few:0 dr_few:0 dr_few:1*9?>, realclaps:(5,8)?, 808:1(11,16)]" # speed (slow 2 (range 0.5 4 saw)) # gain (range 0.6 1.1 rand) # krush 50 # room 0.9 # up "-7"
+
+d10 $ s "braids(<9>,16,2)"
+  # note ("<f e a c>"+"-12")
+  # model 15
+  # sustain 0.5
+  -- # timbre (slow 4 (range 0.4 0.7 saw))
+  # color 0.0
+  # gain 1.1
+
+d10 silence
+
+
+
+
+  xfadeIn 4 2 $ whenmod 8 6 (palindrome) $ whenmod 8 6 (>| note (scale "majPent" "0..24"+"0"))$ swing 56 $ jux (# cutoff (slow 4 5000*saw+500)) $ off (0.125) (# speed 5) $ sometimesBy 0.025 (struct "t*48") $ stack[
+    s "amencutup*16" # n (irand 32) # speed ("3") # room 1 # gain 1.2 # crush 3 # orbit 11
+    , s "plaits*16?"
+        # note (scale "majPent" "0..2")
+        # sustain 0.5
+        # engine 15 --(segment 16 (irand 16))
+        # timbre (range 0.1 0.4 rand)
+        # harm (0.3)
+        # morph 0.5
+        # gain (range 0.9 1 rand)
+    ]
+
+
+d3 silence
+
+d1 $ midibend ( range 0 16383 $ saw) >| note "c e f a" # s "midi"
+
+
+d2 $ note "c2(11,16)" # s "midi" # amp (range 0.75 0.8 $ rand)
+
+d1 $ midibend (slow 2 $ segment 128 $ range 0 16383 saw) # s "midi"
+
+
+
+d1 $ s "moog*100" # speed (slow 4 (range 1 16 saw)) # legato 1
+
+do {
+  d1 $ qtrigger $ filterWhen (>=0) $ seqP [
+  (0, 3, s "moog*100" # speed (slow 3 (range 1 16 saw)) # legato 1)
+  ] ;
+  d2 $ qtrigger $ filterWhen (>=0) $ stack[
+    s "~ cp" # room 0.5,
+    fast 2 $ s "hh*2 hh*2 hh*2 <hh*6 [hh*2]!3>" # room 0.7 # gain (range 1 1.2 rand)
+  ] # speed (slow 4 (range 1 2 saw));
+  d3 $ qtrigger $ filterWhen (>=0) $ seqP [
+    (0, 1, s "feel:2*4"),
+    (1,2, s "feel:2*8"),
+    (2,3, s "feel:2*16"),
+    (3,4, s "feel:2*32")
+  ] # room 0.3 # hpf (slow 4 (1000*saw + 100)) # speed (slow 4 (range 1 2 saw))
+}
+
+d5 $ whenmod 3 2 (struct "f") $ swing 16 $ degradeBy 0.3 $ whenmod 3 1.5 (fast 1.25) $ bite 8 "[<[0*4] [1*4] [<0 3>*4] [2*4]>, {0 1 2 3 4 5 6}%8]" $ iter 8 $ jux (rev) $ s "[SOPHIE_percussion:1](< 11 9 13 16>,16)" # note (off "0.25" (rev) $ off 0.125 (+"<7 12>")(scale "pelog" (run 16))+"[24]") # speed 0.25 # cut 1 # room 0.5
+
+d4 $ swing 16 $ slow 2 $ s "SOPHIE_subs [~@7 SOPHIE_subs?]" # krush 50 # room 0.5 # nudge "0.02" # speed 8
+
+d4 silence
+
+d3$ fast 2 $ s " ~ <SOPHIE_snaps>" # room 1 # nudge "-0.01"
+
+d4 $ slow 2 $ s " [~@3 [superfork*16]]" # note (slow 2 (range 4 30 saw)+"0") # gain 1.2 # room 0.5 -- # legato 1
+
+d2 silence
+
+d2 $ s "808bd:4" # room 0.5 # krush 50 # speed "4"
+
+-- this one
+d1 $ rotR 0.75 $ degradeBy 0.2 $ sometimes (jux rev) $ bite 4 "[0 1 0 1]" $ chunk 4 (# note "{c e f g b}%16")  $ slow 2 $ note (off 0.125 (+12) (off 0.25 (+"-5") "c(3,8) f(3,8,2) <c d e3 f3>(3,8,1) <c3 d e f>*4")) # s "[arpy]" # room 0.8 # speed "[0.5,1]" # crush (slow 2 $ range 3 2 sine) # lpfbus 1 (slow 4 $ range 100 5000 saw)
+
+d1 $ rotR 0.75 $ slow 2 $ note ("c(3,8) f(3,8,2) <c d e3 f3>(3,8,1) <c3 d e f>*4") # s "[arpy]" # room 0.8 # speed "[0.5,1]" -- # crush 3
+
+d1 $ jux (rev)  $ chunk 3 (# note "{a4 e g a3 g}%16") $ slow 2 $ note (off "0.125" (+"-5") (off "0.25" (+12) ("a3(3,8) [e f] g(3,8) [e c]")) ) # s "arpy"  # speed "[0.5,1,2,4]" # room 0.8 -- # lpfbus 1 (slow 2 $ range 100 5000 sine) # speed "[1]"
+
+d2 $ someCyclesBy 0.9 (struct "t!7 [t*3] t!8")$ jux rev $ iter 4 $ s "[amencutup]*16" # n (run 32) # room 0.5 # gain 1.1 -- # speed (slow 2 $ range 2 1 saw)
+
+
+-- https://strudel.cc/?9ePgo-FrpddU
+
+
+d1 $ degradeBy 0.2 $ jux rev $ slow 2 $ bite 4 "<[0 1 0 1]>" $ chunk 4 (# note "{c  e f g b}%16") $ note (off 0.125 (+12) (off 0.25 (+"-5") "c3(3,8) f(3,8,1) <c d e f>(3,8,2)  <c3 d e3 f>*2?")) # s "arpy" # room 0.8 # speed "[0.5,1]"
+
+d2 $ someCycles (jux rev) $ iter 4 $ s "amencutup*16" # n (run 32) # room 0.5 # gain 1.1
+
+d1 $ off "[0.125,0.743,0.614]" (# speed (range 1 4 perlin)) $ s "bd bd sd ~"
+d1 $ note (off "0.125" (+"[g c6]") "c d e f") # s "arpy"
+
+d1 $ jux (palindrome) $ s "bd bd sd ~" # speed (slow 2 $ range 1 4 saw)
+
+d1 $ chunk 4 (# speed 2) $ s "bd bd sd ~"

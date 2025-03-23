@@ -1,0 +1,11 @@
+
+-- serum in live
+d1 $ whenmod 4 3 (struct "t(17,8)") $ struct "t(33,8)" $ note (scale "majPent" ((run "<16 [<8 12> 0]>")+"-6")) # s "midi" # midichan 0
+d2 $ ccv (segment 128 (slow 4 (range 30 100 saw))) # ccn "0" # s "midi" # midichan 0
+
+
+d3 $ note "<c c(3,8)> ~" # s "midi" # midichan 1
+
+d4 $ s "~ 808bd:1(6,8,<0 1 2 3>)" # room 0.5 # speed (slow 4 (range 10 8 saw)) # krush 10
+
+scaleList
